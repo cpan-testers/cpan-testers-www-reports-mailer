@@ -1,5 +1,10 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.06	17/11/2008
+	- fixed run time error where iterator call was bogus :(
+	- fixed preferences parsing to correctly set the new fields for ignored
+	  and report.
+
 0.05	16/11/2008
 	- intergrated changes from the preferences site for ignoring 
 	  distributions and selecting the report type.

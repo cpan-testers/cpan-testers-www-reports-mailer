@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 =head1 NAME
 
@@ -173,7 +173,7 @@ sub check_reports {
     my $rows = $options{cpanstats}->Iterator('hash',$phrasebook{'GetReports'},$last_id);
     return  unless($rows);
 
-    while( my $row = $rows-()) {
+    while( my $row = $rows->()) {
         $counts{REPORTS}++;
         $last_id = $row->{id};
         $row->{state} = uc $row->{state};
@@ -429,6 +429,8 @@ sub get_prefs {
     # use global defaults
     my %prefs = (
             active      => 0,
+            ignored     => 0,
+            report      => 1,
             grades      => {'FAIL' => 1},
             tuple       => 'FIRST',
             version     => 'LATEST',
@@ -447,6 +449,8 @@ sub parse_prefs {
     my %grades = map {$_ => 1} split(',',$row->{grade});
 
     $hash{grades}   = \%grades;
+    $hash{ignored}  = $row->{ignored}   || 0;
+    $hash{report}   = $row->{report}    || 1;
     $hash{tuple}    = $row->{tuple}     || 'FIRST';
     $hash{version}  = $row->{version}   || 'LATEST';
     $hash{patches}  = $row->{patches}   || 0;
