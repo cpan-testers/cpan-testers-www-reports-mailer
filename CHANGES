@@ -1,5 +1,10 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.07	current
+	- fix to ensure default preference entries always exist.
+	- fix broken SQL for incorrect table name :(
+	- additional POD for DBUtils.pm.
+
 0.06	17/11/2008
 	- fixed run time error where iterator call was bogus :(
 	- fixed preferences parsing to correctly set the new fields for ignored

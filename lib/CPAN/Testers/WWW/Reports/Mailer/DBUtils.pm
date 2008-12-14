@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 =head1 NAME
 
@@ -14,9 +14,13 @@ CPAN::Testers::WWW::Reports::Mailer::DBUtils - Database Wrapper
 
   use CPAN::Testers::WWW::Reports::Mailer::DBUtils;
 
+  my $dbx = CPAN::Testers::WWW::Reports::Mailer::DBUtils->new({
+                driver      => 'mysql',
+                database    => 'testdb');
+
   my $dbi = CPAN::Testers::WWW::Reports::Mailer::DBUtils->new({
-                driver => 'CSV',
-                file => '/var/www/mysite/db);
+                driver  => 'CSV',
+                dbfile  => '/var/www/mysite/db);
   sub errors { print STDERR "Error: $_[0], sql=$_[1]\n" }
 
   my @arr = $dbi->GetQuery('array',$sql);
@@ -39,6 +43,16 @@ CPAN::Testers::WWW::Reports::Mailer::DBUtils - Database Wrapper
 The DBUtils package is a further database interface layer, providing a
 collection of control methods to initiate the database connection, handle
 errors and a smooth handover from the program to the database drivers.
+
+Known supported drivers:
+
+  MySQL     (database)
+  SQLite    (database)
+  CSV       (dbfile)
+  ODBC      (driver)
+
+The keys in braces above, indicate how the name/location of the data store is
+passed to the connection string.
 
 =cut
 

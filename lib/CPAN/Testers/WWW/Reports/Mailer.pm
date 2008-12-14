@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 =head1 NAME
 
@@ -96,10 +96,12 @@ my %phrasebook = (
     'GetReportCount'    => "SELECT id FROM cpanstats WHERE platform=? AND perl=? AND state=? AND id < ? LIMIT 2",
     'GetLatestDistVers' => "SELECT version FROM cpanstats WHERE dist=? AND state='cpan' ORDER BY id DESC LIMIT 1",
     'GetAuthor'         => "SELECT tester FROM cpanstats WHERE dist=? AND version=? AND state='cpan' LIMIT 1",
-    'GetDistPrefs'      => "SELECT * FROM prefs_distributions WHERE pauseid=? AND distribution=?",
+
+    'GetAuthorPrefs'    => "SELECT * FROM prefs_authors WHERE pauseid=?",
     'GetDefaultPrefs'   => "SELECT * FROM prefs_authors AS a INNER JOIN prefs_distributions AS d ON d.pauseid=a.pauseid AND d.distribution='-' WHERE a.pauseid=?",
+    'GetDistPrefs'      => "SELECT * FROM prefs_distributions WHERE pauseid=? AND distribution=?",
     'InsertAuthorLogin' => 'INSERT INTO prefs_authors (active,lastlogin,pauseid) VALUES (1,?,?)',
-    'InsertDistPrefs'   => "INSERT INTO prefs_distribution (pauseid,distribution,ignored,report,grade,tuple,version,patches,perl,platform) VALUES (?,?,0,1,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
+    'InsertDistPrefs'   => "INSERT INTO prefs_distributions (pauseid,distribution,ignored,report,grade,tuple,version,patches,perl,platform) VALUES (?,?,0,1,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
 );
 
 # -------------------------------------
@@ -394,6 +396,7 @@ sub get_author {
 
 sub get_prefs {
     my ($author,$dist) = @_;
+    my $active = 0;
 
     # get distribution defaults
     if($author && $dist) {
@@ -416,11 +419,19 @@ sub get_prefs {
             return $prefs{$author}{default};
         }
 
-        my @rows = $options{authors}->GetQuery('hash',$phrasebook{'GetDefaultPrefs'}, $author);
-        if(@rows) {
-            $prefs{$author}{default} = parse_prefs($rows[0]);
-            $prefs{$author}{default}{active} = $rows[0]->{active} || 0;
-            return $prefs{$author}{default};
+        my @auth = $options{authors}->GetQuery('hash',$phrasebook{'GetAuthorPrefs'}, $author);
+        if(@auth) {
+            $prefs{$author}{default}{active} = $auth[0]->{active} || 0;
+
+            my @rows = $options{authors}->GetQuery('hash',$phrasebook{'GetDefaultPrefs'}, $author);
+            if(@rows) {
+                $prefs{$author}{default} = parse_prefs($rows[0]);
+                $prefs{$author}{default}{active} = $rows[0]->{active} || 0;
+                return $prefs{$author}{default};
+            } else {
+                $options{authors}->DoQuery($phrasebook{'InsertDistPrefs'}, $author, '-');
+                $active = $prefs{$author}{default}{active};
+            }
         }
 
         # fall through and assume new author
@@ -428,7 +439,7 @@ sub get_prefs {
 
     # use global defaults
     my %prefs = (
-            active      => 0,
+            active      => $active,
             ignored     => 0,
             report      => 1,
             grades      => {'FAIL' => 1},
