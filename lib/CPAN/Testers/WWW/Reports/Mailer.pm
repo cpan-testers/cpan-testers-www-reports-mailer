@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 =head1 NAME
 
@@ -37,6 +37,7 @@ Report and the individual reports will also be available.
 
 use Compress::Zlib;
 use Config::IniFiles;
+use CPAN::Testers::Common::DBUtils;
 use File::Basename;
 use File::Slurp;
 use Getopt::ArgvFile default=>1;
@@ -46,9 +47,6 @@ use Path::Class;
 use Parse::CPAN::Authors;
 use Template;
 use Time::Piece;
-use WWW::Mechanize;
-
-use CPAN::Testers::WWW::Reports::Mailer::DBUtils;
 
 # -------------------------------------
 # Variables
@@ -138,16 +136,12 @@ sub init_options {
     # load configuration
     my $cfg = Config::IniFiles->new( -file => $options{config} );
 
-    # configure cpanstats DB
-    my %opts = map {$_ => $cfg->val('CPANSTATS',$_);} qw(driver database dbfile dbhost dbport dbuser dbpass);
-    $options{cpanstats} = CPAN::Testers::WWW::Reports::Mailer::DBUtils->new(%opts);
-
-    # configure preferences db
-    %opts = map {$_ => $cfg->val('AUTHORS',$_);} qw(driver database dbfile dbhost dbport dbuser dbpass);
-    $options{authors} = CPAN::Testers::WWW::Reports::Mailer::DBUtils->new(%opts);
-
-    die "Cannot configure CPANSTATS database\n" unless($options{cpanstats});
-    die "Cannot configure AUTHORS database\n"   unless($options{authors});
+    # configure databases
+    for my $db (qw(CPANSTATS CPANPREFS)) {
+        my %opts = map {$_ => $cfg->val($db,$_);} qw(driver database dbfile dbhost dbport dbuser dbpass);
+        $options{$db} = CPAN::Testers::Common::DBUtils->new(%opts);
+        die "Cannot configure $db database\n" unless($options{$db});
+    }
 
     $config{$_} = $cfg->val('SETTINGS',$_)  for(qw(DEBUG));
 
@@ -170,9 +164,7 @@ sub check_reports {
     my (%reports,%tvars);
 
     # find all reports since last update
-#    my @rows = $options{cpanstats}->GetQuery('hash',$phrasebook{'GetReports'},$last_id);
-#    for my $row (@rows) {
-    my $rows = $options{cpanstats}->Iterator('hash',$phrasebook{'GetReports'},$last_id);
+    my $rows = $options{CPANSTATS}->iterator('hash',$phrasebook{'GetReports'},$last_id);
     return  unless($rows);
 
     while( my $row = $rows->()) {
@@ -203,7 +195,7 @@ sub check_reports {
 
         # check whether only first instance required
         if($prefs->{tuple} eq 'FIRST') {
-            my @count = $options{cpanstats}->GetQuery('array',$phrasebook{'GetReportCount'}, $row->{platform}, $row->{perl}, $row->{state}, $row->{id});
+            my @count = $options{CPANSTATS}->getquery('array',$phrasebook{'GetReportCount'}, $row->{platform}, $row->{perl}, $row->{state}, $row->{id});
             next    if(@count > 1);
         }
 
@@ -214,7 +206,7 @@ sub check_reports {
 
         if($prefs->{version} && $prefs->{version} ne 'ALL') {
             if($prefs->{version} eq 'LATEST') {
-                my @vers = $options{cpanstats}->GetQuery('array',$phrasebook{'GetLatestDistVers'},$row->{dist});
+                my @vers = $options{CPANSTATS}->getquery('array',$phrasebook{'GetLatestDistVers'},$row->{dist});
                 next    if(@vers && $vers[0]->[0] ne $row->{version});
             } else {
                 $prefs->{version} =~ s/\s*//g;
@@ -274,8 +266,8 @@ sub check_reports {
         if(!$prefs->{active} || $prefs->{active} == 0) {
             $tvars{subject} = 'Welcome to CPAN Testers';
             write_mail('notification.eml',\%tvars);
-            $options{authors}->DoQuery($phrasebook{'InsertAuthorLogin'}, time(), $author);
-            $options{authors}->DoQuery($phrasebook{'InsertDistPrefs'}, $author, '-');
+            $options{CPANPREFS}->doquery($phrasebook{'InsertAuthorLogin'}, time(), $author);
+            $options{CPANPREFS}->doquery($phrasebook{'InsertDistPrefs'}, $author, '-');
         }
 
         my ($reports,@e);
@@ -387,7 +379,7 @@ sub get_author {
     return  unless($dist && $vers);
 
     unless($authors{$dist} && $authors{$dist}{$vers}) {
-        my @author = $options{cpanstats}->GetQuery('array',$phrasebook{'GetAuthor'}, $dist, $vers);
+        my @author = $options{CPANSTATS}->getquery('array',$phrasebook{'GetAuthor'}, $dist, $vers);
         $authors{$dist}{$vers} = @author ? $author[0]->[0] : undef;
     }
     return $authors{$dist}{$vers};
@@ -404,7 +396,7 @@ sub get_prefs {
             return $prefs{$author}{dists}{$dist};
         }
 
-        my @rows = $options{authors}->GetQuery('hash',$phrasebook{'GetDistPrefs'}, $author,$dist);
+        my @rows = $options{CPANPREFS}->getquery('hash',$phrasebook{'GetDistPrefs'}, $author,$dist);
         if(@rows) {
             $prefs{$author}{dists}{$dist} = parse_prefs($rows[0]);
             return $prefs{$author}{dists}{$dist};
@@ -419,17 +411,17 @@ sub get_prefs {
             return $prefs{$author}{default};
         }
 
-        my @auth = $options{authors}->GetQuery('hash',$phrasebook{'GetAuthorPrefs'}, $author);
+        my @auth = $options{CPANPREFS}->getquery('hash',$phrasebook{'GetAuthorPrefs'}, $author);
         if(@auth) {
             $prefs{$author}{default}{active} = $auth[0]->{active} || 0;
 
-            my @rows = $options{authors}->GetQuery('hash',$phrasebook{'GetDefaultPrefs'}, $author);
+            my @rows = $options{CPANPREFS}->getquery('hash',$phrasebook{'GetDefaultPrefs'}, $author);
             if(@rows) {
                 $prefs{$author}{default} = parse_prefs($rows[0]);
                 $prefs{$author}{default}{active} = $rows[0]->{active} || 0;
                 return $prefs{$author}{default};
             } else {
-                $options{authors}->DoQuery($phrasebook{'InsertDistPrefs'}, $author, '-');
+                $options{CPANPREFS}->doquery($phrasebook{'InsertDistPrefs'}, $author, '-');
                 $active = $prefs{$author}{default}{active};
             }
         }

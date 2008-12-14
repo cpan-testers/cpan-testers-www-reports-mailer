@@ -1,6 +1,12 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
-0.07	current
+0.08	14/12/2008
+	- convert to use CPAN-Testers-Common-DBUtils.
+	- database references now CPANSTATS and CPANPREFS.
+	- fix to email templates now that preferences website is live.
+	- first release to CPAN.
+
+0.07	19/11/2008
 	- fix to ensure default preference entries always exist.
 	- fix broken SQL for incorrect table name :(
 	- additional POD for DBUtils.pm.
