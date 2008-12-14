@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 =head1 NAME
 
@@ -94,13 +94,14 @@ sub new {
 
     # create an attributes hash
     my $dbv = {
-        'driver'    => $hash{driver},
-        'database'  => $hash{database},
-        'dbfile'    => $hash{dbfile},
-        'dbhost'    => $hash{dbhost},
-        'dbport'    => $hash{dbport},
-        'dbuser'    => $hash{dbuser},
-        'dbpass'    => $hash{dbpass},
+        'driver'     => $hash{driver},
+        'database'   => $hash{database},
+        'dbfile'     => $hash{dbfile},
+        'dbhost'     => $hash{dbhost},
+        'dbport'     => $hash{dbport},
+        'dbuser'     => $hash{dbuser},
+        'dbpass'     => $hash{dbpass},
+        'AutoCommit' => defined $hash{AutoCommit} ? $hash{AutoCommit} : 1,
     };
 
     # create the object
@@ -256,21 +257,14 @@ sub DoSQL {
     $dbv->_doQuery($sql,0,@args);
 }
 
-# _doQuery(key,idrequired,<list>)
+# _doQuery(sql,idrequired,<list>)
 #
-#  key - hash key to sql in phrasebook
+#  sql - SQL statement
 #  idrequired - true if an ID value is required on return
 #  <list> - optional additional values to be inserted into SQL placeholders
 #
 #The function performs an SQL statement. If performing an INSERT statement that
 #returns an record id, this is returned to the calling function.
-#
-#The first entry in <list> can be an anonymous hash, containing the placeholder
-#values to be interpolated by Class::Phrasebook.
-#
-#Note that if the key is not found in the phrasebook, the function returns
-#with undef.
-#
 
 sub _doQuery {
     my ($dbv,$sql,$idrequired,@args) = @_;
@@ -381,14 +375,20 @@ sub _db_connect {
     my $dbv  = shift;
 
     my $dsn =   'dbi:' . $dbv->{driver};
+    my %options = (
+        RaiseError => 1,
+        AutoCommit => $dbv->{AutoCommit},
+    );
 
     if($dbv->{driver} =~ /ODBC/) {
         # all the info is in the Data Source repository
 
-    } elsif($dbv->{driver} =~ /SQLite/) {
+    } elsif($dbv->{driver} =~ /SQLite/i) {
         $dsn .=     ':dbname='   . $dbv->{database} if $dbv->{database};
         $dsn .=     ';host='     . $dbv->{dbhost}   if $dbv->{dbhost};
         $dsn .=     ';port='     . $dbv->{dbport}   if $dbv->{dbport};
+
+        $options{sqlite_handle_binary_nulls} = 1;
 
     } else {
         $dsn .=     ':f_dir='    . $dbv->{dbfile}   if $dbv->{dbfile};
@@ -398,8 +398,7 @@ sub _db_connect {
     }
 
     eval {
-        $dbv->{dbh} = DBI->connect($dsn, $dbv->{dbuser}, $dbv->{dbpass},
-                                { RaiseError => 1, AutoCommit => 1 });
+        $dbv->{dbh} = DBI->connect($dsn, $dbv->{dbuser}, $dbv->{dbpass}, \%options);
     };
 
     croak("Cannot connect to DB [$dsn]: $@")    if($@);
@@ -420,7 +419,13 @@ __END__
 
 =head1 SEE ALSO
 
-  DBI,
+L<CPAN::WWW::Testers::Generator>
+L<CPAN::WWW::Testers>
+L<CPAN::Testers::WWW::Statistics>
+
+F<http://www.cpantesters.org/>,
+F<http://stats.cpantesters.org/>,
+F<http://wiki.cpantesters.org/>
 
 =head1 AUTHOR
 

@@ -1,4 +1,14 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.02	06/11/2008
+	- prefs_distributions table extended to include distribution version,
+	  platform, perl version and patches preferences.
+	- code added to cpanstats-mailer (v0.02) to include new preferences.
+	- designed tables so that login and activity are held in the author
+	  table, and all distribution preferences are held in the distribution
+	  table, where defaults are where distribution == '-'.
+	- redsigned new author insertions
+	- implemented a simple phrasebook lookup for SQL queries.
+
 0.01	08/09/2008
 	- initial release

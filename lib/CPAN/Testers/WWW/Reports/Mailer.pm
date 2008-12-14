@@ -4,11 +4,11 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 =head1 NAME
 
-CPAN::Testers::WWW::Reports::Mailer - CPAN Testers Reports Mailer toolset
+CPAN::Testers::WWW::Reports::Mailer - CPAN Testers Reports Mailer
 
 =head1 SYNOPSIS
 
@@ -18,7 +18,17 @@ CPAN::Testers::WWW::Reports::Mailer - CPAN Testers Reports Mailer toolset
 
 =head1 DESCRIPTION
 
-CPAN Testers Reports Mailer toolset
+The CPAN Testers Reports Mailer takes the preferences set within the CPANPREFS
+database, and uses them to filter out reports that the author does or does not
+wish to be made aware of.
+
+New authors are added to the system as a report for their first reported
+distribution is submitted by a tester. Default settings are applied in the
+first instance, with the author able to update these via the preferences
+website.
+
+Initially only a Daily Summary Report is available, in time a Weekly Summary
+Report and the individual reports will also be available.
 
 =cut
 
@@ -37,7 +47,13 @@ __END__
 
 =head1 SEE ALSO
 
-  CPAN::Testers::WWW::Reports::Mailer
+L<CPAN::WWW::Testers::Generator>
+L<CPAN::WWW::Testers>
+L<CPAN::Testers::WWW::Statistics>
+
+F<http://www.cpantesters.org/>,
+F<http://stats.cpantesters.org/>,
+F<http://wiki.cpantesters.org/>
 
 =head1 AUTHOR
 

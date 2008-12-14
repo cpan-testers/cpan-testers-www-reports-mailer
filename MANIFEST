@@ -1,6 +1,6 @@
-bin/cpanstats-mailer
+bin/cpanreps-mailer
 CHANGES
-data/example-settings.ini
+data/settings-example.ini
 lib/CPAN/Testers/WWW/Reports/Mailer.pm
 lib/CPAN/Testers/WWW/Reports/Mailer/DBUtils.pm
 Makefile.PL
