@@ -1,5 +1,14 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.04	14/11/2008
+	- fixed GetDefaultPrefs to use the INNER JOIN.
+	- allowed for exclusions in lists, as suggested by David Cantrell.
+	- moved DEBUG configuration to configuration file
+	- took out application configuration from MANIFEST and replaced it with
+	  an example one, so as not to clobbered any settings from the real one 
+	  when installed.
+	- fixed InsertDistPrefs SQL string.
+
 0.03	06/11/2008
 	- port bulk of script code into Mailer module.
 
@@ -7,10 +16,10 @@ Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 	- prefs_distributions table extended to include distribution version,
 	  platform, perl version and patches preferences.
 	- code added to cpanstats-mailer (v0.02) to include new preferences.
-	- designed tables so that login and activity are held in the author
+	- redesigned tables so that login and activity are held in the author
 	  table, and all distribution preferences are held in the distribution
 	  table, where defaults are where distribution == '-'.
-	- redsigned new author insertions
+	- redesigned new author insertions
 	- implemented a simple phrasebook lookup for SQL queries.
 
 0.01	08/09/2008

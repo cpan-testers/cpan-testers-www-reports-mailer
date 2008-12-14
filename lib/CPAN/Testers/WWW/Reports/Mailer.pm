@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 =head1 NAME
 
@@ -54,10 +54,9 @@ use CPAN::Testers::WWW::Reports::Mailer::DBUtils;
 # Variables
 
 # force default configuration into debug mode
-my $DEBUG = 1;
+my %config = (DEBUG => 1);
 
-my (%options,%authors,%prefs);
-my (%counts);
+my (%options,%authors,%prefs,%counts);
 
 use constant    LASTMAIL    => '_lastmail';
 
@@ -93,9 +92,9 @@ my %phrasebook = (
     'GetLatestDistVers' => "SELECT version FROM cpanstats WHERE dist=? AND state='cpan' ORDER BY id DESC LIMIT 1",
     'GetAuthor'         => "SELECT tester FROM cpanstats WHERE dist=? AND version=? AND state='cpan' LIMIT 1",
     'GetDistPrefs'      => "SELECT * FROM prefs_distributions WHERE pauseid=? AND distribution=?",
-    'GetDefaultPrefs'   => "SELECT * FROM prefs_authors WHERE pauseid=?",
+    'GetDefaultPrefs'   => "SELECT * FROM prefs_authors AS a INNER JOIN prefs_distributions AS d ON d.pauseid=a.pauseid AND d.distribution='-' WHERE a.pauseid=?",
     'InsertAuthorLogin' => 'INSERT INTO prefs_authors (active,lastlogin,pauseid) VALUES (1,?,?)',
-    'InsertDistPrefs'   => "INSERT INTO prefs_authors (pauseid,dist,grade,tuple,version,patches,perl,platform) VALUES (?,?,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
+    'InsertDistPrefs'   => "INSERT INTO prefs_distribution (pauseid,distribution,grade,tuple,version,patches,perl,platform) VALUES (?,?,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
 );
 
 # -------------------------------------
@@ -143,6 +142,8 @@ sub init_options {
     die "Cannot configure CPANSTATS database\n" unless($options{cpanstats});
     die "Cannot configure AUTHORS database\n"   unless($options{authors});
 
+    $config{$_} = $cfg->val('SETTINGS',$_)  for(qw(DEBUG));
+
     $options{pause} = download_mailrc();
 
     # set up API to Template Toolkit
@@ -162,8 +163,11 @@ sub check_reports {
     my (%reports,%tvars);
 
     # find all reports since last update
-    my @rows = $options{cpanstats}->GetQuery('hash',$phrasebook{'GetReports'},$last_id);
-    for my $row (@rows) {
+#    my @rows = $options{cpanstats}->GetQuery('hash',$phrasebook{'GetReports'},$last_id);
+#    for my $row (@rows) {
+    my $rows = $options{cpanstats}->Iterator('hash',$phrasebook{'GetReports'},$last_id);
+    while( my %row = $rows-()) {
+        my $row = \%row;
         $counts{REPORTS}++;
         $last_id = $row->{id};
         $row->{state} = uc $row->{state};
@@ -215,7 +219,12 @@ sub check_reports {
             $prefs->{platform} =~ s/\s*//g;
             $prefs->{platform} =~ s/,/|/g;
             $prefs->{platform} =~ s/\./\\./g;
-            next    unless($row->{platform} =~ /$prefs->{platform}/);
+            $prefs->{platform} =~ s/^(\w+)\|//;
+            if($1 eq 'NOT') {
+                next    if($row->{platform} =~ /$prefs->{platform}/);
+            } else {
+                next    if($row->{platform} !~ /$prefs->{platform}/);
+            }
         }
 
         # Check whether this perl version is required.
@@ -224,7 +233,12 @@ sub check_reports {
             $prefs->{perl} =~ s/,/|/g;
             $prefs->{perl} =~ s/\./\\./g;
             my $v = version->new("$row->{perl}")->numify;
-            next    if($row->{perl} !~ /$prefs->{perl}/ && $v !~ /$prefs->{perl}/);
+            $prefs->{platform} =~ s/^(\w+)\|//;
+            if($1 eq 'NOT') {
+                next    if($row->{perl} =~ /$prefs->{perl}/ && $v =~ /$prefs->{perl}/);
+            } else {
+                next    if($row->{perl} !~ /$prefs->{perl}/ && $v !~ /$prefs->{perl}/);
+            }
         }
 
         # Check whether patches are required.
@@ -456,7 +470,7 @@ sub write_mail {
     $body =~ s/DATE/$DATE/g;
     $body =~ s/SUBJECT/$subject/g;
 
-    if($DEBUG) {
+    if($config{DEBUG}) {
         print "$body\n";
         return;
     }
@@ -472,7 +486,7 @@ sub write_mail {
 
 sub emaildate {
     my $t = localtime;
-    return $t->strftime("%a, %d %b %Y %H:%M:%S %z");
+    return $t->strftime("%a, %d %b %Y %H:%M:%S +0000");
 }
 
 sub download_mailrc {
