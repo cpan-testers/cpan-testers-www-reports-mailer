@@ -1,5 +1,8 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.03	06/11/2008
+	- port bulk of script code into Mailer module.
+
 0.02	06/11/2008
 	- prefs_distributions table extended to include distribution version,
 	  platform, perl version and patches preferences.

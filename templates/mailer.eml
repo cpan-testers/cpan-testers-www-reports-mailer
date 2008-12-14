@@ -13,6 +13,7 @@ Currently only FAIL reports are listed, with only the first instance of a report
 [% FOREACH stat = pver.states -%]
 [% FOREACH id = stat.ids -%]
   - [% stat.state %] http://nntp.x.perl.org/group/perl.cpan.testers/[% id %]
+
 [% END -%]
 [% END -%]
 [% END -%]

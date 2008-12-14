@@ -135,7 +135,8 @@ sub GetQuery {
     $dbv = &_db_connect($dbv) if not $dbv->{dbh};
 
     # prepare the sql statement for executing
-    my $sth = $dbv->{dbh}->prepare($sql);
+    my $sth;
+    eval { $sth = $dbv->{dbh}->prepare($sql) };
     unless($sth) {
         croak("err=".$dbv->{dbh}->errstr.", sql=[$sql], args[".join(",",map{$_ || ''} @args)."]");
         return ();
