@@ -1,5 +1,11 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.05	16/11/2008
+	- intergrated changes from the preferences site for ignoring 
+	  distributions and selecting the report type.
+	- fixed issues with get_author.
+	- altered Iterator to return a reference rather than the array or hash.
+
 0.04	14/11/2008
 	- fixed GetDefaultPrefs to use the INNER JOIN.
 	- allowed for exclusions in lists, as suggested by David Cantrell.

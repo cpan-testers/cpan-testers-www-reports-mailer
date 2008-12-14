@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 =head1 NAME
 
@@ -58,7 +58,12 @@ my %config = (DEBUG => 1);
 
 my (%options,%authors,%prefs,%counts);
 
-use constant    LASTMAIL    => '_lastmail';
+use constant    LASTMAIL            => '_lastmail';
+use constant    DAILY_SUMMARY       => 1;
+use constant    WEEKLY_SUMMARY      => 2;
+use constant    INDIVIDUAL_REPORTS  => 3;
+
+my $REPORT_TYPE = DAILY_SUMMARY;
 
 my $HOW  = '/usr/sbin/sendmail -bm';
 my $HEAD = 'To: "NAME" <EMAIL>
@@ -94,7 +99,7 @@ my %phrasebook = (
     'GetDistPrefs'      => "SELECT * FROM prefs_distributions WHERE pauseid=? AND distribution=?",
     'GetDefaultPrefs'   => "SELECT * FROM prefs_authors AS a INNER JOIN prefs_distributions AS d ON d.pauseid=a.pauseid AND d.distribution='-' WHERE a.pauseid=?",
     'InsertAuthorLogin' => 'INSERT INTO prefs_authors (active,lastlogin,pauseid) VALUES (1,?,?)',
-    'InsertDistPrefs'   => "INSERT INTO prefs_distribution (pauseid,distribution,grade,tuple,version,patches,perl,platform) VALUES (?,?,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
+    'InsertDistPrefs'   => "INSERT INTO prefs_distribution (pauseid,distribution,ignored,report,grade,tuple,version,patches,perl,platform) VALUES (?,?,0,1,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
 );
 
 # -------------------------------------
@@ -166,8 +171,9 @@ sub check_reports {
 #    my @rows = $options{cpanstats}->GetQuery('hash',$phrasebook{'GetReports'},$last_id);
 #    for my $row (@rows) {
     my $rows = $options{cpanstats}->Iterator('hash',$phrasebook{'GetReports'},$last_id);
-    while( my %row = $rows-()) {
-        my $row = \%row;
+    return  unless($rows);
+
+    while( my $row = $rows-()) {
         $counts{REPORTS}++;
         $last_id = $row->{id};
         $row->{state} = uc $row->{state};
@@ -189,7 +195,8 @@ sub check_reports {
 
         # get distribution preferences
         $prefs  = get_prefs($author, $row->{dist})    || next;
-        next    if($prefs->{grades}{'NONE'});
+        next    if($prefs->{ignored});
+        next    if($prefs->{report} != $REPORT_TYPE);
         next    unless($prefs->{grades}{$row->{state}});
 
         # check whether only first instance required
@@ -375,8 +382,9 @@ sub get_lastid {
 
 sub get_author {
     my ($dist,$vers) = @_;
+    return  unless($dist && $vers);
 
-    unless($authors{$dist}{$vers}) {
+    unless($authors{$dist} && $authors{$dist}{$vers}) {
         my @author = $options{cpanstats}->GetQuery('array',$phrasebook{'GetAuthor'}, $dist, $vers);
         $authors{$dist}{$vers} = @author ? $author[0]->[0] : undef;
     }

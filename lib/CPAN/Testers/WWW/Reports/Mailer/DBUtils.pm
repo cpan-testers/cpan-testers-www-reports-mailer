@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 =head1 NAME
 
@@ -205,12 +205,12 @@ sub Iterator {
     # grab the data in the right way
     if ( $type eq 'array' ) {
         return sub {
-            if ( my $row = $sth->fetchrow_arrayref() ) { return @{$row}; }
+            if ( my $row = $sth->fetchrow_arrayref() ) { return $row; }
             else { $sth->finish; return; }
         }
     } else {
         return sub {
-            if ( my $row = $sth->fetchrow_hashref() ) { return %$row; }
+            if ( my $row = $sth->fetchrow_hashref() ) { return $row; }
             else { $sth->finish; return; }
         }
     }
