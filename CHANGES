@@ -1,5 +1,11 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.09	15/12/2008
+	- minor debug output change to make life easier to ensure test runs 
+	  match.
+	- added protection for missing configuration.
+	- added debug command line switch to ensure debugging is ON!
+
 0.08	14/12/2008
 	- convert to use CPAN-Testers-Common-DBUtils.
 	- database references now CPANSTATS and CPANPREFS.

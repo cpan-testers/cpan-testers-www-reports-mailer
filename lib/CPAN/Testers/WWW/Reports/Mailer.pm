@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 =head1 NAME
 
@@ -124,6 +124,7 @@ my %phrasebook = (
 sub init_options {
     GetOptions( \%options,
         'config=s',
+        'debug',
         'help|h',
         'version|v'
     );
@@ -138,12 +139,13 @@ sub init_options {
 
     # configure databases
     for my $db (qw(CPANSTATS CPANPREFS)) {
+        die "No configuration for $db database\n"   unless($cfg->SectionExists($db));
         my %opts = map {$_ => $cfg->val($db,$_);} qw(driver database dbfile dbhost dbport dbuser dbpass);
         $options{$db} = CPAN::Testers::Common::DBUtils->new(%opts);
         die "Cannot configure $db database\n" unless($options{$db});
     }
 
-    $config{$_} = $cfg->val('SETTINGS',$_)  for(qw(DEBUG));
+    $config{DEBUG} = $options{debug} || $cfg->val('SETTINGS','DEBUG');
 
     $options{pause} = download_mailrc();
 
@@ -486,7 +488,7 @@ sub write_mail {
     $body =~ s/SUBJECT/$subject/g;
 
     if($config{DEBUG}) {
-        print "$body\n";
+        print "TEST: $parms->{author}\n";
         return;
     }
 
