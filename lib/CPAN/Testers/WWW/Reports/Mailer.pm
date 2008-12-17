@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 =head1 NAME
 
@@ -197,7 +197,7 @@ sub check_reports {
 
         # check whether only first instance required
         if($prefs->{tuple} eq 'FIRST') {
-            my @count = $options{CPANSTATS}->getquery('array',$phrasebook{'GetReportCount'}, $row->{platform}, $row->{perl}, $row->{state}, $row->{id});
+            my @count = $options{CPANSTATS}->get_query('array',$phrasebook{'GetReportCount'}, $row->{platform}, $row->{perl}, $row->{state}, $row->{id});
             next    if(@count > 1);
         }
 
@@ -208,7 +208,7 @@ sub check_reports {
 
         if($prefs->{version} && $prefs->{version} ne 'ALL') {
             if($prefs->{version} eq 'LATEST') {
-                my @vers = $options{CPANSTATS}->getquery('array',$phrasebook{'GetLatestDistVers'},$row->{dist});
+                my @vers = $options{CPANSTATS}->get_query('array',$phrasebook{'GetLatestDistVers'},$row->{dist});
                 next    if(@vers && $vers[0]->[0] ne $row->{version});
             } else {
                 $prefs->{version} =~ s/\s*//g;
@@ -268,8 +268,8 @@ sub check_reports {
         if(!$prefs->{active} || $prefs->{active} == 0) {
             $tvars{subject} = 'Welcome to CPAN Testers';
             write_mail('notification.eml',\%tvars);
-            $options{CPANPREFS}->doquery($phrasebook{'InsertAuthorLogin'}, time(), $author);
-            $options{CPANPREFS}->doquery($phrasebook{'InsertDistPrefs'}, $author, '-');
+            $options{CPANPREFS}->do_query($phrasebook{'InsertAuthorLogin'}, time(), $author);
+            $options{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-');
         }
 
         my ($reports,@e);
@@ -381,7 +381,7 @@ sub get_author {
     return  unless($dist && $vers);
 
     unless($authors{$dist} && $authors{$dist}{$vers}) {
-        my @author = $options{CPANSTATS}->getquery('array',$phrasebook{'GetAuthor'}, $dist, $vers);
+        my @author = $options{CPANSTATS}->get_query('array',$phrasebook{'GetAuthor'}, $dist, $vers);
         $authors{$dist}{$vers} = @author ? $author[0]->[0] : undef;
     }
     return $authors{$dist}{$vers};
@@ -398,7 +398,7 @@ sub get_prefs {
             return $prefs{$author}{dists}{$dist};
         }
 
-        my @rows = $options{CPANPREFS}->getquery('hash',$phrasebook{'GetDistPrefs'}, $author,$dist);
+        my @rows = $options{CPANPREFS}->get_query('hash',$phrasebook{'GetDistPrefs'}, $author,$dist);
         if(@rows) {
             $prefs{$author}{dists}{$dist} = parse_prefs($rows[0]);
             return $prefs{$author}{dists}{$dist};
@@ -413,17 +413,17 @@ sub get_prefs {
             return $prefs{$author}{default};
         }
 
-        my @auth = $options{CPANPREFS}->getquery('hash',$phrasebook{'GetAuthorPrefs'}, $author);
+        my @auth = $options{CPANPREFS}->get_query('hash',$phrasebook{'GetAuthorPrefs'}, $author);
         if(@auth) {
             $prefs{$author}{default}{active} = $auth[0]->{active} || 0;
 
-            my @rows = $options{CPANPREFS}->getquery('hash',$phrasebook{'GetDefaultPrefs'}, $author);
+            my @rows = $options{CPANPREFS}->get_query('hash',$phrasebook{'GetDefaultPrefs'}, $author);
             if(@rows) {
                 $prefs{$author}{default} = parse_prefs($rows[0]);
                 $prefs{$author}{default}{active} = $rows[0]->{active} || 0;
                 return $prefs{$author}{default};
             } else {
-                $options{CPANPREFS}->doquery($phrasebook{'InsertDistPrefs'}, $author, '-');
+                $options{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-');
                 $active = $prefs{$author}{default}{active};
             }
         }

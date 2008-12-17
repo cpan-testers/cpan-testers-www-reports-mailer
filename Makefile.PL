@@ -6,7 +6,7 @@ WriteMakefile(
 
         'Compress::Zlib'                    => 0,
         'Config::IniFiles'                  => 0,
-        'CPAN::Testers::Common::DBUtils'    => 0,
+        'CPAN::Testers::Common::DBUtils'    => 0.03,
         'File::Basename'                    => 0,
         'File::Slurp'                       => 0,
         'Getopt::ArgvFile'                  => 0,

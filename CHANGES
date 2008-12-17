@@ -1,6 +1,11 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.10	17/12/2008
+	- added missing README.
+	- fixed DBUtils method name calls.
+
 0.09	15/12/2008
+	- convert to use CPAN-Testers-Common-DBUtils
 	- minor debug output change to make life easier to ensure test runs 
 	  match.
 	- added protection for missing configuration.
