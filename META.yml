@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                     CPAN-Testers-WWW-Reports-Mailer
-version:                  0.10
+version:                  0.11
 abstract:                 CPAN Testers Reports Mailer
 author:
   - Barbie <barbie@cpan.org>
@@ -24,11 +24,12 @@ requires:
   Time::Piece:                      0
   DBD::mysql:                       0
   DBD::SQLite:                      1.07
+  version:                          0
 
 provides:
   CPAN::Testers::WWW::Reports::Mailer:
     file:     lib/CPAN/Testers/WWW/Reports/Mailer.pm
-    version:  0.10
+    version:  0.11
 
 meta-spec:
    version:   1.4

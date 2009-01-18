@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 =head1 NAME
 
@@ -47,6 +47,7 @@ use Path::Class;
 use Parse::CPAN::Authors;
 use Template;
 use Time::Piece;
+use version;
 
 # -------------------------------------
 # Variables

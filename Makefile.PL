@@ -16,6 +16,7 @@ WriteMakefile(
         'Parse::CPAN::Authors'              => 0,
         'Template'                          => 0,
         'Time::Piece'                       => 0,
+        'version'                           => 0,
 
         'DBD::mysql'                        => 0,
         'DBD::SQLite'                       => '1.07',
