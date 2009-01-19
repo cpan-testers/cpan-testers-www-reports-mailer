@@ -8,6 +8,8 @@ MANIFEST
 META.yml
 README
 t/01base.t
+t/05setup_db-cpanprefs.t
+t/05setup_db-cpanstats.t
 t/20attributes.t
 t/30counts.t
 t/31lastid.t
