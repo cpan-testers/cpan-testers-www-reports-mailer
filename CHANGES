@@ -1,9 +1,12 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
-0.12	current
+0.12	19/01/2009
 	- moved to OO style of API.
 	- updated cpanreps-mailer (0.05) to use new OO API.
 	- added logging functionality.
+	- altered mail templates
+	- updated and added further count metrics.
+	- moved config example to examples/ and added example shell script.
 
 0.11	18/01/2009
 	- template website link fixes (thanks to JJ for spotting)

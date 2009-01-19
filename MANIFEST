@@ -1,6 +1,7 @@
 bin/cpanreps-mailer
 CHANGES
-data/settings-example.ini
+examples/cpanprefs-mailer.sh
+examples/settings-example.ini
 lib/CPAN/Testers/WWW/Reports/Mailer.pm
 Makefile.PL
 MANIFEST

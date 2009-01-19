@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.11';
+$VERSION = '0.12';
 
 =head1 NAME
 
@@ -55,10 +55,13 @@ use base qw(Class::Accessor::Chained::Fast);
 # -------------------------------------
 # Variables
 
-# force default configuration into debug mode
-my %config = (DEBUG => 1);
+# default configuration settings
+my %default = (
+    DEBUG       => 1,
+    logclean    => 0
+);
 
-my (%options,%authors,%prefs,%counts);
+my (%AUTHORS,%PREFS);
 
 use constant    LASTMAIL            => '_lastmail';
 use constant    DAILY_SUMMARY       => 1;
@@ -138,6 +141,7 @@ sub new {
     my $self = {};
     bless $self, $class;
 
+    my %options;
     GetOptions( \%options,
         'config=s',
         'logfile=s',
@@ -166,9 +170,9 @@ sub new {
         die "Cannot configure $db database\n" unless($self->{$db});
     }
 
-    $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','DEBUG'    ) ) );
+    $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','DEBUG'    ), $default{debug}) );
     $self->logfile( $self->_defined_or( $options{logfile},  $hash{logfile},  $cfg->val('SETTINGS','logfile'  ) ) );
-    $self->logclean($self->_defined_or( $options{logclean}, $hash{logclean}, $cfg->val('SETTINGS','logclean' ), 0 ) );
+    $self->logclean($self->_defined_or( $options{logclean}, $hash{logclean}, $cfg->val('SETTINGS','logclean' ), $default{logclean} ) );
 
     $self->pause (_download_mailrc());
 
@@ -215,10 +219,10 @@ sub check_reports {
     while( my $row = $rows->()) {
         $self->_log( "DEBUG: processing report: $row->{id}\n" )    if($self->debug);
 
-        $counts{REPORTS}++;
+        $self->{counts}{REPORTS}++;
         $last_id = $row->{id};
         $row->{state} = uc $row->{state};
-        $counts{$row->{state}}++;
+        $self->{counts}{$row->{state}}++;
         my $author = $self->_get_author($row->{dist}, $row->{version}) || next;
 
         $row->{version}  ||= '';
@@ -230,7 +234,7 @@ sub check_reports {
 
         # do we need to worry about this author?
         if($prefs->{active} == 2) {
-            $counts{NOMAIL}++;
+            $self->{counts}{NOMAIL}++;
             next;
         }
 
@@ -298,9 +302,9 @@ sub check_reports {
     $self->_log( "DEBUG: processing authors: ".(scalar(keys %reports))."\n" )  if($self->debug);
 
     for my $author (sort keys %reports) {
-        $self->_log( "DEBUG: processing mail for author: $author\n" )    if($self->debug);
+        $self->_log( "DEBUG: $author\n" )   if($self->debug);
 
-        my $pause = $$self->pause->author($author);
+        my $pause = $self->pause->author($author);
         $tvars{name}   = $pause ? $pause->name : $author;
         $tvars{author} = $author;
         $tvars{dists}  = ();
@@ -317,9 +321,17 @@ sub check_reports {
         if(!$prefs->{active} || $prefs->{active} == 0) {
             $tvars{subject} = 'Welcome to CPAN Testers';
             $self->_write_mail('notification.eml',\%tvars);
-            $self->{CPANPREFS}->do_query($phrasebook{'InsertAuthorLogin'}, time(), $author);
-            $self->{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-');
+            $self->{counts}{NEWAUTH}++;
+
+            # insert author defaults, however check that they don't already
+            # exists in the system first, in case entries are out of sync.
+            my @auth = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetAuthorPrefs'}, $author);
+            $self->{CPANPREFS}->do_query($phrasebook{'InsertAuthorLogin'}, time(), $author) unless(@auth);
+            my @dist = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetDistPrefs'}, $author,'-');
+            $self->{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-')  unless(@dist);
         }
+
+        $self->_log( "DEBUG: $author - distributions = ".(scalar(keys %{$reports{$author}->{dists}}))."\n" ) if($self->debug);
 
         my ($reports,@e);
         for my $dist (keys %{$reports{$author}->{dists}}) {
@@ -349,7 +361,8 @@ sub check_reports {
         }
 
         next    unless($reports);
-        $self->_log( "DEBUG: reports for author: $author = $reports\n" )   if($self->debug);
+        if($self->debug)    { $self->_log( "DEBUG: $author - reports = $reports\n" ) }
+        else                { $self->_log( "INFO: $author - dists=".(scalar(keys %{$reports{$author}->{dists}})).", reports=$reports\n" ) }
 
         $tvars{dists}   = \@e;
         $tvars{subject} = 'CPAN Testers Daily Report';
@@ -357,14 +370,21 @@ sub check_reports {
         $self->_write_mail('mailer.eml',\%tvars);
     }
 
-    $self->_get_lastid($last_id);
+    $self->_get_lastid($last_id)    unless($self->debug);
+    $self->_log( "INFO: new last_id=$last_id\n" );
     $self->_log( "INFO: STOP checking reports\n" );
 }
 
 sub check_counts {
     my $self = shift;
     $self->_log( "INFO: COUNTS:\n" );
-    $self->_log( sprintf "INFO: %7s = %6d\n", $_, $counts{$_} )    for(keys %counts);
+    my @counts = qw(REPORTS PASS FAIL UNKNOWN NA NOMAIL MAILS NEWAUTH GOOD BAD);
+    push @counts, 'TEST'    if($self->debug);
+
+    for(@counts) {
+        $self->{counts}{$_} ||= 0;
+        $self->_log( sprintf "INFO: %7s = %6d\n", $_, $self->{counts}{$_} );
+    }
 }
 
 sub help {
@@ -436,11 +456,11 @@ sub _get_author {
     my ($dist,$vers) = @_;
     return  unless($dist && $vers);
 
-    unless($authors{$dist} && $authors{$dist}{$vers}) {
+    unless($AUTHORS{$dist} && $AUTHORS{$dist}{$vers}) {
         my @author = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetAuthor'}, $dist, $vers);
-        $authors{$dist}{$vers} = @author ? $author[0]->[0] : undef;
+        $AUTHORS{$dist}{$vers} = @author ? $author[0]->[0] : undef;
     }
-    return $authors{$dist}{$vers};
+    return $AUTHORS{$dist}{$vers};
 }
 
 
@@ -451,14 +471,14 @@ sub _get_prefs {
 
     # get distribution defaults
     if($author && $dist) {
-        if(defined $prefs{$author}{dists}{$dist}) {
-            return $prefs{$author}{dists}{$dist};
+        if(defined $PREFS{$author}{dists}{$dist}) {
+            return $PREFS{$author}{dists}{$dist};
         }
 
         my @rows = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetDistPrefs'}, $author,$dist);
         if(@rows) {
-            $prefs{$author}{dists}{$dist} = $self->_parse_prefs($rows[0]);
-            return $prefs{$author}{dists}{$dist};
+            $PREFS{$author}{dists}{$dist} = $self->_parse_prefs($rows[0]);
+            return $PREFS{$author}{dists}{$dist};
         }
 
         # fall through and assume author defaults
@@ -466,22 +486,22 @@ sub _get_prefs {
 
     # get author defaults
     if($author) {
-        if(defined $prefs{$author}{default}) {
-            return $prefs{$author}{default};
+        if(defined $PREFS{$author}{default}) {
+            return $PREFS{$author}{default};
         }
 
         my @auth = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetAuthorPrefs'}, $author);
         if(@auth) {
-            $prefs{$author}{default}{active} = $auth[0]->{active} || 0;
+            $PREFS{$author}{default}{active} = $auth[0]->{active} || 0;
 
             my @rows = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetDefaultPrefs'}, $author);
             if(@rows) {
-                $prefs{$author}{default} = $self->_parse_prefs($rows[0]);
-                $prefs{$author}{default}{active} = $rows[0]->{active} || 0;
-                return $prefs{$author}{default};
+                $PREFS{$author}{default} = $self->_parse_prefs($rows[0]);
+                $PREFS{$author}{default}{active} = $rows[0]->{active} || 0;
+                return $PREFS{$author}{default};
             } else {
                 $self->{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-');
-                $active = $prefs{$author}{default}{active};
+                $active = $PREFS{$author}{default}{active};
             }
         }
 
@@ -500,6 +520,7 @@ sub _get_prefs {
             perl        => 'ALL',
             platform    => 'ALL',
         );
+    $PREFS{$author}{dists}{$dist} = \%prefs;
     return \%prefs;
 }
 
@@ -524,39 +545,38 @@ sub _parse_prefs {
 }
 
 sub _write_mail {
-    my $self = shift;
-    my ($template,$parms) = @_;
-    my ($text);
+    my ($self,$template,$parms) = @_;
 
     my $subject = $parms->{subject} || 'CPAN Testers Daily Reports';
-
-    $counts{MAILS}++;
-#print "$parms->{author} - $subject\n";
-#return;
-
-    my $DATE = $self->_emaildate();
-    $DATE =~ s/\s+$//;
-
-    $self->tt->process( $template, $parms, \$text ) || die $self->tt->error;
-
     my $cmd = qq!| $HOW $parms->{author}\@cpan.org!;
-    my $body = $HEAD . $text;
-    $body =~ s/NAME/$parms->{name}/g;
-    $body =~ s/EMAIL/$parms->{author}\@cpan.org/g;
-    $body =~ s/DATE/$DATE/g;
-    $body =~ s/SUBJECT/$subject/g;
+
+    $self->{counts}{MAILS}++;
 
     if($self->debug) {
         $self->_log( "INFO: TEST: $parms->{author}\n" );
-        return;
-    }
+        $self->{counts}{TEST}++;
 
-    if(my $fh = IO::File->new($cmd)) {
+    } elsif(my $fh = IO::File->new($cmd)) {
+        my $DATE = $self->_emaildate();
+        $DATE =~ s/\s+$//;
+
+        my $text;
+        $self->tt->process( $template, $parms, \$text ) || die $self->tt->error;
+
+        my $body = $HEAD . $text;
+        $body =~ s/NAME/$parms->{name}/g;
+        $body =~ s/EMAIL/$parms->{author}\@cpan.org/g;
+        $body =~ s/DATE/$DATE/g;
+        $body =~ s/SUBJECT/$subject/g;
+
         print $fh $body;
         $fh->close;
         $self->_log( "INFO: GOOD: $parms->{author}\n" );
+        $self->{counts}{GOOD}++;
+
     } else {
         $self->_log( "INFO: BAD:  $parms->{author}\n" );
+        $self->{counts}{BAD}++;
     }
 }
 
