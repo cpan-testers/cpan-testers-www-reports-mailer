@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 =head1 NAME
 
@@ -14,7 +14,12 @@ CPAN::Testers::WWW::Reports::Mailer - CPAN Testers Reports Mailer
 
   use CPAN::Testers::WWW::Reports::Mailer;
 
-  # TO BE COMPLETED
+  my $mailer = CPAN::Testers::WWW::Reports::Mailer->new(
+    config => 'myconfig.ini'
+  );
+
+  $mailer->check_reports();
+  $mailer->check_counts();
 
 =head1 DESCRIPTION
 
@@ -57,13 +62,13 @@ use base qw(Class::Accessor::Chained::Fast);
 
 # default configuration settings
 my %default = (
+    LASTMAIL    => '_lastmail',
     DEBUG       => 1,
     logclean    => 0
 );
 
 my (%AUTHORS,%PREFS);
 
-use constant    LASTMAIL            => '_lastmail';
 use constant    DAILY_SUMMARY       => 1;
 use constant    WEEKLY_SUMMARY      => 2;
 use constant    INDIVIDUAL_REPORTS  => 3;
@@ -113,7 +118,7 @@ my %phrasebook = (
 # The Application Programming Interface
 
 __PACKAGE__->mk_accessors(
-    qw( debug logfile logclean tt pause ));
+    qw( lastmail debug logfile logclean tt pause ));
 
 # -------------------------------------
 # The Public Interface Functions
@@ -144,6 +149,7 @@ sub new {
     my %options;
     GetOptions( \%options,
         'config=s',
+        'lastmail=s',
         'logfile=s',
         'logclean',
         'debug',
@@ -170,7 +176,8 @@ sub new {
         die "Cannot configure $db database\n" unless($self->{$db});
     }
 
-    $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','DEBUG'    ), $default{debug}) );
+    $self->lastmail($self->_defined_or( $options{lastmail}, $hash{lastmail}, $cfg->val('SETTINGS','LASTMAIL' ), $default{LASTMAIL}) );
+    $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','DEBUG'    ), $default{DEBUG}) );
     $self->logfile( $self->_defined_or( $options{logfile},  $hash{logfile},  $cfg->val('SETTINGS','logfile'  ) ) );
     $self->logclean($self->_defined_or( $options{logclean}, $hash{logclean}, $cfg->val('SETTINGS','logclean' ), $default{logclean} ) );
 
@@ -388,22 +395,25 @@ sub check_counts {
 }
 
 sub help {
-    my $self = shift;
-    my $full = shift;
+    my ($self,$full) = @_;
 
     if($full) {
         print <<HERE;
 
 Usage: $0 --config=<file> \\
-         [--logfile=<file> [--logclean]] [--debug] [-h] [-v]
+         [--logfile=<file> [--logclean]] [--debug] [--lastmail=<file>]
+         [-h] [-v]
 
   --config=<file>   database configuration file
-  --logfile=<file>  log file
-  --logclean        0 = append, 1 = overwrite
-  --debug           debug mode, no mail sent
+  --lastmail=<file> lastmail counter file (*)
+  --logfile=<file>  log file (*)
+  --logclean        0 = append, 1 = overwrite (*)
+  --debug           debug mode, no mail sent (*)
   -h                this help screen
   -v                program version
 
+  NOTES:
+    * - these will override any settings within the configuration file.
 HERE
 
     }
@@ -438,15 +448,14 @@ HERE
 =cut
 
 sub _get_lastid {
-    my $self = shift;
-    my $id = shift;
+    my ($self,$id) = @_;
 
-    overwrite_file( LASTMAIL, 0 ) unless -f LASTMAIL;
+    overwrite_file( $self->lastmail, 0 ) unless -f $self->lastmail;
 
     if ($id) {
-        overwrite_file( LASTMAIL, $id );
+        overwrite_file( $self->lastmail, $id );
     } else {
-        my $id = read_file(LASTMAIL);
+        my $id = read_file($self->lastmail);
         return $id;
     }
 }
@@ -525,21 +534,20 @@ sub _get_prefs {
 }
 
 sub _parse_prefs {
-    my $self = shift;
-    my $row = shift;
+    my ($self,$row) = @_;
     my %hash;
 
     $row->{grade} ||= 'FAIL';
     my %grades = map {$_ => 1} split(',',$row->{grade});
 
     $hash{grades}   = \%grades;
-    $hash{ignored}  = $row->{ignored}   || 0;
-    $hash{report}   = $row->{report}    || 1;
-    $hash{tuple}    = $row->{tuple}     || 'FIRST';
-    $hash{version}  = $row->{version}   || 'LATEST';
-    $hash{patches}  = $row->{patches}   || 0;
-    $hash{perl}     = $row->{perl}      || 'ALL';
-    $hash{platform} = $row->{platform}  || 'ALL';
+    $hash{ignored}  = $self->_defined_or($row->{ignored},  0);
+    $hash{report}   = $self->_defined_or($row->{report},   1);
+    $hash{tuple}    = $self->_defined_or($row->{tuple},    'FIRST');
+    $hash{version}  = $self->_defined_or($row->{version},  'LATEST');
+    $hash{patches}  = $self->_defined_or($row->{patches},  0);
+    $hash{perl}     = $self->_defined_or($row->{perl},     'ALL');
+    $hash{platform} = $self->_defined_or($row->{platform}, 'ALL');
 
     return \%hash;
 }

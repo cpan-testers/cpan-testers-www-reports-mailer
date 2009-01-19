@@ -1,5 +1,9 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.13	19/01/2009
+	- added more tests (now up to 43.4% coverage).
+	- enabled lastmail to be a configurable setting.
+
 0.12	19/01/2009
 	- moved to OO style of API.
 	- updated cpanreps-mailer (0.05) to use new OO API.
