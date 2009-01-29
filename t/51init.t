@@ -4,7 +4,7 @@ use strict;
 use warnings;
 $|=1;
 
-use Test::More tests => 7;
+use Test::More tests => 10;
 use lib 't';
 use CTWRM_Testing;
 
@@ -25,3 +25,6 @@ isa_ok( $obj->{CPANPREFS},         'CPAN::Testers::Common::DBUtils', 'CPANPREFS'
 isa_ok( $obj->tt,   'Template', 'tt' );
 # TODO: should check attributes
 
+is($obj->_defined_or( undef, 1, 2 ), 1);
+is($obj->_defined_or( 3, undef, 4 ), 3);
+is($obj->_defined_or( 5, 6, undef ), 5);

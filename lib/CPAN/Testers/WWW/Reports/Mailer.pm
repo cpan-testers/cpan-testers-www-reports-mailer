@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.13';
+$VERSION = '0.14';
 
 =head1 NAME
 
@@ -35,6 +35,82 @@ website.
 Initially only a Daily Summary Report is available, in time a Weekly Summary
 Report and the individual reports will also be available.
 
+=head1 CONFIGURATION
+
+Configuration for this application can occur via the command line, the API and
+the configuration file. Of them all, only the configuration file is required.
+
+The configuration file should be in the INI style, with the sections CPANSTATS
+and CPANPREFS describing the associated database access required. The general
+settings section, SETTINGS, is optional, and can be overridden by the command
+line and the API arguments.
+
+=head2 Database Configuration
+
+The CPANSTATS and CPANPREFS sections are required, and should contain the
+following key/value pairs to describe access to the specific database.
+
+=over 4
+
+=item * driver
+
+=item * database
+
+=item * dbhost
+
+=item * dbport
+
+=item * dbuser
+
+=item * dbpass
+
+=back
+
+Only 'driver' and 'database' are required for an SQLite database, while the
+other key/values may need to be completed for other databases.
+
+=head2 General Configuration
+
+The following options are available, in the configuration file, on the command
+line and via the API call to new() as a hash.
+
+=over 4
+
+=item * debug
+
+By default this is set to 1, to avoid accidentally running and sending lots of
+mails :) Set to 0 to allow normal processing.
+
+=item * lastmail
+
+The location of the counter file, that stores the ids of the last reports
+processed.
+
+=item * mailrc
+
+The location of the 01mailrc.txt file stored locally. By default the location
+is assumed to be 'data/01mailrc.txt'. If the confirguration is not set, or the
+file cannot be found, it will be dynamically downloaded from CPAN.
+
+=item * logfile
+
+The location of the logfile. If not provided, logging is disabled.
+
+=item * logclean
+
+By default this is set to 0, append to existing log. If set to 1, will create
+a new log or overwrite any existing log, on the first call to log a message,
+then will automatically reset to 0, so as to append any further messages.
+
+=item * mode
+
+Processing mode required. This can be one of three values, 'daily', 'weekly' or
+'reports'. 'daily' and 'weekly' create the mails for the Daily Summary and
+Weekly Summary reports respectively. 'reports' creates individual report mails
+for authors.
+
+=back
+
 =cut
 
 # -------------------------------------
@@ -62,18 +138,20 @@ use base qw(Class::Accessor::Chained::Fast);
 
 # default configuration settings
 my %default = (
-    LASTMAIL    => '_lastmail',
-    DEBUG       => 1,
-    logclean    => 0
+    lastmail    => '_lastmail',
+    debug       => 1,
+    logclean    => 0,
+    mode        => 'daily',
+    mailrc      => 'data/01mailrc.txt'
 );
 
 my (%AUTHORS,%PREFS);
 
-use constant    DAILY_SUMMARY       => 1;
-use constant    WEEKLY_SUMMARY      => 2;
-use constant    INDIVIDUAL_REPORTS  => 3;
-
-my $REPORT_TYPE = DAILY_SUMMARY;
+my %MODES = (
+    daily   => 1,
+    weekly  => 2,
+    reports => 3
+);
 
 my $HOW  = '/usr/sbin/sendmail -bm';
 my $HEAD = 'To: "NAME" <EMAIL>
@@ -118,7 +196,7 @@ my %phrasebook = (
 # The Application Programming Interface
 
 __PACKAGE__->mk_accessors(
-    qw( lastmail debug logfile logclean tt pause ));
+    qw( lastmail debug logfile logclean mode mailrc tt pause ));
 
 # -------------------------------------
 # The Public Interface Functions
@@ -150,9 +228,11 @@ sub new {
     GetOptions( \%options,
         'config=s',
         'lastmail=s',
+        'mailrc=s',
         'logfile=s',
         'logclean',
         'debug',
+        'mode=s',
         'help|h',
         'version|v'
     );
@@ -176,12 +256,19 @@ sub new {
         die "Cannot configure $db database\n" unless($self->{$db});
     }
 
-    $self->lastmail($self->_defined_or( $options{lastmail}, $hash{lastmail}, $cfg->val('SETTINGS','LASTMAIL' ), $default{LASTMAIL}) );
-    $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','DEBUG'    ), $default{DEBUG}) );
+    $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','debug'    ), $default{debug}) );
+    $self->lastmail($self->_defined_or( $options{lastmail}, $hash{lastmail}, $cfg->val('SETTINGS','lastmail' ), $default{lastmail}) );
+    $self->mailrc(  $self->_defined_or( $options{mailrc},   $hash{mailrc},   $cfg->val('SETTINGS','mailrc'   ), $default{mailrc} ) );
     $self->logfile( $self->_defined_or( $options{logfile},  $hash{logfile},  $cfg->val('SETTINGS','logfile'  ) ) );
     $self->logclean($self->_defined_or( $options{logclean}, $hash{logclean}, $cfg->val('SETTINGS','logclean' ), $default{logclean} ) );
+    $self->mode(lc  $self->_defined_or( $options{mode},     $hash{mode},     $cfg->val('SETTINGS','mode'     ), $default{mode} ) );
 
-    $self->pause (_download_mailrc());
+    my $mode = $self->mode;
+    unless($mode =~ /^(daily|weekly|reports)$/) {
+        die "mode can ONLY be 'daily', 'weekly' or 'reports'\n";
+    }
+
+    $self->pause ($self->_download_mailrc());
 
     # set up API to Template Toolkit
     $self->tt( Template->new(
@@ -200,9 +287,17 @@ sub new {
 
 =item * check_reports
 
+The core method that analyses the reports and constructs the mails.
+
 =item * check_counts
 
+Prints a summary of the processing.
+
 =item * help
+
+Using the command line option, --help or -h, displays a help screen with
+instructions of the command line arguments. See the Configuration section
+for further details.
 
 =back
 
@@ -210,10 +305,12 @@ sub new {
 
 sub check_reports {
     my $self = shift;
+    my $mode = $self->mode;
+    my $report_type = $MODES{$mode};
     my $last_id = int( $self->_get_lastid() );
     my (%reports,%tvars);
 
-    $self->_log( "INFO: START checking reports\n" );
+    $self->_log( "INFO: START checking reports in '$mode' mode\n" );
     $self->_log( "INFO: last_id=$last_id\n" );
 
     # find all reports since last update
@@ -232,6 +329,11 @@ sub check_reports {
         $self->{counts}{$row->{state}}++;
         my $author = $self->_get_author($row->{dist}, $row->{version}) || next;
 
+        unless($author) {
+            $self->_log( "WARN: author not found for distribution [$row->{dist}], [$row->{version}]\n" );
+            next;
+        }
+
         $row->{version}  ||= '';
         $row->{platform} ||= '';
         $row->{perl}     ||= '';
@@ -248,7 +350,7 @@ sub check_reports {
         # get distribution preferences
         $prefs  = $self->_get_prefs($author, $row->{dist})    || next;
         next    if($prefs->{ignored});
-        next    if($prefs->{report} != $REPORT_TYPE);
+        next    if($prefs->{report} != $report_type);
         next    unless($prefs->{grades}{$row->{state}});
 
         # check whether only first instance required
@@ -372,7 +474,9 @@ sub check_reports {
         else                { $self->_log( "INFO: $author - dists=".(scalar(keys %{$reports{$author}->{dists}})).", reports=$reports\n" ) }
 
         $tvars{dists}   = \@e;
-        $tvars{subject} = 'CPAN Testers Daily Report';
+        $tvars{subject} = 'CPAN Testers '.(ucfirst $mode).' Summary Report';
+        $tvars{period}  = $mode eq 'weekly' ? '7 days' : '24 hours';
+        $tvars{mode}    = ucfirst $mode;
 
         $self->_write_mail('mailer.eml',\%tvars);
     }
@@ -384,7 +488,9 @@ sub check_reports {
 
 sub check_counts {
     my $self = shift;
-    $self->_log( "INFO: COUNTS:\n" );
+    my $mode = $self->mode;
+
+    $self->_log( "INFO: COUNTS for '$mode' mode:\n" );
     my @counts = qw(REPORTS PASS FAIL UNKNOWN NA NOMAIL MAILS NEWAUTH GOOD BAD);
     push @counts, 'TEST'    if($self->debug);
 
@@ -402,6 +508,7 @@ sub help {
 
 Usage: $0 --config=<file> \\
          [--logfile=<file> [--logclean]] [--debug] [--lastmail=<file>]
+         [--mode=(daily|weekly|report)]
          [-h] [-v]
 
   --config=<file>   database configuration file
@@ -409,6 +516,7 @@ Usage: $0 --config=<file> \\
   --logfile=<file>  log file (*)
   --logclean        0 = append, 1 = overwrite (*)
   --debug           debug mode, no mail sent (*)
+  --mode            run mode (daily, weekly, reports) (*)
   -h                this help screen
   -v                program version
 
@@ -449,13 +557,17 @@ HERE
 
 sub _get_lastid {
     my ($self,$id) = @_;
+    my $mode = $self->mode;
 
-    overwrite_file( $self->lastmail, 0 ) unless -f $self->lastmail;
+    overwrite_file( $self->lastmail, 'daily=0,weekly=0,reports=0' ) unless -f $self->lastmail;
 
     if ($id) {
-        overwrite_file( $self->lastmail, $id );
+        my $text = read_file($self->lastmail);
+        $text =~ s!($mode=)\d+!$1$id!;
+        overwrite_file( $self->lastmail, $text );
     } else {
-        my $id = read_file($self->lastmail);
+        my $text = read_file($self->lastmail);
+        ($id) = $text =~ m!$mode=(\d+)!;
         return $id;
     }
 }
@@ -477,6 +589,8 @@ sub _get_prefs {
     my $self = shift;
     my ($author,$dist) = @_;
     my $active = 0;
+
+    return  unless($author);
 
     # get distribution defaults
     if($author && $dist) {
@@ -516,6 +630,8 @@ sub _get_prefs {
 
         # fall through and assume new author
     }
+
+    $dist ||= '-';
 
     # use global defaults
     my %prefs = (
@@ -596,10 +712,11 @@ sub _emaildate {
 
 sub _download_mailrc {
     my $self = shift;
+    my $file = $self->mailrc;
     my $data;
 
-    if(-f 'data/01mailrc.txt') {
-        $data = read_file('data/01mailrc.txt');
+    if($file && -f $file) {
+        $data = read_file($file);
 
     } else {
         my $url = 'http://www.cpan.org/authors/01mailrc.txt.gz';

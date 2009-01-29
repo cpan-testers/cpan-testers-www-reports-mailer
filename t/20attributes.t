@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 25;
+use Test::More tests => 33;
 use CPAN::Testers::WWW::Reports::Mailer;
 
 use lib 't';
@@ -21,6 +21,8 @@ foreach my $k ( qw/
     tt
     pause
     lastmail
+    mode
+    mailrc
 / ){
   my $label = "[$k]";
   SKIP: {
@@ -48,7 +50,4 @@ foreach my $k ( qw/
 #    is( $obj->$k, 123, "$label get" );
 #  };
 #}
-
-# TODO -- test these:
-#	$MAX_ID;
 

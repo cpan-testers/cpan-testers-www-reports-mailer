@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More tests => 8;
 use CPAN::Testers::WWW::Reports::Mailer;
 
 use lib 't';
@@ -14,6 +14,19 @@ use CTWRM_Testing;
 
     my %prefs = (
         LBROCARD => {
+          'version' => 'LATEST',
+          'ignored' => 0,
+          'perl' => 'ALL',
+          'report' => '1',
+          'tuple' => 'FIRST',
+          'platform' => 'ALL',
+          'patches' => 0,
+          'grades' => {
+                        'FAIL' => 1
+                      }
+        },
+        BARBIE => {
+          'active' => 0,
           'version' => 'LATEST',
           'ignored' => 0,
           'perl' => 'ALL',
@@ -94,6 +107,7 @@ use Data::Dumper;
 #print STDERR Dumper($obj->_parse_prefs($row));
 
 
+    is_deeply($obj->_get_prefs('BARBIE'),              $prefs{BARBIE}, 'author not found - BARBIE');
+    is_deeply($obj->_get_prefs('SAPER'),               $prefs{SAPER},  'found author prefs - SAPER');
+    is_deeply($obj->_get_prefs('SAPER','Fake-Distro'), $prefs{SAPER},  'found author prefs - SAPER - for unset Distro');
 }
-
-

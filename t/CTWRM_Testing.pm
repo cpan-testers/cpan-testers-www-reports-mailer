@@ -53,7 +53,7 @@ driver=SQLite
 database=t/_DBDIR/test2.db
 
 [SETTINGS]
-DEBUG=1
-logfile=logs/cpanreps.log
+debug=1
+logfile=t/_TMPDIR/cpanreps.log
 logclean=1
 

@@ -1,5 +1,24 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.14	29/01/2009
+	- added author check in case lookup failed.
+	- fixed preferences bug for new authors.
+	- added more documentation.
+	- added more tests (43.9% coverage).
+	- added mode setting to define processing. Currently only daily summary
+	  reports are available, but this will extend to weekly summary reports
+	  and individual reports in time.
+	- options 'debug' and 'lastmail' now lower case in all configuration
+	  variations.
+
+	- BACKWARDS INCOMPATIBILITY WARNING:
+
+	  Due to the rework of the lastmail counter file, the old format will
+	  cause errors in the new system. In order to port to the new format,
+	  take the number currently stored and replace the the zeroes in the
+	  following string with it: daily=0,weekly=0,reports=0. Then save the 
+	  file.
+
 0.13	19/01/2009
 	- added more tests (now up to 43.4% coverage).
 	- enabled lastmail to be a configurable setting.
