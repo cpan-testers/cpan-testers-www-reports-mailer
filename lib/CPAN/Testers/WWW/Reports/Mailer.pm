@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.14';
+$VERSION = '0.15';
 
 =head1 NAME
 
@@ -119,12 +119,15 @@ for authors.
 use Compress::Zlib;
 use Config::IniFiles;
 use CPAN::Testers::Common::DBUtils;
+use Email::Simple;
 use File::Basename;
 use File::Path;
 use File::Slurp;
 use Getopt::ArgvFile default=>1;
 use Getopt::Long;
 use LWP::UserAgent;
+use MIME::Base64;
+use MIME::QuotedPrint;
 use Path::Class;
 use Parse::CPAN::Authors;
 use Template;
@@ -148,14 +151,23 @@ my %default = (
 my (%AUTHORS,%PREFS);
 
 my %MODES = (
-    daily   => 1,
-    weekly  => 2,
-    reports => 3
+    daily   => { type =>  1, period => '24 hours',  report => 'Daily Summary' },
+    weekly  => { type =>  2, period => '7 days',    report => 'Weekly Summary' },   # typically a Saturday
+    reports => { type =>  3, period => '',          report => 'Test' },
+    monthly => { type =>  4, period => 'month',     report => 'Monthly Summary' },
+    sun     => { type =>  5, period => '7 days',    report => 'Weekly Summary' },
+    mon     => { type =>  6, period => '7 days',    report => 'Weekly Summary' },
+    tue     => { type =>  7, period => '7 days',    report => 'Weekly Summary' },
+    wed     => { type =>  8, period => '7 days',    report => 'Weekly Summary' },
+    thu     => { type =>  9, period => '7 days',    report => 'Weekly Summary' },
+    fri     => { type => 10, period => '7 days',    report => 'Weekly Summary' },
+    sat     => { type => 11, period => '7 days',    report => 'Weekly Summary' },
 );
 
-my $HOW  = '/usr/sbin/sendmail -bm';
-my $HEAD = 'To: "NAME" <EMAIL>
-From: CPAN Tester Report Server <do_not_reply@cpantesters.org>
+my $FROM    = 'CPAN Tester Report Server <do_not_reply@cpantesters.org>';
+my $HOW     = '/usr/sbin/sendmail -bm';
+my $HEAD    = 'To: "NAME" <EMAIL>
+From: FROM
 Date: DATE
 Subject: SUBJECT
 
@@ -190,6 +202,8 @@ my %phrasebook = (
     'GetDistPrefs'      => "SELECT * FROM prefs_distributions WHERE pauseid=? AND distribution=?",
     'InsertAuthorLogin' => 'INSERT INTO prefs_authors (active,lastlogin,pauseid) VALUES (1,?,?)',
     'InsertDistPrefs'   => "INSERT INTO prefs_distributions (pauseid,distribution,ignored,report,grade,tuple,version,patches,perl,platform) VALUES (?,?,0,1,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
+
+    'GetArticle'        => "SELECT * FROM articles WHERE id=?",
 );
 
 #----------------------------------------------------------------------------
@@ -249,7 +263,7 @@ sub new {
     my $cfg = Config::IniFiles->new( -file => $config );
 
     # configure databases
-    for my $db (qw(CPANSTATS CPANPREFS)) {
+    for my $db (qw(CPANSTATS CPANPREFS ARTICLES)) {
         die "No configuration for $db database\n"   unless($cfg->SectionExists($db));
         my %opts = map {$_ => $cfg->val($db,$_);} qw(driver database dbfile dbhost dbport dbuser dbpass);
         $self->{$db} = CPAN::Testers::Common::DBUtils->new(%opts);
@@ -264,8 +278,13 @@ sub new {
     $self->mode(lc  $self->_defined_or( $options{mode},     $hash{mode},     $cfg->val('SETTINGS','mode'     ), $default{mode} ) );
 
     my $mode = $self->mode;
-    unless($mode =~ /^(daily|weekly|reports)$/) {
-        die "mode can ONLY be 'daily', 'weekly' or 'reports'\n";
+    if($mode =~ /day/) {
+        $mode = substr($mode,0,3);
+        $self->mode($mode);
+    }
+
+    unless($mode =~ /^(daily|weekly|reports|monthly|sun|mon|tue|wed|thu|fri|sat)$/) {
+        die "mode can MUST be 'daily', 'weekly', 'monthly', 'reports', or a day of the week.\n";
     }
 
     $self->pause ($self->_download_mailrc());
@@ -306,7 +325,7 @@ for further details.
 sub check_reports {
     my $self = shift;
     my $mode = $self->mode;
-    my $report_type = $MODES{$mode};
+    my $report_type = $MODES{$mode}->{type};
     my $last_id = int( $self->_get_lastid() );
     my (%reports,%tvars);
 
@@ -364,7 +383,7 @@ sub check_reports {
         # to 'ALL' then we should allow EVERYTHING through, otherwise filter
         # on the requested versions.
 
-        if($prefs->{version} && $prefs->{version} ne 'ALL') {
+        if($row->{version} && $prefs->{version} && $prefs->{version} ne 'ALL') {
             if($prefs->{version} eq 'LATEST') {
                 my @vers = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetLatestDistVers'},$row->{dist});
                 next    if(@vers && $vers[0]->[0] ne $row->{version});
@@ -376,12 +395,12 @@ sub check_reports {
         }
 
         # Check whether this platform is required.
-        if($prefs->{platform} && $prefs->{platform} ne 'ALL') {
+        if($row->{platform} && $prefs->{platform} && $prefs->{platform} ne 'ALL') {
             $prefs->{platform} =~ s/\s*//g;
             $prefs->{platform} =~ s/,/|/g;
             $prefs->{platform} =~ s/\./\\./g;
             $prefs->{platform} =~ s/^(\w+)\|//;
-            if($1 eq 'NOT') {
+            if($1 && $1 eq 'NOT') {
                 next    if($row->{platform} =~ /$prefs->{platform}/);
             } else {
                 next    if($row->{platform} !~ /$prefs->{platform}/);
@@ -389,13 +408,13 @@ sub check_reports {
         }
 
         # Check whether this perl version is required.
-        if($prefs->{perl} && $prefs->{perl} ne 'ALL') {
+        if($row->{perl} && $prefs->{perl} && $prefs->{perl} ne 'ALL') {
             $prefs->{perl} =~ s/\s*//g;
             $prefs->{perl} =~ s/,/|/g;
             $prefs->{perl} =~ s/\./\\./g;
             my $v = version->new("$row->{perl}")->numify;
             $prefs->{platform} =~ s/^(\w+)\|//;
-            if($1 eq 'NOT') {
+            if($1 && $1 eq 'NOT') {
                 next    if($row->{perl} =~ /$prefs->{perl}/ && $v =~ /$prefs->{perl}/);
             } else {
                 next    if($row->{perl} !~ /$prefs->{perl}/ && $v !~ /$prefs->{perl}/);
@@ -405,80 +424,86 @@ sub check_reports {
         # Check whether patches are required.
         next    if(!$prefs->{patches} && $row->{perl} =~ /patch/);
 
+        if($mode eq 'reports') {
+            $self->_send_report($author,$row);
+        }
+
         push @{$reports{$author}->{dists}{$row->{dist}}->{versions}{$row->{version}}->{platforms}{$row->{platform}}->{perls}{$row->{perl}}->{states}{uc $row->{state}}->{value}}, $row->{id};
     }
 
-    $self->_log( "DEBUG: processing authors: ".(scalar(keys %reports))."\n" )  if($self->debug);
+    if($mode ne 'reports') {
+        $self->_log( "DEBUG: processing authors: ".(scalar(keys %reports))."\n" )  if($self->debug);
 
-    for my $author (sort keys %reports) {
-        $self->_log( "DEBUG: $author\n" )   if($self->debug);
+        for my $author (sort keys %reports) {
+            $self->_log( "DEBUG: $author\n" )   if($self->debug);
 
-        my $pause = $self->pause->author($author);
-        $tvars{name}   = $pause ? $pause->name : $author;
-        $tvars{author} = $author;
-        $tvars{dists}  = ();
+            my $pause = $self->pause->author($author);
+            $tvars{name}   = $pause ? $pause->name : $author;
+            $tvars{author} = $author;
+            $tvars{dists}  = ();
 
-        # get author preferences
-        my $prefs = $self->_get_prefs($author);
+            # get author preferences
+            my $prefs = $self->_get_prefs($author);
 
-        # active:
-        # 0 - new author, no correspondance
-        # 1 - new author, notification mailed
-        # 2 - author requested no mail
-        # 3 - author requested summary report
+            # active:
+            # 0 - new author, no correspondance
+            # 1 - new author, notification mailed
+            # 2 - author requested no mail
+            # 3 - author requested summary report
 
-        if(!$prefs->{active} || $prefs->{active} == 0) {
-            $tvars{subject} = 'Welcome to CPAN Testers';
-            $self->_write_mail('notification.eml',\%tvars);
-            $self->{counts}{NEWAUTH}++;
+            if(!$prefs->{active} || $prefs->{active} == 0) {
+                $tvars{subject} = 'Welcome to CPAN Testers';
+                $self->_write_mail('notification.eml',\%tvars);
+                $self->{counts}{NEWAUTH}++;
 
-            # insert author defaults, however check that they don't already
-            # exists in the system first, in case entries are out of sync.
-            my @auth = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetAuthorPrefs'}, $author);
-            $self->{CPANPREFS}->do_query($phrasebook{'InsertAuthorLogin'}, time(), $author) unless(@auth);
-            my @dist = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetDistPrefs'}, $author,'-');
-            $self->{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-')  unless(@dist);
-        }
-
-        $self->_log( "DEBUG: $author - distributions = ".(scalar(keys %{$reports{$author}->{dists}}))."\n" ) if($self->debug);
-
-        my ($reports,@e);
-        for my $dist (keys %{$reports{$author}->{dists}}) {
-            my $v = $reports{$author}->{dists}{$dist};
-            my @d;
-            for my $version (keys %{$v->{versions}}) {
-                my $w = $v->{versions}{$version};
-                my @c;
-                for my $platform (keys %{$w->{platforms}}) {
-                    my $x = $w->{platforms}{$platform};
-                    my @b;
-                    for my $perl (keys %{$x->{perls}}) {
-                        my $y = $x->{perls}{$perl};
-                        my @a;
-                        for my $state (keys %{$y->{states}}) {
-                            my $z = $y->{states}{$state};
-                            push @a, {state => $state, ids => $z->{value}};
-                            $reports++;
-                        }
-                        push @b, {perl => $perl, states => \@a};
-                    }
-                    push @c, {platform => $platform, perls => \@b};
-                }
-                push @d, {version => $version, platforms => \@c};
+                # insert author defaults, however check that they don't already
+                # exists in the system first, in case entries are out of sync.
+                my @auth = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetAuthorPrefs'}, $author);
+                $self->{CPANPREFS}->do_query($phrasebook{'InsertAuthorLogin'}, time(), $author) unless(@auth);
+                my @dist = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetDistPrefs'}, $author,'-');
+                $self->{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-')  unless(@dist);
             }
-            push @e, {dist => $dist, versions => \@d};
+
+            $self->_log( "DEBUG: $author - distributions = ".(scalar(keys %{$reports{$author}->{dists}}))."\n" ) if($self->debug);
+
+            my ($reports,@e);
+            for my $dist (keys %{$reports{$author}->{dists}}) {
+                my $v = $reports{$author}->{dists}{$dist};
+                my @d;
+                for my $version (keys %{$v->{versions}}) {
+                    my $w = $v->{versions}{$version};
+                    my @c;
+                    for my $platform (keys %{$w->{platforms}}) {
+                        my $x = $w->{platforms}{$platform};
+                        my @b;
+                        for my $perl (keys %{$x->{perls}}) {
+                            my $y = $x->{perls}{$perl};
+                            my @a;
+                            for my $state (keys %{$y->{states}}) {
+                                my $z = $y->{states}{$state};
+                                push @a, {state => $state, ids => $z->{value}};
+                                $reports++;
+                            }
+                            push @b, {perl => $perl, states => \@a};
+                        }
+                        push @c, {platform => $platform, perls => \@b};
+                    }
+                    push @d, {version => $version, platforms => \@c};
+                }
+                push @e, {dist => $dist, versions => \@d};
+            }
+
+            next    unless($reports);
+            if($self->debug)    { $self->_log( "DEBUG: $author - reports = $reports\n" ) }
+            else                { $self->_log( "INFO: $author - dists=".(scalar(keys %{$reports{$author}->{dists}})).", reports=$reports\n" ) }
+
+            $tvars{dists}   = \@e;
+            $tvars{period}  = $MODES{$mode}->{period};
+            $tvars{report}  = $MODES{$mode}->{report};
+            $tvars{subject} = 'CPAN Testers $tvars{report} Report';
+
+            $self->_write_mail('mailer.eml',\%tvars);
         }
-
-        next    unless($reports);
-        if($self->debug)    { $self->_log( "DEBUG: $author - reports = $reports\n" ) }
-        else                { $self->_log( "INFO: $author - dists=".(scalar(keys %{$reports{$author}->{dists}})).", reports=$reports\n" ) }
-
-        $tvars{dists}   = \@e;
-        $tvars{subject} = 'CPAN Testers '.(ucfirst $mode).' Summary Report';
-        $tvars{period}  = $mode eq 'weekly' ? '7 days' : '24 hours';
-        $tvars{mode}    = ucfirst $mode;
-
-        $self->_write_mail('mailer.eml',\%tvars);
     }
 
     $self->_get_lastid($last_id)    unless($self->debug);
@@ -508,7 +533,7 @@ sub help {
 
 Usage: $0 --config=<file> \\
          [--logfile=<file> [--logclean]] [--debug] [--lastmail=<file>]
-         [--mode=(daily|weekly|report)]
+         [--mode=(daily|weekly|report|monthly|sun|mon|tue|wed|thu|fri|sat)]
          [-h] [-v]
 
   --config=<file>   database configuration file
@@ -516,7 +541,7 @@ Usage: $0 --config=<file> \\
   --logfile=<file>  log file (*)
   --logclean        0 = append, 1 = overwrite (*)
   --debug           debug mode, no mail sent (*)
-  --mode            run mode (daily, weekly, reports) (*)
+  --mode            run mode (*)
   -h                this help screen
   -v                program version
 
@@ -563,12 +588,19 @@ sub _get_lastid {
 
     if ($id) {
         my $text = read_file($self->lastmail);
-        $text =~ s!($mode=)\d+!$1$id!;
+        if($text =~ m!$mode=\d+!) {
+            $text =~ s!($mode=)\d+!$1$id!;
+        } else {
+            $text .= ",$mode=$id";  # auto add mode
+        }
         overwrite_file( $self->lastmail, $text );
     } else {
         my $text = read_file($self->lastmail);
-        ($id) = $text =~ m!$mode=(\d+)!;
-        return $id;
+        if(($id) = $text =~ m!$mode=(\d+)!) {
+            return $id;
+        } else {
+            return 0;   # mode not found start from zero
+        }
     }
 }
 
@@ -668,9 +700,45 @@ sub _parse_prefs {
     return \%hash;
 }
 
+sub _send_report {
+    my ($self,$author,$row) = @_;
+
+    # get article
+    my @rows = $self->{ARTICLES}->get_query('hash',$phrasebook{'GetArticle'}, $row->{id});
+
+    # disassemble article
+    $rows[0]->{article} = decode_qp($rows[0]->{article})	if($rows[0]->{article} =~ /=3D/);
+    my $mail = Email::Simple->new($rows[0]->{article});
+    return unless $mail;
+
+    # get from & subject line
+    my $from    = $mail->header("From");
+    my $subject = $mail->header("Subject");
+    return unless $subject;
+
+    # extract the body
+    my $encoding = $mail->header('Content-Transfer-Encoding');
+    my $body = $mail->body;
+    $body = decode_base64($body)  if($encoding && $encoding eq 'base64');
+
+    # set up new mail headers
+    my $pause = $self->pause->author($author);
+    my %tvars = (
+        author  => $author, 
+        name    => ($pause ? $pause->name : $author),
+        subject => $subject,
+        from    => $from,
+        body    => $body,
+    );
+
+    # send data
+    $self->_write_mail('report.eml',\%tvars);
+}
+
 sub _write_mail {
     my ($self,$template,$parms) = @_;
 
+    my $from = $parms->{from} || $FROM;
     my $subject = $parms->{subject} || 'CPAN Testers Daily Reports';
     my $cmd = qq!| $HOW $parms->{author}\@cpan.org!;
 
@@ -688,6 +756,7 @@ sub _write_mail {
         $self->tt->process( $template, $parms, \$text ) || die $self->tt->error;
 
         my $body = $HEAD . $text;
+        $body =~ s/FROM/$from/g;
         $body =~ s/NAME/$parms->{name}/g;
         $body =~ s/EMAIL/$parms->{author}\@cpan.org/g;
         $body =~ s/DATE/$DATE/g;

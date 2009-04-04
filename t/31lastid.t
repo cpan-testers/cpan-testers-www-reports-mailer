@@ -3,8 +3,9 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 21;
 use CPAN::Testers::WWW::Reports::Mailer;
+use IO::File;
 
 use lib 't';
 use CTWRM_Testing;
@@ -39,8 +40,25 @@ use CTWRM_Testing;
     $obj->mode('reports');
     is($obj->_get_lastid,16, 'get last id - reports mode still valid');
 
-
-    my ($counts,@log);
-    my @lines = do { open FILE, '<', $obj->lastmail; <FILE> };
+    my @lines = _readfile($obj->lastmail);
     is($lines[0],'daily=12,weekly=14,reports=16', 'read last id');
+
+    $obj->mode('monthly');
+    is($obj->_get_lastid,0, 'get last id - monthly mode zero');
+    @lines = _readfile($obj->lastmail);
+    is($lines[0],'daily=12,weekly=14,reports=16', 'read last id no monthly');
+
+    ok($obj->_get_lastid(20), 'set last id - monthly mode');
+    @lines = _readfile($obj->lastmail);
+    is($lines[0],'daily=12,weekly=14,reports=16,monthly=20', 'read last id with monthly');
+    is($obj->_get_lastid,20, 'get last id - monthly mode 20');
+}
+
+sub _readfile {
+    my $file = shift;
+    my $fh = IO::File->new($file,'r');
+    my @lines = do { <$fh> };
+    $fh->close;
+
+    return @lines;
 }

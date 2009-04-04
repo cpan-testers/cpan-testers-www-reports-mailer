@@ -8,6 +8,7 @@ MANIFEST
 META.yml
 README
 t/01base.t
+t/05setup_db-articles.t
 t/05setup_db-cpanprefs.t
 t/05setup_db-cpanstats.t
 t/20attributes.t
@@ -23,5 +24,7 @@ t/CTWRM_Testing.pm
 t/90podtest.t
 t/91podcover.t
 t/94metatest.t
+t/95changedate.t
 templates/mailer.eml
 templates/notification.eml
+templates/report.eml

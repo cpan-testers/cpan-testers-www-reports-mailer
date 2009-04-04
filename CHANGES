@@ -1,5 +1,10 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.15	04/04/2009
+	- added support for monthly and named day weekly reports.
+	- added support for individual reports
+	- added more tests
+
 0.14	29/01/2009
 	- added author check in case lookup failed.
 	- fixed preferences bug for new authors.

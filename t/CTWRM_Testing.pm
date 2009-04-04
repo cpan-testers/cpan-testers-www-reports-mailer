@@ -52,6 +52,10 @@ database=t/_DBDIR/test.db
 driver=SQLite
 database=t/_DBDIR/test2.db
 
+[ARTICLES]
+driver=SQLite
+database=t/_DBDIR/test3.db
+
 [SETTINGS]
 debug=1
 logfile=t/_TMPDIR/cpanreps.log

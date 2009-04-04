@@ -2,7 +2,7 @@
 use strict;
 $|++;
 
-my $VERSION = '0.05';
+my $VERSION = '0.06';
 
 #----------------------------------------------------------------------------
 
@@ -35,9 +35,7 @@ use CPAN::Testers::WWW::Reports::Mailer;
 # default is debug mode on, thus no mails are sent, need to
 # force this to 0 to ensure mails do get sent correctly.
 
-my $mailer = CPAN::Testers::WWW::Reports::Mailer->new(
-    debug => 1
-);
+my $mailer = CPAN::Testers::WWW::Reports::Mailer->new();
 
 $mailer->check_reports();
 $mailer->check_counts();
