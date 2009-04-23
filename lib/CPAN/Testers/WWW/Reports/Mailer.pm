@@ -119,6 +119,7 @@ for authors.
 use Compress::Zlib;
 use Config::IniFiles;
 use CPAN::Testers::Common::DBUtils;
+use Email::Address;
 use Email::Simple;
 use File::Basename;
 use File::Path;
@@ -151,17 +152,17 @@ my %default = (
 my (%AUTHORS,%PREFS);
 
 my %MODES = (
-    daily   => { type =>  1, period => '24 hours',  report => 'Daily Summary' },
-    weekly  => { type =>  2, period => '7 days',    report => 'Weekly Summary' },   # typically a Saturday
-    reports => { type =>  3, period => '',          report => 'Test' },
-    monthly => { type =>  4, period => 'month',     report => 'Monthly Summary' },
-    sun     => { type =>  5, period => '7 days',    report => 'Weekly Summary' },
-    mon     => { type =>  6, period => '7 days',    report => 'Weekly Summary' },
-    tue     => { type =>  7, period => '7 days',    report => 'Weekly Summary' },
-    wed     => { type =>  8, period => '7 days',    report => 'Weekly Summary' },
-    thu     => { type =>  9, period => '7 days',    report => 'Weekly Summary' },
-    fri     => { type => 10, period => '7 days',    report => 'Weekly Summary' },
-    sat     => { type => 11, period => '7 days',    report => 'Weekly Summary' },
+    daily   => { type =>  1, period => '24 hours', report => 'Daily Summary'   },
+    weekly  => { type =>  2, period => '7 days',   report => 'Weekly Summary'  },   # typically a Saturday
+    reports => { type =>  3, period => '',         report => 'Test'            },
+    monthly => { type =>  4, period => 'month',    report => 'Monthly Summary' },
+    sun     => { type =>  5, period => '7 days',   report => 'Weekly Summary'  },
+    mon     => { type =>  6, period => '7 days',   report => 'Weekly Summary'  },
+    tue     => { type =>  7, period => '7 days',   report => 'Weekly Summary'  },
+    wed     => { type =>  8, period => '7 days',   report => 'Weekly Summary'  },
+    thu     => { type =>  9, period => '7 days',   report => 'Weekly Summary'  },
+    fri     => { type => 10, period => '7 days',   report => 'Weekly Summary'  },
+    sat     => { type => 11, period => '7 days',   report => 'Weekly Summary'  },
 );
 
 my $FROM    = 'CPAN Tester Report Server <do_not_reply@cpantesters.org>';
@@ -177,18 +178,18 @@ my @dotw = (    "Sunday",   "Monday", "Tuesday", "Wednesday",
                 "Thursday", "Friday", "Saturday" );
 
 my @months = (
-        { 'id' =>  1,   'value' => "January",   },
-        { 'id' =>  2,   'value' => "February",  },
-        { 'id' =>  3,   'value' => "March",     },
-        { 'id' =>  4,   'value' => "April",     },
-        { 'id' =>  5,   'value' => "May",       },
-        { 'id' =>  6,   'value' => "June",      },
-        { 'id' =>  7,   'value' => "July",      },
-        { 'id' =>  8,   'value' => "August",    },
-        { 'id' =>  9,   'value' => "September", },
-        { 'id' => 10,   'value' => "October",   },
-        { 'id' => 11,   'value' => "November",  },
-        { 'id' => 12,   'value' => "December"   },
+        { 'id' =>  1, 'value' => "January",   },
+        { 'id' =>  2, 'value' => "February",  },
+        { 'id' =>  3, 'value' => "March",     },
+        { 'id' =>  4, 'value' => "April",     },
+        { 'id' =>  5, 'value' => "May",       },
+        { 'id' =>  6, 'value' => "June",      },
+        { 'id' =>  7, 'value' => "July",      },
+        { 'id' =>  8, 'value' => "August",    },
+        { 'id' =>  9, 'value' => "September", },
+        { 'id' => 10, 'value' => "October",   },
+        { 'id' => 11, 'value' => "November",  },
+        { 'id' => 12, 'value' => "December"   },
 );
 
 my %phrasebook = (
@@ -265,7 +266,11 @@ sub new {
     # configure databases
     for my $db (qw(CPANSTATS CPANPREFS ARTICLES)) {
         die "No configuration for $db database\n"   unless($cfg->SectionExists($db));
-        my %opts = map {$_ => $cfg->val($db,$_);} qw(driver database dbfile dbhost dbport dbuser dbpass);
+        my %opts;
+        for my $key (qw(driver database dbfile dbhost dbport dbuser dbpass)) {
+            my $val = $cfg->val($db,$key);
+            $opts{$key} = $val  if(defined $val);
+        }
         $self->{$db} = CPAN::Testers::Common::DBUtils->new(%opts);
         die "Cannot configure $db database\n" unless($self->{$db});
     }
@@ -716,6 +721,9 @@ sub _send_report {
     my $subject = $mail->header("Subject");
     return unless $subject;
 
+    my ($address) = Email::Address->parse($from);
+    my $reply = sprintf "%s\@%s", $address->user, $address->host;
+
     # extract the body
     my $encoding = $mail->header('Content-Transfer-Encoding');
     my $body = $mail->body;
@@ -727,8 +735,9 @@ sub _send_report {
         author  => $author, 
         name    => ($pause ? $pause->name : $author),
         subject => $subject,
-        from    => $from,
+        from    => $reply,
         body    => $body,
+        reply   => $reply
     );
 
     # send data
@@ -744,23 +753,29 @@ sub _write_mail {
 
     $self->{counts}{MAILS}++;
 
+    my $DATE = $self->_emaildate();
+    $DATE =~ s/\s+$//;
+
+    my $text;
+    $self->tt->process( $template, $parms, \$text ) || die $self->tt->error;
+
+    my $body;
+    $body =  "Reply-To: $parms->{reply}\n"  if($parms->{reply});
+    $body .= $HEAD . $text;
+    $body =~ s/FROM/$from/g;
+    $body =~ s/NAME/$parms->{name}/g;
+    $body =~ s/EMAIL/$parms->{author}\@cpan.org/g;
+    $body =~ s/DATE/$DATE/g;
+    $body =~ s/SUBJECT/$subject/g;
+
     if($self->debug) {
         $self->_log( "INFO: TEST: $parms->{author}\n" );
         $self->{counts}{TEST}++;
-
+        my $fh = IO::File->new('mailer-debug.log','a+') or die "Cannot write to debug file [mailer-debug.log]: $!\n";
+        print $fh $body;
+        $fh->close;
+        
     } elsif(my $fh = IO::File->new($cmd)) {
-        my $DATE = $self->_emaildate();
-        $DATE =~ s/\s+$//;
-
-        my $text;
-        $self->tt->process( $template, $parms, \$text ) || die $self->tt->error;
-
-        my $body = $HEAD . $text;
-        $body =~ s/FROM/$from/g;
-        $body =~ s/NAME/$parms->{name}/g;
-        $body =~ s/EMAIL/$parms->{author}\@cpan.org/g;
-        $body =~ s/DATE/$DATE/g;
-        $body =~ s/SUBJECT/$subject/g;
 
         print $fh $body;
         $fh->close;

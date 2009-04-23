@@ -52,8 +52,8 @@ my ($pd) = $dbh->selectrow_array('select count(*) from prefs_distributions');
 
 $dbh->disconnect;
 
-is($pa, 15, "row count for prefs_authors");
-is($pd, 15, "row count for prefs_distributions");
+is($pa, 16, "row count for prefs_authors");
+is($pd, 16, "row count for prefs_distributions");
 
 #select * from prefs_authors where pauseid in ('JHARDING','JBRYAN','VOISCHEV','LBROCARD','JALDHAR','JESSE','INGY','JETEVE','DRRHO','JJORE','ISHIGAKI','ADRIANWIT','SAPER','GARU','ZOFFIX');
 #select * from prefs_distributions where pauseid in ('JHARDING','JBRYAN','VOISCHEV','LBROCARD','JALDHAR','JESSE','INGY','JETEVE','DRRHO','JJORE','ISHIGAKI','ADRIANWIT','SAPER','GARU','ZOFFIX');
@@ -62,6 +62,7 @@ is($pd, 15, "row count for prefs_distributions");
 # pauseid|distribution|ignored|report|grade|tuple|version|patches|perl|platform
 __DATA__
 auth|ADRIANWIT|3|NULL
+auth|BARBIE|3|NULL
 auth|DRRHO|3|NULL
 auth|GARU|3|NULL
 auth|INGY|3|NULL
@@ -77,6 +78,7 @@ auth|SAPER|3|NULL
 auth|VOISCHEV|3|NULL
 auth|ZOFFIX|3|NULL
 dist|ADRIANWIT|-|0|1|FAIL|FIRST|LATEST|0|ALL|ALL
+dist|BARBIE|-|0|3|ALL|FIRST|LATEST|0|ALL|ALL
 dist|DRRHO|-|0|1|FAIL|FIRST|LATEST|0|ALL|ALL
 dist|GARU|-|0|1|FAIL|FIRST|LATEST|0|ALL|ALL
 dist|INGY|-|0|1|FAIL|FIRST|LATEST|0|ALL|ALL

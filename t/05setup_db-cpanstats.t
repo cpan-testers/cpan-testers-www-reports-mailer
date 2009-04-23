@@ -45,7 +45,7 @@ my ($ct) = $dbh->selectrow_array('select count(*) from cpanstats');
 
 $dbh->disconnect;
 
-is($ct, 96, "row count for cpanstats");
+is($ct, 99, "row count for cpanstats");
 
 #select * from cpanstats where state='cpan' and dist in ('AEAE', 'AI-NeuralNet-BackProp', 'AI-NeuralNet-Mesh', 'AI-NeuralNet-SOM', 'AOL-TOC', 'Abstract-Meta-Class', 'Acme', 'Acme-Anything', 'Acme-BOPE', 'Acme-Brainfuck', 'Acme-Buffy', 'Acme-CPANAuthors-Canadian', 'Acme-CPANAuthors-CodeRepos', 'Acme-CPANAuthors-French', 'Acme-CPANAuthors-Japanese');
 # sqlite> select * from cpanstats where postdate=200901 order by dist limit 20;
@@ -147,3 +147,6 @@ __DATA__
 2538875|cpan|200811|ZOFFIX|Acme-CPANAuthors-Canadian|0.0101||0|||200811022323
 2676844|cpan|200811|ADRIANWIT|Abstract-Meta-Class|0.13||0|||200811240039
 2963931|cpan|200812|ISHIGAKI|Acme-CPANAuthors-Japanese|0.090101||0|||200812311942
+3000000|cpan|200901|BARBIE|App-Maisha|0.01||0|||200901010135
+3000001|fail|200901|cpan@sourcentral.org ("Oliver Paukstadt")|App-Maisha|0.01|s390x-linux-thread-multi|5.8.8|linux|2.6.18-92.1.18.el5|200901010635
+3000002|pass|200901|cpan@sourcentral.org ("Oliver Paukstadt")|App-Maisha|0.01|s390x-linux|5.10.0|linux|2.6.16.60-0.31-default|200901010638

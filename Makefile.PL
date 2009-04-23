@@ -8,6 +8,7 @@ WriteMakefile(
         'Config::IniFiles'                  => 0,
         'Class::Accessor::Chained::Fast'    => 0,
         'CPAN::Testers::Common::DBUtils'    => 0.03,
+        'Email::Address'                    => 0,
         'Email::Simple'                     => 0,
         'File::Basename'                    => 0,
         'File::Slurp'                       => 0,

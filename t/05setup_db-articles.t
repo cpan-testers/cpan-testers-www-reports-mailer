@@ -24,13 +24,15 @@ $dbh->do(q{
 
 while(<DATA>){
   chomp;
-  $dbh->do('INSERT INTO articles ( id, artcile ) VALUES ( ?, ? )', {}, split(/\|/,$_) );
+  $dbh->do('INSERT INTO articles ( id, article ) VALUES ( ?, ? )', {}, split(/\|/,$_) );
 }
 
 my ($ct) = $dbh->selectrow_array('select count(*) from articles');
 
 $dbh->disconnect;
 
-is($ct, 0, "row count for cpanstats");
+is($ct, 2, "row count for articles");
 
 __DATA__
+3000001|This is a FAIL
+3000002|This is a PASS

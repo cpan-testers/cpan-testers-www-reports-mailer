@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 9;
 use CPAN::Testers::WWW::Reports::Mailer;
 
 use lib 't';
@@ -25,7 +25,7 @@ use CTWRM_Testing;
                         'FAIL' => 1
                       }
         },
-        BARBIE => {
+        NOONE => {
           'active' => 0,
           'version' => 'LATEST',
           'ignored' => 0,
@@ -36,6 +36,19 @@ use CTWRM_Testing;
           'patches' => 0,
           'grades' => {
                         'FAIL' => 1
+                      }
+        },
+        BARBIE => {
+          'active' => 3,
+          'version' => 'LATEST',
+          'ignored' => 0,
+          'perl' => 'ALL',
+          'report' => '3',
+          'tuple' => 'FIRST',
+          'platform' => 'ALL',
+          'patches' => 0,
+          'grades' => {
+                        'ALL' => 1
                       }
         },
         SAPER => {
@@ -107,7 +120,8 @@ use Data::Dumper;
 #print STDERR Dumper($obj->_parse_prefs($row));
 
 
-    is_deeply($obj->_get_prefs('BARBIE'),              $prefs{BARBIE}, 'author not found - BARBIE');
+    is_deeply($obj->_get_prefs('NOONE'),               $prefs{NOONE},  'author not found - NOONE');
+    is_deeply($obj->_get_prefs('BARBIE'),              $prefs{BARBIE}, 'found author prefs - BARBIE');
     is_deeply($obj->_get_prefs('SAPER'),               $prefs{SAPER},  'found author prefs - SAPER');
     is_deeply($obj->_get_prefs('SAPER','Fake-Distro'), $prefs{SAPER},  'found author prefs - SAPER - for unset Distro');
 }
