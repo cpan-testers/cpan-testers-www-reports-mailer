@@ -1,5 +1,13 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.17	06/06/2009
+	- fixed email subject bug. Thanks to TONYC & RCAPUTO for spotting it.
+	- changed the way _get_lastid() works.
+	- added _set_lastid() to shortcut updating to the latest report
+	- non-daily mode SQL rewritten to speed up processing.
+	- added _get_earliest() to get a realistic start id, if a given mode
+	  hasn't been set with a last id.
+
 0.16	23/04/2009
 	- added more tests
 	- added better reply-to handling

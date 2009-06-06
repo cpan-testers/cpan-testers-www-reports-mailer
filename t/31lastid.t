@@ -13,7 +13,7 @@ use CTWRM_Testing;
 {
     ok( my $obj = CTWRM_Testing::getObj(), "got object" );
 
-    my $f = File::Spec->catfile('t','_DBDIR','lastmail');
+    my $f = 't/_DBDIR/lastmail';
     ok($obj->lastmail($f),'reset last mail file');
     is($obj->lastmail,$f, 'reset last mail');
 

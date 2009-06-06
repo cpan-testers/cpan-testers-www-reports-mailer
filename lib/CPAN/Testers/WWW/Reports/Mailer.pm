@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.16';
+$VERSION = '0.17';
 
 =head1 NAME
 
@@ -193,7 +193,13 @@ my @months = (
 );
 
 my %phrasebook = (
+    'LastReport'        => "SELECT MAX(id) FROM cpanstats",
+    'GetEarliest'       => "SELECT id FROM cpanstats WHERE fulldate > ? ORDER BY id LIMIT 1",
+
+    'FindAuthorType'    => "SELECT pauseid FROM prefs_distributions WHERE report = ?",
+
     'GetReports'        => "SELECT id,dist,version,platform,perl,state FROM cpanstats WHERE id > ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
+    'GetReports2'       => "SELECT c.id,c.dist,c.version,c.platform,c.perl,c.state FROM cpanstats AS c WHERE c.id > ? AND c.state IN ('pass','fail','na','unknown') INNER JOIN ixlatest AS x ON x.dist=c.dist WHERE author IN (%s) ORDER BY id",
     'GetReportCount'    => "SELECT id FROM cpanstats WHERE platform=? AND perl=? AND state=? AND id < ? LIMIT 2",
     'GetLatestDistVers' => "SELECT version FROM cpanstats WHERE dist=? AND state='cpan' ORDER BY id DESC LIMIT 1",
     'GetAuthor'         => "SELECT tester FROM cpanstats WHERE dist=? AND version=? AND state='cpan' LIMIT 1",
@@ -337,14 +343,24 @@ sub check_reports {
     $self->_log( "INFO: START checking reports in '$mode' mode\n" );
     $self->_log( "INFO: last_id=$last_id\n" );
 
-    # find all reports since last update
-    my $rows = $self->{CPANSTATS}->iterator('hash',$phrasebook{'GetReports'},$last_id);
-    unless($rows) {
-        $self->_log( "INFO: STOP checking reports\n" );
-        return;
+    my $next;
+    if($mode ne 'daily') {
+        my @authors = $self->{CPANPREFS}->get_query('hash',$phrasebook{'FindAuthorType'}, $report_type);
+        return $self->_set_lastid()  unless(@authors);
+        my $sql = sprintf $phrasebook{'GetReports2'}, join(',',map {"'$_->{pauseid}'"} @authors);
+        $next = $self->{CPANSTATS}->iterator('hash',$sql,$last_id);
+    } else {
+        # find all reports since last update
+        $next = $self->{CPANSTATS}->iterator('hash',$phrasebook{'GetReports'},$last_id);
+        unless($next) {
+            $self->_log( "INFO: STOP checking reports\n" );
+            return;
+        }
     }
 
-    while( my $row = $rows->()) {
+    my $rows = 0;
+    while( my $row = $next->()) {
+        $rows++;
         $self->_log( "DEBUG: processing report: $row->{id}\n" )    if($self->debug);
 
         $self->{counts}{REPORTS}++;
@@ -436,6 +452,8 @@ sub check_reports {
         push @{$reports{$author}->{dists}{$row->{dist}}->{versions}{$row->{version}}->{platforms}{$row->{platform}}->{perls}{$row->{perl}}->{states}{uc $row->{state}}->{value}}, $row->{id};
     }
 
+    return $self->_set_lastid()  unless($rows);
+
     if($mode ne 'reports') {
         $self->_log( "DEBUG: processing authors: ".(scalar(keys %reports))."\n" )  if($self->debug);
 
@@ -505,15 +523,13 @@ sub check_reports {
             $tvars{dists}   = \@e;
             $tvars{period}  = $MODES{$mode}->{period};
             $tvars{report}  = $MODES{$mode}->{report};
-            $tvars{subject} = 'CPAN Testers $tvars{report} Report';
+            $tvars{subject} = "CPAN Testers $tvars{report} Report";
 
             $self->_write_mail('mailer.eml',\%tvars);
         }
     }
 
-    $self->_get_lastid($last_id)    unless($self->debug);
-    $self->_log( "INFO: new last_id=$last_id\n" );
-    $self->_log( "INFO: STOP checking reports\n" );
+    $self->_set_lastid($last_id);
 }
 
 sub check_counts {
@@ -569,6 +585,8 @@ HERE
 
 =item * _get_lastid
 
+=item * _set_lastid
+
 =item * _get_author
 
 =item * _get_prefs
@@ -591,22 +609,76 @@ sub _get_lastid {
 
     overwrite_file( $self->lastmail, 'daily=0,weekly=0,reports=0' ) unless -f $self->lastmail;
 
-    if ($id) {
+    if (defined $id) {
         my $text = read_file($self->lastmail);
         if($text =~ m!$mode=\d+!) {
             $text =~ s!($mode=)\d+!$1$id!;
         } else {
             $text .= ",$mode=$id";  # auto add mode
         }
+        $text =~ s/\s+//g;
         overwrite_file( $self->lastmail, $text );
+        return $id;
+    }
+
+    my $text = read_file($self->lastmail);
+    return $id  if(($id) = $text =~ m!$mode=(\d+)!);
+    return $self->_get_earliest();   # mode not found, find earliest id based on mode
+}
+
+sub _set_lastid {
+    my ($self,$id) = @_;
+
+    if(!defined $id) {
+        my @lastid = $self->{CPANPREFS}->get_query('array',$phrasebook{'LastReport'});
+        $id = @lastid ? $lastid[0]->[0] : 0;
+    }
+
+    $self->_log( "INFO: new last_id=$id\n" );
+    $self->_log( "INFO: STOP checking reports\n" );
+
+    return $id  if($self->debug);
+
+    $self->_get_lastid($id);
+}
+
+sub _get_earliest {
+    my $self = shift;
+    my $mode = $self->mode;
+
+    my @date = localtime(time);
+    $date[5] += 1900;
+    $date[4] += 1;
+    if($mode eq 'monthly') {
+        $date[4] -= 1;
+        $date[3] = 1;
+    } elsif($mode eq 'daily' || $mode eq 'reports') {
+        $date[3] -= 1;
     } else {
-        my $text = read_file($self->lastmail);
-        if(($id) = $text =~ m!$mode=(\d+)!) {
-            return $id;
+        $date[3] -=7;
+    }
+
+    if($date[3] < 1) {
+        $date[4] -= 1;
+        if($date[4] == 2 && $date[5] % 4) {
+            $date[3] = 28 - $date[3];
+        } elsif($date[3] == 2) {
+            $date[3] = 29 - $date[3];
+        } elsif($date[3] == 4 || $date[3] == 6 || $date[3] == 9 || $date[3] == 11) {
+            $date[3] = 30 - $date[3];
         } else {
-            return 0;   # mode not found start from zero
+            $date[3] = 31 - $date[3];
+        }
+        if($date[4] < 1) {
+            $date[4] = 12;
+            $date[5] -= 1;
         }
     }
+
+    my $fulldate = sprintf "%04d%02d%02d000000", $date[5], $date[4], $date[3];
+    my @report = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetEarliest'}, $fulldate);
+    return 0    unless(@report);
+    return $report[0]->[0] || 0;
 }
 
 sub _get_author {
