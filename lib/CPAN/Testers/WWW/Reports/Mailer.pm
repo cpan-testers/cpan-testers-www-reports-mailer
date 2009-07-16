@@ -199,7 +199,7 @@ my %phrasebook = (
     'FindAuthorType'    => "SELECT pauseid FROM prefs_distributions WHERE report = ?",
 
     'GetReports'        => "SELECT id,dist,version,platform,perl,state FROM cpanstats WHERE id > ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
-    'GetReports2'       => "SELECT c.id,c.dist,c.version,c.platform,c.perl,c.state FROM cpanstats AS c WHERE c.id > ? AND c.state IN ('pass','fail','na','unknown') INNER JOIN ixlatest AS x ON x.dist=c.dist WHERE author IN (%s) ORDER BY id",
+    'GetReports2'       => "SELECT c.id,c.dist,c.version,c.platform,c.perl,c.state FROM cpanstats AS c INNER JOIN ixlatest AS x ON x.dist=c.dist WHERE c.id > ? AND c.state IN ('pass','fail','na','unknown') AND author IN (%s) ORDER BY id",
     'GetReportCount'    => "SELECT id FROM cpanstats WHERE platform=? AND perl=? AND state=? AND id < ? LIMIT 2",
     'GetLatestDistVers' => "SELECT version FROM cpanstats WHERE dist=? AND state='cpan' ORDER BY id DESC LIMIT 1",
     'GetAuthor'         => "SELECT tester FROM cpanstats WHERE dist=? AND version=? AND state='cpan' LIMIT 1",
