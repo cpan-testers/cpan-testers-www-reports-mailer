@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.18';
+$VERSION = '0.19';
 
 =head1 NAME
 
@@ -435,15 +435,18 @@ sub check_reports {
 
         # Check whether this perl version is required.
         if($row->{perl} && $prefs->{perl} && $prefs->{perl} ne 'ALL') {
+            my $perlv = $row->{perl};
+            $perlv = $row->{perl};
+
             $prefs->{perl} =~ s/\s*//g;
             $prefs->{perl} =~ s/,/|/g;
             $prefs->{perl} =~ s/\./\\./g;
-            my $v = version->new("$row->{perl}")->numify;
+            my $v = version->new("$perlv")->numify;
             $prefs->{platform} =~ s/^(\w+)\|//;
             if($1 && $1 eq 'NOT') {
-                next    if($row->{perl} =~ /$prefs->{perl}/ && $v =~ /$prefs->{perl}/);
+                next    if($perlv =~ /$prefs->{perl}/ && $v =~ /$prefs->{perl}/);
             } else {
-                next    if($row->{perl} !~ /$prefs->{perl}/ && $v !~ /$prefs->{perl}/);
+                next    if($perlv !~ /$prefs->{perl}/ && $v !~ /$prefs->{perl}/);
             }
         }
 
@@ -638,7 +641,7 @@ sub _set_lastid {
     my ($self,$id) = @_;
 
     if(!defined $id) {
-        my @lastid = $self->{CPANPREFS}->get_query('array',$phrasebook{'LastReport'});
+        my @lastid = $self->{CPANSTATS}->get_query('array',$phrasebook{'LastReport'});
         $id = @lastid ? $lastid[0]->[0] : 0;
     }
 

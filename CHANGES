@@ -1,5 +1,9 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.19	27/07/2009
+	- temporary fix on live server made permanent (version.pm bug)
+	- fixed bad db reference
+
 0.18	27/07/2009
 	- fix for ALL grades.
 	- expanded test suite and samples considerably
