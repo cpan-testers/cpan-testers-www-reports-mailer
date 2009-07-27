@@ -5,7 +5,7 @@ use warnings;
 $|=1;
 use Test::More tests => 2;
 use DBI;
-use DBD::SQLite;
+#use DBD::SQLite;
 use File::Spec;
 use File::Path;
 use File::Basename;

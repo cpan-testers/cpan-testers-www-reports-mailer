@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.17';
+$VERSION = '0.18';
 
 =head1 NAME
 
@@ -135,7 +135,7 @@ use Template;
 use Time::Piece;
 use version;
 
-use base qw(Class::Accessor::Chained::Fast);
+use base qw(Class::Accessor::Fast);
 
 # -------------------------------------
 # Variables
@@ -298,7 +298,7 @@ sub new {
         die "mode can MUST be 'daily', 'weekly', 'monthly', 'reports', or a day of the week.\n";
     }
 
-    $self->pause ($self->_download_mailrc());
+    $self->pause($self->_download_mailrc());
 
     # set up API to Template Toolkit
     $self->tt( Template->new(
@@ -369,6 +369,9 @@ sub check_reports {
         $self->{counts}{$row->{state}}++;
         my $author = $self->_get_author($row->{dist}, $row->{version}) || next;
 
+        $self->_log( "DEBUG: dist: $row->{dist} $row->{version} $row->{state}\n" )    if($self->debug);
+        $self->_log( "DEBUG: author: $author\n" )    if($self->debug);
+
         unless($author) {
             $self->_log( "WARN: author not found for distribution [$row->{dist}], [$row->{version}]\n" );
             next;
@@ -384,14 +387,16 @@ sub check_reports {
         # do we need to worry about this author?
         if($prefs->{active} == 2) {
             $self->{counts}{NOMAIL}++;
+            $self->_log( "DEBUG: author: $author - not active\n" )    if($self->debug);
             next;
         }
 
         # get distribution preferences
-        $prefs  = $self->_get_prefs($author, $row->{dist})    || next;
+        $prefs = $self->_get_prefs($author, $row->{dist});
+        next    unless($prefs);
         next    if($prefs->{ignored});
         next    if($prefs->{report} != $report_type);
-        next    unless($prefs->{grades}{$row->{state}});
+        next    unless($prefs->{grades}{$row->{state}} || $prefs->{grades}{'ALL'});
 
         # check whether only first instance required
         if($prefs->{tuple} eq 'FIRST') {
@@ -490,19 +495,19 @@ sub check_reports {
             $self->_log( "DEBUG: $author - distributions = ".(scalar(keys %{$reports{$author}->{dists}}))."\n" ) if($self->debug);
 
             my ($reports,@e);
-            for my $dist (keys %{$reports{$author}->{dists}}) {
+            for my $dist (sort keys %{$reports{$author}->{dists}}) {
                 my $v = $reports{$author}->{dists}{$dist};
                 my @d;
-                for my $version (keys %{$v->{versions}}) {
+                for my $version (sort keys %{$v->{versions}}) {
                     my $w = $v->{versions}{$version};
                     my @c;
-                    for my $platform (keys %{$w->{platforms}}) {
+                    for my $platform (sort keys %{$w->{platforms}}) {
                         my $x = $w->{platforms}{$platform};
                         my @b;
-                        for my $perl (keys %{$x->{perls}}) {
+                        for my $perl (sort keys %{$x->{perls}}) {
                             my $y = $x->{perls}{$perl};
                             my @a;
-                            for my $state (keys %{$y->{states}}) {
+                            for my $state (sort keys %{$y->{states}}) {
                                 my $z = $y->{states}{$state};
                                 push @a, {state => $state, ids => $z->{value}};
                                 $reports++;
@@ -607,7 +612,10 @@ sub _get_lastid {
     my ($self,$id) = @_;
     my $mode = $self->mode;
 
-    overwrite_file( $self->lastmail, 'daily=0,weekly=0,reports=0' ) unless -f $self->lastmail;
+    unless( -f $self->lastmail ) {
+        mkpath(dirname($self->lastmail));
+        overwrite_file( $self->lastmail, 'daily=0,weekly=0,reports=0' );
+    }
 
     if (defined $id) {
         my $text = read_file($self->lastmail);
@@ -783,6 +791,8 @@ sub _send_report {
     # get article
     my @rows = $self->{ARTICLES}->get_query('hash',$phrasebook{'GetArticle'}, $row->{id});
 
+    #$self->_log( "ARTICLE: $row->{id}: $rows[0]->{article}\n" );
+
     # disassemble article
     $rows[0]->{article} = decode_qp($rows[0]->{article})	if($rows[0]->{article} =~ /=3D/);
     my $mail = Email::Simple->new($rows[0]->{article});
@@ -926,10 +936,11 @@ __END__
 
 =head1 SEE ALSO
 
-L<CPAN::WWW::Testers::Generator>
+L<CPAN::Testers::Data::Generator>
 L<CPAN::WWW::Testers>
 L<CPAN::Testers::WWW::Statistics>
 
+F<http://blog.cpantesters.org/>,
 F<http://www.cpantesters.org/>,
 F<http://stats.cpantesters.org/>,
 F<http://wiki.cpantesters.org/>

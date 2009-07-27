@@ -1,5 +1,9 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.18	27/07/2009
+	- fix for ALL grades.
+	- expanded test suite and samples considerably
+
 0.17	06/06/2009
 	- fixed email subject bug. Thanks to TONYC & RCAPUTO for spotting it.
 	- changed the way _get_lastid() works.

@@ -3,12 +3,19 @@
 use strict;
 use warnings;
 $|=1;
+
+use lib 't';
+use lib qw(./lib ../lib);
+
 use Test::More tests => 1;
 use DBI;
 #use DBD::SQLite;
 use File::Spec;
 use File::Path;
 use File::Basename;
+use File::Slurp;
+
+my @articles = qw(4766103 4766403 4766801);
 
 my $f = File::Spec->catfile('t','_DBDIR','test3.db');
 unlink $f if -f $f;
@@ -22,17 +29,14 @@ $dbh->do(q{
   )
 });
 
-while(<DATA>){
-  chomp;
-  $dbh->do('INSERT INTO articles ( id, article ) VALUES ( ?, ? )', {}, split(/\|/,$_) );
+for my $id (@articles) {
+  my $text = read_file('t/samples/'.$id);
+  $dbh->do('INSERT INTO articles ( id, article ) VALUES ( ?, ? )', {}, $id, $text );
 }
 
 my ($ct) = $dbh->selectrow_array('select count(*) from articles');
 
 $dbh->disconnect;
 
-is($ct, 2, "row count for articles");
+is($ct, 3, "row count for articles");
 
-__DATA__
-3000001|This is a FAIL
-3000002|This is a PASS

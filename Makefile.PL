@@ -6,7 +6,7 @@ WriteMakefile(
 
         'Compress::Zlib'                    => 0,
         'Config::IniFiles'                  => 0,
-        'Class::Accessor::Chained::Fast'    => 0,
+        'Class::Accessor::Fast'             => 0,
         'CPAN::Testers::Common::DBUtils'    => 0.03,
         'Email::Address'                    => 0,
         'Email::Simple'                     => 0,
