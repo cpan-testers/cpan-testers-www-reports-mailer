@@ -38,6 +38,7 @@ t/90podtest.t
 t/91podcover.t
 t/94metatest.t
 t/95changedate.t
+t/data/01mailrc.txt
 t/data/61daily.eml
 t/data/62daily.eml
 t/data/63daily.eml

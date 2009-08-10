@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.19';
+$VERSION = '0.20';
 
 =head1 NAME
 
@@ -211,13 +211,15 @@ my %phrasebook = (
     'InsertDistPrefs'   => "INSERT INTO prefs_distributions (pauseid,distribution,ignored,report,grade,tuple,version,patches,perl,platform) VALUES (?,?,0,1,'FAIL','FIRST','LATEST',0,'ALL','ALL')",
 
     'GetArticle'        => "SELECT * FROM articles WHERE id=?",
+
+    'GetReportTest'     => "SELECT id,dist,version,platform,perl,state FROM cpanstats WHERE id = ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
 );
 
 #----------------------------------------------------------------------------
 # The Application Programming Interface
 
 __PACKAGE__->mk_accessors(
-    qw( lastmail debug logfile logclean mode mailrc tt pause ));
+    qw( lastmail debug test logfile logclean mode mailrc tt pause ));
 
 # -------------------------------------
 # The Public Interface Functions
@@ -250,6 +252,7 @@ sub new {
         'config=s',
         'lastmail=s',
         'mailrc=s',
+        'test=i',
         'logfile=s',
         'logclean',
         'debug',
@@ -280,6 +283,9 @@ sub new {
         $self->{$db} = CPAN::Testers::Common::DBUtils->new(%opts);
         die "Cannot configure $db database\n" unless($self->{$db});
     }
+
+    $self->test(    $self->_defined_or( $options{test},     $hash{test},     $cfg->val('SETTINGS','test'  ), 0 ) );
+    $options{debug} = 1 if($self->test);
 
     $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','debug'    ), $default{debug}) );
     $self->lastmail($self->_defined_or( $options{lastmail}, $hash{lastmail}, $cfg->val('SETTINGS','lastmail' ), $default{lastmail}) );
@@ -344,7 +350,9 @@ sub check_reports {
     $self->_log( "INFO: last_id=$last_id\n" );
 
     my $next;
-    if($mode ne 'daily') {
+    if($self->test) {
+        $next = $self->{CPANSTATS}->iterator('hash',$phrasebook{'GetReportTest'},$self->test);
+    } elsif($mode ne 'daily') {
         my @authors = $self->{CPANPREFS}->get_query('hash',$phrasebook{'FindAuthorType'}, $report_type);
         return $self->_set_lastid()  unless(@authors);
         my $sql = sprintf $phrasebook{'GetReports2'}, join(',',map {"'$_->{pauseid}'"} @authors);
@@ -367,10 +375,12 @@ sub check_reports {
         $last_id = $row->{id};
         $row->{state} = uc $row->{state};
         $self->{counts}{$row->{state}}++;
-        my $author = $self->_get_author($row->{dist}, $row->{version}) || next;
 
         $self->_log( "DEBUG: dist: $row->{dist} $row->{version} $row->{state}\n" )    if($self->debug);
+
+        my $author = $self->_get_author($row->{dist}, $row->{version});
         $self->_log( "DEBUG: author: $author\n" )    if($self->debug);
+        next    unless($author);
 
         unless($author) {
             $self->_log( "WARN: author not found for distribution [$row->{dist}], [$row->{version}]\n" );
@@ -393,14 +403,21 @@ sub check_reports {
 
         # get distribution preferences
         $prefs = $self->_get_prefs($author, $row->{dist});
+        $self->_log( "DEBUG: dist prefs: " .($prefs ? 'Found' : 'Not Found')."\n" )                             if($self->debug);
         next    unless($prefs);
+        $self->_log( "DEBUG: dist prefs: ignored=" .($prefs->{ignored} || 0)."\n" )                             if($self->debug);
         next    if($prefs->{ignored});
+        $self->_log( "DEBUG: dist prefs: report=$prefs->{report}, report type=$report_type\n" )                 if($self->debug);
         next    if($prefs->{report} != $report_type);
+        $self->_log( "DEBUG: dist prefs: $row->{state}=" .($prefs->{grades}{$row->{state}}||'undef')."\n" )     if($self->debug);
+        $self->_log( "DEBUG: dist prefs: ALL=" .($prefs->{grades}{ALL}||'undef')."\n" )                         if($self->debug);
         next    unless($prefs->{grades}{$row->{state}} || $prefs->{grades}{'ALL'});
+        $self->_log( "DEBUG: dist prefs: CONTINUE\n" )                                                          if($self->debug);
 
         # check whether only first instance required
         if($prefs->{tuple} eq 'FIRST') {
             my @count = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetReportCount'}, $row->{platform}, $row->{perl}, $row->{state}, $row->{id});
+            $self->_log( "DEBUG: dist prefs: tuple=FIRST, count=".(scalar(@count))."\n" )    if($self->debug);
             next    if(@count > 1);
         }
 
@@ -412,10 +429,13 @@ sub check_reports {
         if($row->{version} && $prefs->{version} && $prefs->{version} ne 'ALL') {
             if($prefs->{version} eq 'LATEST') {
                 my @vers = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetLatestDistVers'},$row->{dist});
+                $self->_log( "DEBUG: dist prefs: vers=".(scalar(@vers))."\n" )                  if($self->debug);
+                $self->_log( "DEBUG: dist prefs: version=$vers[0]->[0], $row->{version}\n" )    if($self->debug);
                 next    if(@vers && $vers[0]->[0] ne $row->{version});
             } else {
                 $prefs->{version} =~ s/\s*//g;
                 my %m = map {$_ => 1} split(',',$prefs->{version});
+                $self->_log( "DEBUG: dist prefs: $row->{version}\n" )    if($self->debug);
                 next    unless($m{$row->{version}});
             }
         }
@@ -427,8 +447,10 @@ sub check_reports {
             $prefs->{platform} =~ s/\./\\./g;
             $prefs->{platform} =~ s/^(\w+)\|//;
             if($1 && $1 eq 'NOT') {
+                $self->_log( "DEBUG: dist prefs: $row->{platform}, =~ $prefs->{platform}\n" )    if($self->debug);
                 next    if($row->{platform} =~ /$prefs->{platform}/);
             } else {
+                $self->_log( "DEBUG: dist prefs: $row->{platform}, !~ $prefs->{platform}\n" )    if($self->debug);
                 next    if($row->{platform} !~ /$prefs->{platform}/);
             }
         }
@@ -444,14 +466,19 @@ sub check_reports {
             my $v = version->new("$perlv")->numify;
             $prefs->{platform} =~ s/^(\w+)\|//;
             if($1 && $1 eq 'NOT') {
+                $self->_log( "DEBUG: dist prefs: $perlv || $v =~ $prefs->{perl}\n" )    if($self->debug);
                 next    if($perlv =~ /$prefs->{perl}/ && $v =~ /$prefs->{perl}/);
             } else {
+                $self->_log( "DEBUG: dist prefs: $perlv || $v !~ $prefs->{perl}\n" )    if($self->debug);
                 next    if($perlv !~ /$prefs->{perl}/ && $v !~ /$prefs->{perl}/);
             }
         }
 
+        $self->_log( "DEBUG: dist prefs: patches=$prefs->{patches}, row perl $row->{perl}\n" )    if($self->debug);
         # Check whether patches are required.
         next    if(!$prefs->{patches} && $row->{perl} =~ /patch/);
+
+        $self->_log( "DEBUG: report is being added to mailshot\n" )    if($self->debug);
 
         if($mode eq 'reports') {
             $self->_send_report($author,$row);
@@ -561,7 +588,8 @@ sub help {
         print <<HERE;
 
 Usage: $0 --config=<file> \\
-         [--logfile=<file> [--logclean]] [--debug] [--lastmail=<file>]
+         [--logfile=<file> [--logclean]] [--debug] [--test=<id>] 
+         [--lastmail=<file>]
          [--mode=(daily|weekly|report|monthly|sun|mon|tue|wed|thu|fri|sat)]
          [-h] [-v]
 
@@ -570,6 +598,7 @@ Usage: $0 --config=<file> \\
   --logfile=<file>  log file (*)
   --logclean        0 = append, 1 = overwrite (*)
   --debug           debug mode, no mail sent (*)
+  --test=<id>       test an id in debug mode, no mail sent (*)
   --mode            run mode (*)
   -h                this help screen
   -v                program version

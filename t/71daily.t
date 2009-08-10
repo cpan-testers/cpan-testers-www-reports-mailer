@@ -9,10 +9,10 @@ use lib 't';
 use lib qw(./lib ../lib);
 
 my %COUNTS = (
-    REPORTS => 530,
-    PASS    => 494,
-    FAIL    => 12,
-    UNKNOWN => 24,
+    REPORTS => 777,
+    PASS    => 718,
+    FAIL    => 34,
+    UNKNOWN => 25,
     NA      => 0,
     NOMAIL  => 0,
     MAILS   => 1,
@@ -46,24 +46,25 @@ mkpath(dirname($files{lastmail}));
 overwrite_file($files{lastmail}, 'daily=4587509,weekly=4587509,reports=4587509' );
 run_mailer();
 
-$COUNTS{REPORTS} = 147;
-$COUNTS{PASS}    = 141;
-$COUNTS{FAIL}    = 5;
-$COUNTS{UNKNOWN} = 1;
+$COUNTS{REPORTS} = 394;
+$COUNTS{PASS}    = 365;
+$COUNTS{FAIL}    = 27;
+$COUNTS{UNKNOWN} = 2;
 overwrite_file($files{lastmail}, 'daily=4722317,weekly=4722317,reports=4722317' );
 run_mailer();
 
-$COUNTS{MAILS}   = 0;
-$COUNTS{REPORTS} = 39;
-$COUNTS{PASS}    = 38;
-$COUNTS{TEST}    = 0;
-$COUNTS{FAIL}    = 1;
-$COUNTS{UNKNOWN} = 0;
+$COUNTS{MAILS}   = 1;
+$COUNTS{REPORTS} = 286;
+$COUNTS{PASS}    = 262;
+$COUNTS{TEST}    = 1;
+$COUNTS{FAIL}    = 23;
+$COUNTS{UNKNOWN} = 1;
 overwrite_file($files{lastmail}, 'daily=4766000,weekly=4766000,reports=4766000' );
 run_mailer();
 
-$COUNTS{REPORTS} = 38;
-$COUNTS{FAIL}    = 0;
+$COUNTS{MAILS}   = 1;
+$COUNTS{REPORTS} = 285;
+$COUNTS{FAIL}    = 22;
 overwrite_file($files{lastmail}, 'daily=4766100,weekly=4766100,reports=4766100' );
 run_mailer();
 

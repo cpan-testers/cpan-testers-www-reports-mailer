@@ -1,5 +1,10 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.20	10/08/2009
+	- added many more tests
+	- added more diagnostics in debug mode
+	- added the ability to check a report (automatical sets debug mode)
+
 0.19	27/07/2009
 	- temporary fix on live server made permanent (version.pm bug)
 	- fixed bad db reference

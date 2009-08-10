@@ -1,4 +1,12 @@
 use ExtUtils::MakeMaker;
+
+print <<HERE;
+
+  Please note that the tests within this distribution can take a long time
+  to run. As such, be prepared to wait a little while to get the results.
+
+HERE
+
 WriteMakefile(
     'NAME'          => 'CPAN::Testers::WWW::Reports::Mailer',
     'VERSION_FROM'  => 'lib/CPAN/Testers/WWW/Reports/Mailer.pm',
