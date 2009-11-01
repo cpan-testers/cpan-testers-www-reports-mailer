@@ -1,5 +1,8 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.21	01/11/2009
+	- bug fix when searching for tuples.
+
 0.20	10/08/2009
 	- added many more tests
 	- added more diagnostics in debug mode
