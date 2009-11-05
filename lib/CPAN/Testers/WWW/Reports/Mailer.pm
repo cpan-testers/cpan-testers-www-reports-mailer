@@ -76,10 +76,26 @@ line and via the API call to new() as a hash.
 
 =over 4
 
-=item * debug
+=item * mode
+
+Processing mode required. This can be one of three values, 'daily', 'weekly' or
+'reports'. 'daily' and 'weekly' create the mails for the Daily Summary and
+Weekly Summary reports respectively. 'reports' creates individual report mails
+for authors.
+
+=item * verbose
+
+If set to a true value, will print additional log messages.
+
+=item * nomail
 
 By default this is set to 1, to avoid accidentally running and sending lots of
 mails :) Set to 0 to allow normal processing.
+
+=item * test
+
+If used, must be set to a single NNTPID, which will then be tested in isolation
+for the currently set mode. Automatically sets the nomail flag to true.
 
 =item * lastmail
 
@@ -101,13 +117,6 @@ The location of the logfile. If not provided, logging is disabled.
 By default this is set to 0, append to existing log. If set to 1, will create
 a new log or overwrite any existing log, on the first call to log a message,
 then will automatically reset to 0, so as to append any further messages.
-
-=item * mode
-
-Processing mode required. This can be one of three values, 'daily', 'weekly' or
-'reports'. 'daily' and 'weekly' create the mails for the Daily Summary and
-Weekly Summary reports respectively. 'reports' creates individual report mails
-for authors.
 
 =back
 
@@ -143,7 +152,8 @@ use base qw(Class::Accessor::Fast);
 # default configuration settings
 my %default = (
     lastmail    => '_lastmail',
-    debug       => 1,
+    verbose     => 0,
+    nomail      => 1,
     logclean    => 0,
     mode        => 'daily',
     mailrc      => 'data/01mailrc.txt'
@@ -219,7 +229,7 @@ my %phrasebook = (
 # The Application Programming Interface
 
 __PACKAGE__->mk_accessors(
-    qw( lastmail debug test logfile logclean mode mailrc tt pause ));
+    qw( lastmail verbose nomail test logfile logclean mode mailrc tt pause ));
 
 # -------------------------------------
 # The Public Interface Functions
@@ -239,7 +249,8 @@ sub new {
         'test=i',
         'logfile=s',
         'logclean',
-        'debug',
+        'verbose',
+        'nomail',
         'mode=s',
         'help|h',
         'version|v'
@@ -270,9 +281,10 @@ sub new {
     }
 
     $self->test(    $self->_defined_or( $options{test},     $hash{test},     $cfg->val('SETTINGS','test'  ), 0 ) );
-    $options{debug} = 1 if($self->test);
+    $options{nomail} = 1 if($self->test);
 
-    $self->debug(   $self->_defined_or( $options{debug},    $hash{debug},    $cfg->val('SETTINGS','debug'    ), $default{debug}) );
+    $self->verbose( $self->_defined_or( $options{verbose},  $hash{verbose},  $cfg->val('SETTINGS','verbose'  ), $default{verbose}) );
+    $self->nomail(  $self->_defined_or( $options{nomail},   $hash{nomail},   $cfg->val('SETTINGS','nomail'   ), $default{nomail}) );
     $self->lastmail($self->_defined_or( $options{lastmail}, $hash{lastmail}, $cfg->val('SETTINGS','lastmail' ), $default{lastmail}) );
     $self->mailrc(  $self->_defined_or( $options{mailrc},   $hash{mailrc},   $cfg->val('SETTINGS','mailrc'   ), $default{mailrc} ) );
     $self->logfile( $self->_defined_or( $options{logfile},  $hash{logfile},  $cfg->val('SETTINGS','logfile'  ) ) );
@@ -332,17 +344,17 @@ sub check_reports {
     my $rows = 0;
     while( my $row = $next->()) {
         $rows++;
-        $self->_log( "DEBUG: processing report: $row->{id}\n" )    if($self->debug);
+        $self->_log( "DEBUG: processing report: $row->{id}\n" )    if($self->verbose);
 
         $self->{counts}{REPORTS}++;
         $last_id = $row->{id};
         $row->{state} = uc $row->{state};
         $self->{counts}{$row->{state}}++;
 
-        $self->_log( "DEBUG: dist: $row->{dist} $row->{version} $row->{state}\n" )    if($self->debug);
+        $self->_log( "DEBUG: dist: $row->{dist} $row->{version} $row->{state}\n" )    if($self->verbose);
 
         my $author = $self->_get_author($row->{dist}, $row->{version});
-        $self->_log( "DEBUG: author: $author\n" )    if($self->debug);
+        $self->_log( "DEBUG: author: $author\n" )    if($self->verbose);
         next    unless($author);
 
         unless($author) {
@@ -360,22 +372,22 @@ sub check_reports {
         # do we need to worry about this author?
         if($prefs->{active} == 2) {
             $self->{counts}{NOMAIL}++;
-            $self->_log( "DEBUG: author: $author - not active\n" )    if($self->debug);
+            $self->_log( "DEBUG: author: $author - not active\n" )    if($self->verbose);
             next;
         }
 
         # get distribution preferences
         $prefs = $self->_get_prefs($author, $row->{dist});
-        $self->_log( "DEBUG: dist prefs: " .($prefs ? 'Found' : 'Not Found')."\n" )                             if($self->debug);
+        $self->_log( "DEBUG: dist prefs: " .($prefs ? 'Found' : 'Not Found')."\n" )                             if($self->verbose);
         next    unless($prefs);
-        $self->_log( "DEBUG: dist prefs: ignored=" .($prefs->{ignored} || 0)."\n" )                             if($self->debug);
+        $self->_log( "DEBUG: dist prefs: ignored=" .($prefs->{ignored} || 0)."\n" )                             if($self->verbose);
         next    if($prefs->{ignored});
-        $self->_log( "DEBUG: dist prefs: report=$prefs->{report}, report type=$report_type\n" )                 if($self->debug);
+        $self->_log( "DEBUG: dist prefs: report=$prefs->{report}, report type=$report_type\n" )                 if($self->verbose);
         next    if($prefs->{report} != $report_type);
-        $self->_log( "DEBUG: dist prefs: $row->{state}=" .($prefs->{grades}{$row->{state}}||'undef')."\n" )     if($self->debug);
-        $self->_log( "DEBUG: dist prefs: ALL=" .($prefs->{grades}{ALL}||'undef')."\n" )                         if($self->debug);
+        $self->_log( "DEBUG: dist prefs: $row->{state}=" .($prefs->{grades}{$row->{state}}||'undef')."\n" )     if($self->verbose);
+        $self->_log( "DEBUG: dist prefs: ALL=" .($prefs->{grades}{ALL}||'undef')."\n" )                         if($self->verbose);
         next    unless($prefs->{grades}{$row->{state}} || $prefs->{grades}{'ALL'});
-        $self->_log( "DEBUG: dist prefs: CONTINUE\n" )                                                          if($self->debug);
+        $self->_log( "DEBUG: dist prefs: CONTINUE\n" )                                                          if($self->verbose);
 
         # Check whether distribution version is required.
         # If version set to 'LATEST' check this is the current version, if set
@@ -385,13 +397,13 @@ sub check_reports {
         if($row->{version} && $prefs->{version} && $prefs->{version} ne 'ALL') {
             if($prefs->{version} eq 'LATEST') {
                 my @vers = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetLatestDistVers'},$row->{dist});
-                $self->_log( "DEBUG: dist prefs: vers=".(scalar(@vers))."\n" )                  if($self->debug);
-                $self->_log( "DEBUG: dist prefs: version=$vers[0]->[0], $row->{version}\n" )    if($self->debug);
+                $self->_log( "DEBUG: dist prefs: vers=".(scalar(@vers))."\n" )                  if($self->verbose);
+                $self->_log( "DEBUG: dist prefs: version=$vers[0]->[0], $row->{version}\n" )    if($self->verbose);
                 next    if(@vers && $vers[0]->[0] ne $row->{version});
             } else {
                 $prefs->{version} =~ s/\s*//g;
                 my %m = map {$_ => 1} split(',',$prefs->{version});
-                $self->_log( "DEBUG: dist prefs: $row->{version}\n" )    if($self->debug);
+                $self->_log( "DEBUG: dist prefs: $row->{version}\n" )    if($self->verbose);
                 next    unless($m{$row->{version}});
             }
         }
@@ -403,10 +415,10 @@ sub check_reports {
             $prefs->{platform} =~ s/\./\\./g;
             $prefs->{platform} =~ s/^(\w+)\|//;
             if($1 && $1 eq 'NOT') {
-                $self->_log( "DEBUG: dist prefs: $row->{platform}, =~ $prefs->{platform}\n" )    if($self->debug);
+                $self->_log( "DEBUG: dist prefs: $row->{platform}, =~ $prefs->{platform}\n" )    if($self->verbose);
                 next    if($row->{platform} =~ /$prefs->{platform}/);
             } else {
-                $self->_log( "DEBUG: dist prefs: $row->{platform}, !~ $prefs->{platform}\n" )    if($self->debug);
+                $self->_log( "DEBUG: dist prefs: $row->{platform}, !~ $prefs->{platform}\n" )    if($self->verbose);
                 next    if($row->{platform} !~ /$prefs->{platform}/);
             }
         }
@@ -422,27 +434,27 @@ sub check_reports {
             my $v = version->new("$perlv")->numify;
             $prefs->{platform} =~ s/^(\w+)\|//;
             if($1 && $1 eq 'NOT') {
-                $self->_log( "DEBUG: dist prefs: $perlv || $v =~ $prefs->{perl}\n" )    if($self->debug);
+                $self->_log( "DEBUG: dist prefs: $perlv || $v =~ $prefs->{perl}\n" )    if($self->verbose);
                 next    if($perlv =~ /$prefs->{perl}/ && $v =~ /$prefs->{perl}/);
             } else {
-                $self->_log( "DEBUG: dist prefs: $perlv || $v !~ $prefs->{perl}\n" )    if($self->debug);
+                $self->_log( "DEBUG: dist prefs: $perlv || $v !~ $prefs->{perl}\n" )    if($self->verbose);
                 next    if($perlv !~ /$prefs->{perl}/ && $v !~ /$prefs->{perl}/);
             }
         }
 
         # Check whether patches are required.
-        $self->_log( "DEBUG: dist prefs: patches=$prefs->{patches}, row perl $row->{perl}\n" )    if($self->debug);
+        $self->_log( "DEBUG: dist prefs: patches=$prefs->{patches}, row perl $row->{perl}\n" )    if($self->verbose);
         next    if(!$prefs->{patches} && $row->{perl} =~ /patch/);
 
         # check whether only first instance required
         if($prefs->{tuple} eq 'FIRST') {
             my @count = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetReportCount'}, 
                 $row->{platform}, $row->{perl}, $row->{state}, $row->{id}, $row->{dist}, $row->{version});
-            $self->_log( "DEBUG: dist prefs: tuple=FIRST, count=".(scalar(@count))."\n" )    if($self->debug);
+            $self->_log( "DEBUG: dist prefs: tuple=FIRST, count=".(scalar(@count))."\n" )    if($self->verbose);
             next    if(@count > 0);
         }
 
-        $self->_log( "DEBUG: report is being added to mailshot\n" )    if($self->debug);
+        $self->_log( "DEBUG: report is being added to mailshot\n" )    if($self->verbose);
 
         if($mode eq 'reports') {
             $self->_send_report($author,$row);
@@ -454,10 +466,10 @@ sub check_reports {
     return $self->_set_lastid()  unless($rows);
 
     if($mode ne 'reports') {
-        $self->_log( "DEBUG: processing authors: ".(scalar(keys %reports))."\n" )  if($self->debug);
+        $self->_log( "DEBUG: processing authors: ".(scalar(keys %reports))."\n" )  if($self->verbose);
 
         for my $author (sort keys %reports) {
-            $self->_log( "DEBUG: $author\n" )   if($self->debug);
+            $self->_log( "DEBUG: $author\n" )   if($self->verbose);
 
             my $pause = $self->pause->author($author);
             $tvars{name}   = $pause ? $pause->name : $author;
@@ -486,7 +498,7 @@ sub check_reports {
                 $self->{CPANPREFS}->do_query($phrasebook{'InsertDistPrefs'}, $author, '-')  unless(@dist);
             }
 
-            $self->_log( "DEBUG: $author - distributions = ".(scalar(keys %{$reports{$author}->{dists}}))."\n" ) if($self->debug);
+            $self->_log( "DEBUG: $author - distributions = ".(scalar(keys %{$reports{$author}->{dists}}))."\n" ) if($self->verbose);
 
             my ($reports,@e);
             for my $dist (sort keys %{$reports{$author}->{dists}}) {
@@ -516,7 +528,7 @@ sub check_reports {
             }
 
             next    unless($reports);
-            if($self->debug)    { $self->_log( "DEBUG: $author - reports = $reports\n" ) }
+            if($self->verbose)    { $self->_log( "DEBUG: $author - reports = $reports\n" ) }
             else                { $self->_log( "INFO: $author - dists=".(scalar(keys %{$reports{$author}->{dists}})).", reports=$reports\n" ) }
 
             $tvars{dists}   = \@e;
@@ -537,7 +549,7 @@ sub check_counts {
 
     $self->_log( "INFO: COUNTS for '$mode' mode:\n" );
     my @counts = qw(REPORTS PASS FAIL UNKNOWN NA NOMAIL MAILS NEWAUTH GOOD BAD);
-    push @counts, 'TEST'    if($self->debug);
+    push @counts, 'TEST'    if($self->nomail);
 
     for(@counts) {
         $self->{counts}{$_} ||= 0;
@@ -552,17 +564,18 @@ sub help {
         print <<HERE;
 
 Usage: $0 --config=<file> \\
-         [--logfile=<file> [--logclean]] [--debug] [--test=<id>] 
-         [--lastmail=<file>]
-         [--mode=(daily|weekly|report|monthly|sun|mon|tue|wed|thu|fri|sat)]
+         [--logfile=<file> [--logclean]] [--verbose] [--nomail] \\ 
+         [--test=<id>] [--lastmail=<file>] \\
+         [--mode=(daily|weekly|report|monthly|sun|mon|tue|wed|thu|fri|sat)] \\
          [-h] [-v]
 
   --config=<file>   database configuration file
-  --lastmail=<file> lastmail counter file (*)
   --logfile=<file>  log file (*)
   --logclean        0 = append, 1 = overwrite (*)
-  --debug           debug mode, no mail sent (*)
+  --verbose         print additional log messages
+  --nomail          nomail flag, no mail sent if true (*)
   --test=<id>       test an id in debug mode, no mail sent (*)
+  --lastmail=<file> lastmail counter file (*)
   --mode            run mode (*)
   -h                this help screen
   -v                program version
@@ -617,7 +630,7 @@ sub _set_lastid {
     $self->_log( "INFO: new last_id=$id\n" );
     $self->_log( "INFO: STOP checking reports\n" );
 
-    return $id  if($self->debug);
+    return $id  if($self->nomail);
 
     $self->_get_lastid($id);
 }
@@ -822,7 +835,7 @@ sub _write_mail {
     $body =~ s/DATE/$DATE/g;
     $body =~ s/SUBJECT/$subject/g;
 
-    if($self->debug) {
+    if($self->nomail) {
         $self->_log( "INFO: TEST: $parms->{author}\n" );
         $self->{counts}{TEST}++;
         my $fh = IO::File->new('mailer-debug.log','a+') or die "Cannot write to debug file [mailer-debug.log]: $!\n";
@@ -948,9 +961,13 @@ for further details.
 
 Path to the file containing the last NNTPID processed.
 
-=item * debug
+=item * verbose
 
-Provides the internal debug flag.
+Provides the current verbose configuration setting.
+
+=item * nomail
+
+Provides the current nomail configuration setting.
 
 =item * test
 
@@ -1017,7 +1034,7 @@ Composes and sends a mail message.
 
 =item * _emaildate
 
-Returns an RFC compliant formatted date string.
+Returns an RFC 2822 compliant formatted date string.
 
 =item * _download_mailrc
 

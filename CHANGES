@@ -1,9 +1,10 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
-0.24	current
+0.24	05/11/2009
 	- POD documentation updates.
 	- moved tuples check to later in the process, as it is a big database
 	  drain, when other checks could exclude the current report quickly.
+	- split debug flag into nomail and verbose flags.
 
 0.23	05/11/2009
 	- added auto reconnect if using a MySQL database.

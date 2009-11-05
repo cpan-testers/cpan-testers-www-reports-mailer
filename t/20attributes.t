@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 37;
+use Test::More tests => 41;
 use CPAN::Testers::WWW::Reports::Mailer;
 
 use lib 't';
@@ -15,7 +15,8 @@ ok( my $obj = CTWRM_Testing::getObj(), "got object" );
 
 # predefined attributes
 foreach my $k ( qw/
-	debug
+	verbose
+	nomail
     test
     logfile
     logclean

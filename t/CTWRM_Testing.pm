@@ -130,7 +130,8 @@ database=t/_DBDIR/test3.db
 
 [SETTINGS]
 mailrc=t/data/01mailrc.txt
-debug=1
+verbose=1
+nomail=1
 logfile=t/_TMPDIR/cpanreps.log
 logclean=1
 
