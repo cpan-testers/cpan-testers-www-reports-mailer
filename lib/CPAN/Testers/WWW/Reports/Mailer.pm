@@ -377,14 +377,6 @@ sub check_reports {
         next    unless($prefs->{grades}{$row->{state}} || $prefs->{grades}{'ALL'});
         $self->_log( "DEBUG: dist prefs: CONTINUE\n" )                                                          if($self->debug);
 
-        # check whether only first instance required
-        if($prefs->{tuple} eq 'FIRST') {
-            my @count = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetReportCount'}, 
-                $row->{platform}, $row->{perl}, $row->{state}, $row->{id}, $row->{dist}, $row->{version});
-            $self->_log( "DEBUG: dist prefs: tuple=FIRST, count=".(scalar(@count))."\n" )    if($self->debug);
-            next    if(@count > 0);
-        }
-
         # Check whether distribution version is required.
         # If version set to 'LATEST' check this is the current version, if set
         # to 'ALL' then we should allow EVERYTHING through, otherwise filter
@@ -438,9 +430,17 @@ sub check_reports {
             }
         }
 
-        $self->_log( "DEBUG: dist prefs: patches=$prefs->{patches}, row perl $row->{perl}\n" )    if($self->debug);
         # Check whether patches are required.
+        $self->_log( "DEBUG: dist prefs: patches=$prefs->{patches}, row perl $row->{perl}\n" )    if($self->debug);
         next    if(!$prefs->{patches} && $row->{perl} =~ /patch/);
+
+        # check whether only first instance required
+        if($prefs->{tuple} eq 'FIRST') {
+            my @count = $self->{CPANSTATS}->get_query('array',$phrasebook{'GetReportCount'}, 
+                $row->{platform}, $row->{perl}, $row->{state}, $row->{id}, $row->{dist}, $row->{version});
+            $self->_log( "DEBUG: dist prefs: tuple=FIRST, count=".(scalar(@count))."\n" )    if($self->debug);
+            next    if(@count > 0);
+        }
 
         $self->_log( "DEBUG: report is being added to mailshot\n" )    if($self->debug);
 
