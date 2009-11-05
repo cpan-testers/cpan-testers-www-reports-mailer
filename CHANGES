@@ -1,5 +1,8 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.23	05/11/2009
+	- added auto reconnect if using a MySQL database.
+
 0.22	01/11/2009
 	- test fix due to MSWin32 delaying the file deletion process.
 	- amended logging test config to use local 01mailrc.txt

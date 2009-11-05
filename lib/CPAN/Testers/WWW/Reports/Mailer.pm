@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.22';
+$VERSION = '0.23';
 
 =head1 NAME
 
@@ -282,6 +282,7 @@ sub new {
         }
         $self->{$db} = CPAN::Testers::Common::DBUtils->new(%opts);
         die "Cannot configure $db database\n" unless($self->{$db});
+    	$self->{db}->{mysql_auto_reconnect} = 1	if($opts{driver} =~ /mysql/i);
     }
 
     $self->test(    $self->_defined_or( $options{test},     $hash{test},     $cfg->val('SETTINGS','test'  ), 0 ) );
