@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.23';
+$VERSION = '0.24';
 
 =head1 NAME
 
@@ -224,22 +224,6 @@ __PACKAGE__->mk_accessors(
 # -------------------------------------
 # The Public Interface Functions
 
-=head1 INTERFACE
-
-=head2 The Constructor
-
-=over
-
-=item * new
-
-Instatiates the object CPAN::WWW::Testers. Requires a hash of parameters, with
-'config' being the only mandatory key. Note that 'config' can be anything that
-L<Config::IniFiles> accepts for the I<-file> option.
-
-=back
-
-=cut
-
 sub new {
     my $class = shift;
     my %hash  = @_;
@@ -317,28 +301,6 @@ sub new {
 
     return $self;
 }
-
-=head2 Methods
-
-=over
-
-=item * check_reports
-
-The core method that analyses the reports and constructs the mails.
-
-=item * check_counts
-
-Prints a summary of the processing.
-
-=item * help
-
-Using the command line option, --help or -h, displays a help screen with
-instructions of the command line arguments. See the Configuration section
-for further details.
-
-=back
-
-=cut
 
 sub check_reports {
     my $self = shift;
@@ -617,30 +579,6 @@ HERE
 
 #----------------------------------------------------------------------------
 # Internal Methods
-
-=head2 Internal Methods
-
-=over 4
-
-=item * _get_lastid
-
-=item * _set_lastid
-
-=item * _get_author
-
-=item * _get_prefs
-
-=item * _parse_prefs
-
-=item * _write_mail
-
-=item * _emaildate
-
-=item * _download_mailrc
-
-=back
-
-=cut
 
 sub _get_lastid {
     my ($self,$id) = @_;
@@ -967,6 +905,125 @@ sub _defined_or {
 1;
 
 __END__
+
+=head1 INTERFACE
+
+=head2 The Constructor
+
+=over
+
+=item * new
+
+Instatiates the object CPAN::WWW::Testers. Requires a hash of parameters, with
+'config' being the only mandatory key. Note that 'config' can be anything that
+L<Config::IniFiles> accepts for the I<-file> option.
+
+=back
+
+=head2 Public Methods
+
+=over 4
+
+=item * check_reports
+
+The core method that analyses the reports and constructs the mails.
+
+=item * check_counts
+
+Prints a summary of the processing.
+
+=item * help
+
+Using the command line option, --help or -h, displays a help screen with
+instructions of the command line arguments. See the Configuration section
+for further details.
+
+=back
+
+=head2 Accessor Methods
+
+=over 4
+
+=item * lastfile
+
+Path to the file containing the last NNTPID processed.
+
+=item * debug
+
+Provides the internal debug flag.
+
+=item * test
+
+Provides a single test ID, if not all NNTPIDs need testing.
+
+=item * logfile
+
+Path to output log file for progress and debugging messages.
+
+=item * logclean
+
+If set to a true value will create/overwrite the logfile, otherwise will
+append any messages.
+
+=item * mode
+
+Provides the current mode being executed.
+
+=item * mailrc
+
+Path to the 01mailrc.txt file.
+
+=item * tt
+
+Provides the Template Toolkit object.
+
+=item * pause
+
+Provides the Parse::CPAN::Authors object.
+
+=back
+
+=head2 Internal Methods
+
+=over 4
+
+=item * _get_lastid
+
+Returns the last NNTPID processed for the current mode.
+
+=item * _set_lastid
+
+Sets the given NNTPID for the current mode.
+
+=item * _get_author
+
+Returns the author of a given distribution/version.
+
+=item * _get_prefs
+
+Returns the author preferences.
+
+=item * _parse_prefs
+
+Parse a preferences record and returns a hash instance.
+
+=item * _send_report
+
+Repackages a report as an email for an individual author.
+
+=item * _write_mail
+
+Composes and sends a mail message.
+
+=item * _emaildate
+
+Returns an RFC compliant formatted date string.
+
+=item * _download_mailrc
+
+Downloads and/or reads a copy of the 01mailrc.txt file.
+
+=back
 
 =head1 SEE ALSO
 

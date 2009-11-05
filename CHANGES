@@ -1,5 +1,8 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.24	current
+	- POD documentation updates.
+
 0.23	05/11/2009
 	- added auto reconnect if using a MySQL database.
 
