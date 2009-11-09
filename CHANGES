@@ -1,5 +1,8 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.25	09/11/2009
+	- fixed 31lastid.t to start with a blank sheet.
+
 0.24	05/11/2009
 	- POD documentation updates.
 	- moved tuples check to later in the process, as it is a big database

@@ -10,10 +10,12 @@ use IO::File;
 use lib 't';
 use CTWRM_Testing;
 
+my $f = 't/_DBDIR/lastmail';
+unlink $f;
+
 {
     ok( my $obj = CTWRM_Testing::getObj(), "got object" );
 
-    my $f = 't/_DBDIR/lastmail';
     ok($obj->lastmail($f),'reset last mail file');
     is($obj->lastmail,$f, 'reset last mail');
 
