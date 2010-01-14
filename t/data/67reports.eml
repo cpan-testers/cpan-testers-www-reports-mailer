@@ -23,7 +23,7 @@ If you think this report is invalid, please consult the CPAN Testers Wiki
 for suggestions on how to avoid getting FAIL reports for missing library
 or binary dependencies, unsupported operating systems, and so on:
 
-http://cpantest.grango.org/wiki/CPANAuthorNotes
+http://wiki.cpantesters.org/wiki/CPANAuthorNotes
 
 Sections of this report:
 
@@ -192,7 +192,7 @@ If you think this report is invalid, please consult the CPAN Testers Wiki
 for suggestions on how to avoid getting FAIL reports for missing library
 or binary dependencies, unsupported operating systems, and so on:
 
-http://cpantest.grango.org/wiki/CPANAuthorNotes
+http://wiki.cpantesters.org/wiki/CPANAuthorNotes
 
 Sections of this report:
 

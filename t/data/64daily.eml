@@ -12,676 +12,676 @@ To set your preferences for what you wish to have reported in this Daily Summary
 
 App-Maisha-0.12:
 - amd64-freebsd / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3373877
+  - FAIL http://www.cpantesters.org/cpan/report/3373877
 
 
 
 App-Maisha-Plugin-PingFM-0.02:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4573192
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4573192
 
 
 
 CPAN-Testers-Common-Article-0.36:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4571869
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4571869
 
 
 
 CPAN-Testers-Common-DBUtils-0.03:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4571649
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4571649
 
 
 
 CPAN-Testers-Data-Release-0.02:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4664046
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4664046
 
 
 
 CPAN-Testers-Data-Uploads-0.07:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4661576
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4661576
 
 
 
 CPAN-WWW-Testers-Generator-0.30:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4290990
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4290990
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4585399
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4585399
 
 
 
 CPAN-YACSmoke-Plugin-NNTP-0.05:
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397258
+  - NA http://www.cpantesters.org/cpan/report/1397258
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4658072
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4658072
 
 
 
 CPAN-YACSmoke-Plugin-NNTPWeb-0.06:
 - i386-freebsd / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/1303800
+  - FAIL http://www.cpantesters.org/cpan/report/1303800
 
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397282
+  - NA http://www.cpantesters.org/cpan/report/1397282
 
 - i386-freebsd / 5.8.8 patch 33662:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/1364232
+  - FAIL http://www.cpantesters.org/cpan/report/1364232
 
 - i386-freebsd-64int / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/1895675
+  - FAIL http://www.cpantesters.org/cpan/report/1895675
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4617298
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4617298
 
 - sun4-solaris / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/1353452
+  - FAIL http://www.cpantesters.org/cpan/report/1353452
 
 
 
 CPAN-YACSmoke-Plugin-Outlook-0.06:
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397286
+  - NA http://www.cpantesters.org/cpan/report/1397286
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4589586
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4589586
 
 
 
 CPAN-YACSmoke-Plugin-WebList-0.05:
 - amd64-freebsd / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2804552
+  - FAIL http://www.cpantesters.org/cpan/report/2804552
 
 - amd64-freebsd / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2804544
+  - FAIL http://www.cpantesters.org/cpan/report/2804544
 
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397287
+  - NA http://www.cpantesters.org/cpan/report/1397287
 
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397756
+  - NA http://www.cpantesters.org/cpan/report/1397756
 
 - i386-freebsd / 5.8.8 patch 34559:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2538544
+  - FAIL http://www.cpantesters.org/cpan/report/2538544
 
 - i386-freebsd / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2612723
+  - FAIL http://www.cpantesters.org/cpan/report/2612723
 
 - i686-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3088644
+  - FAIL http://www.cpantesters.org/cpan/report/3088644
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3440249
+  - FAIL http://www.cpantesters.org/cpan/report/3440249
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4133371
+  - FAIL http://www.cpantesters.org/cpan/report/4133371
 
 - i686-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4016130
+  - FAIL http://www.cpantesters.org/cpan/report/4016130
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3519392
+  - FAIL http://www.cpantesters.org/cpan/report/3519392
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4393098
+  - FAIL http://www.cpantesters.org/cpan/report/4393098
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4585439
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4585439
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4339709
+  - FAIL http://www.cpantesters.org/cpan/report/4339709
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4103101
+  - FAIL http://www.cpantesters.org/cpan/report/4103101
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4433101
+  - FAIL http://www.cpantesters.org/cpan/report/4433101
 
 - i686-linux-thread-multi-64int / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4753070
+  - FAIL http://www.cpantesters.org/cpan/report/4753070
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4338447
+  - FAIL http://www.cpantesters.org/cpan/report/4338447
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4400931
+  - FAIL http://www.cpantesters.org/cpan/report/4400931
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4542992
+  - FAIL http://www.cpantesters.org/cpan/report/4542992
 
 - i86pc-solaris-64int / 5.8.8 patch 34559:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2548873
+  - FAIL http://www.cpantesters.org/cpan/report/2548873
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3517780
+  - FAIL http://www.cpantesters.org/cpan/report/3517780
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3476806
+  - FAIL http://www.cpantesters.org/cpan/report/3476806
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3808029
+  - FAIL http://www.cpantesters.org/cpan/report/3808029
 
 
 
 Calendar-List-0.21:
 - i686-linux-64int-ld / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/1637737
+  - FAIL http://www.cpantesters.org/cpan/report/1637737
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4615167
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4615167
 
 
 
 Data-FormValidator-Constraints-Words-0.03:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4591180
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4591180
 
 
 
 Data-Phrasebook-0.29:
 - amd64-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1093970
+  - NA http://www.cpantesters.org/cpan/report/1093970
 
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397858
+  - NA http://www.cpantesters.org/cpan/report/1397858
 
 - i686-linux-64int-ld / 5.8.8 patch 33935:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/1592796
+  - FAIL http://www.cpantesters.org/cpan/report/1592796
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4628980
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4628980
 
 
 
 Data-Phrasebook-Loader-DBI-0.11:
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1398094
+  - NA http://www.cpantesters.org/cpan/report/1398094
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4591132
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4591132
 
 
 
 Data-Phrasebook-Loader-Ini-0.10:
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397864
+  - NA http://www.cpantesters.org/cpan/report/1397864
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4656829
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4656829
 
 
 
 Data-Phrasebook-Loader-XML-0.12:
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397863
+  - NA http://www.cpantesters.org/cpan/report/1397863
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4667357
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4667357
 
 
 
 Data-Phrasebook-Loader-YAML-0.09:
 - amd64-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1093966
+  - NA http://www.cpantesters.org/cpan/report/1093966
 
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1397865
+  - NA http://www.cpantesters.org/cpan/report/1397865
 
 
 
 Finance-Currency-Convert-XE-0.15:
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1237421
+  - NA http://www.cpantesters.org/cpan/report/1237421
 
 - i386-freebsd-64int / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3089291
+  - FAIL http://www.cpantesters.org/cpan/report/3089291
 
 - i386-netbsd-thread-multi / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3139959
+  - FAIL http://www.cpantesters.org/cpan/report/3139959
 
 - i686-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3162297
+  - FAIL http://www.cpantesters.org/cpan/report/3162297
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3418162
+  - FAIL http://www.cpantesters.org/cpan/report/3418162
 
 - i686-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3537472
+  - FAIL http://www.cpantesters.org/cpan/report/3537472
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3999195
+  - FAIL http://www.cpantesters.org/cpan/report/3999195
 
 - i686-linux-64int-ld / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2864684
+  - FAIL http://www.cpantesters.org/cpan/report/2864684
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3221883
+  - FAIL http://www.cpantesters.org/cpan/report/3221883
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3505391
+  - FAIL http://www.cpantesters.org/cpan/report/3505391
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4085677
+  - FAIL http://www.cpantesters.org/cpan/report/4085677
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4589061
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4589061
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4092036
+  - FAIL http://www.cpantesters.org/cpan/report/4092036
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3955222
+  - FAIL http://www.cpantesters.org/cpan/report/3955222
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4090051
+  - FAIL http://www.cpantesters.org/cpan/report/4090051
 
 - i686-linux-thread-multi-64int-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3424113
+  - FAIL http://www.cpantesters.org/cpan/report/3424113
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4100734
+  - FAIL http://www.cpantesters.org/cpan/report/4100734
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3503267
+  - FAIL http://www.cpantesters.org/cpan/report/3503267
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3074438
+  - FAIL http://www.cpantesters.org/cpan/report/3074438
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3476885
+  - FAIL http://www.cpantesters.org/cpan/report/3476885
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3808043
+  - FAIL http://www.cpantesters.org/cpan/report/3808043
 
 
 
 GD-Chart-Radial-0.07:
 - i386-freebsd / 5.5.5:
-  - NA http://nntp.x.perl.org/group/perl.cpan.testers/1398997
+  - NA http://www.cpantesters.org/cpan/report/1398997
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4657087
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4657087
 
 
 
 Mail-File-0.08:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4610946
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4610946
 
 
 
 Mail-Outlook-0.15:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4612005
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4612005
 
 
 
 Parse-CPAN-Distributions-0.05:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4291803
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4291803
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4617961
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4617961
 
 
 
 Regexp-Log-Common-0.05:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4641011
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4641011
 
 
 
 Test-JSON-Meta-0.01:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4653528
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4653528
 
 
 
 WWW-Scraper-ISBN-Amazon_Driver-0.14:
 - i386-freebsd / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2641587
+  - FAIL http://www.cpantesters.org/cpan/report/2641587
 
 - i486-linux-gnu-thread-multi / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4022215
+  - FAIL http://www.cpantesters.org/cpan/report/4022215
 
 - i686-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3269721
+  - FAIL http://www.cpantesters.org/cpan/report/3269721
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4117816
+  - FAIL http://www.cpantesters.org/cpan/report/4117816
 
 - i686-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3528799
+  - FAIL http://www.cpantesters.org/cpan/report/3528799
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3990402
+  - FAIL http://www.cpantesters.org/cpan/report/3990402
 
 - i686-linux-64int-ld / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2852658
+  - FAIL http://www.cpantesters.org/cpan/report/2852658
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3492341
+  - FAIL http://www.cpantesters.org/cpan/report/3492341
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4059560
+  - FAIL http://www.cpantesters.org/cpan/report/4059560
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4337610
+  - FAIL http://www.cpantesters.org/cpan/report/4337610
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4461270
+  - FAIL http://www.cpantesters.org/cpan/report/4461270
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4653224
+  - FAIL http://www.cpantesters.org/cpan/report/4653224
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4681890
+  - FAIL http://www.cpantesters.org/cpan/report/4681890
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4756165
+  - FAIL http://www.cpantesters.org/cpan/report/4756165
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4287225
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4287225
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4609584
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4609584
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3985952
+  - FAIL http://www.cpantesters.org/cpan/report/3985952
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4069299
+  - FAIL http://www.cpantesters.org/cpan/report/4069299
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4280009
+  - FAIL http://www.cpantesters.org/cpan/report/4280009
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4493643
+  - FAIL http://www.cpantesters.org/cpan/report/4493643
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4655542
+  - FAIL http://www.cpantesters.org/cpan/report/4655542
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4755743
+  - FAIL http://www.cpantesters.org/cpan/report/4755743
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3931436
+  - FAIL http://www.cpantesters.org/cpan/report/3931436
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4059558
+  - FAIL http://www.cpantesters.org/cpan/report/4059558
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4400364
+  - FAIL http://www.cpantesters.org/cpan/report/4400364
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4754970
+  - FAIL http://www.cpantesters.org/cpan/report/4754970
 
 - i686-linux-thread-multi-64int-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3409781
+  - FAIL http://www.cpantesters.org/cpan/report/3409781
 
 - i686-linux-thread-multi-64int-ld / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3055572
+  - FAIL http://www.cpantesters.org/cpan/report/3055572
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4136360
+  - FAIL http://www.cpantesters.org/cpan/report/4136360
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3963117
+  - FAIL http://www.cpantesters.org/cpan/report/3963117
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4068275
+  - FAIL http://www.cpantesters.org/cpan/report/4068275
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4274953
+  - FAIL http://www.cpantesters.org/cpan/report/4274953
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4462429
+  - FAIL http://www.cpantesters.org/cpan/report/4462429
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4762393
+  - FAIL http://www.cpantesters.org/cpan/report/4762393
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1049-g5f1c709:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3929742
+  - FAIL http://www.cpantesters.org/cpan/report/3929742
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4075851
+  - FAIL http://www.cpantesters.org/cpan/report/4075851
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1257-g2b4f847:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4276209
+  - FAIL http://www.cpantesters.org/cpan/report/4276209
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4379607
+  - FAIL http://www.cpantesters.org/cpan/report/4379607
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4503070
+  - FAIL http://www.cpantesters.org/cpan/report/4503070
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4766801
+  - FAIL http://www.cpantesters.org/cpan/report/4766801
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3449068
+  - FAIL http://www.cpantesters.org/cpan/report/3449068
 
 - x86_64-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4018076
+  - FAIL http://www.cpantesters.org/cpan/report/4018076
 
 - x86_64-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4019841
+  - FAIL http://www.cpantesters.org/cpan/report/4019841
 
 - x86_64-linux-ld / 5.11.0 patch 34814:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2991475
+  - FAIL http://www.cpantesters.org/cpan/report/2991475
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3476946
+  - FAIL http://www.cpantesters.org/cpan/report/3476946
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3808063
+  - FAIL http://www.cpantesters.org/cpan/report/3808063
 
 
 
 WWW-Scraper-ISBN-ORA_Driver-0.09:
 - amd64-freebsd / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2824171
+  - FAIL http://www.cpantesters.org/cpan/report/2824171
 
 - i686-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4124781
+  - FAIL http://www.cpantesters.org/cpan/report/4124781
 
 - i686-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3994351
+  - FAIL http://www.cpantesters.org/cpan/report/3994351
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4082324
+  - FAIL http://www.cpantesters.org/cpan/report/4082324
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4380052
+  - FAIL http://www.cpantesters.org/cpan/report/4380052
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4380061
+  - FAIL http://www.cpantesters.org/cpan/report/4380061
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4478920
+  - FAIL http://www.cpantesters.org/cpan/report/4478920
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4766403
+  - FAIL http://www.cpantesters.org/cpan/report/4766403
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4073594
+  - FAIL http://www.cpantesters.org/cpan/report/4073594
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4290984
+  - FAIL http://www.cpantesters.org/cpan/report/4290984
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4494556
+  - FAIL http://www.cpantesters.org/cpan/report/4494556
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3943636
+  - FAIL http://www.cpantesters.org/cpan/report/3943636
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4073595
+  - FAIL http://www.cpantesters.org/cpan/report/4073595
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4274644
+  - FAIL http://www.cpantesters.org/cpan/report/4274644
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4408944
+  - FAIL http://www.cpantesters.org/cpan/report/4408944
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4079845
+  - FAIL http://www.cpantesters.org/cpan/report/4079845
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4279892
+  - FAIL http://www.cpantesters.org/cpan/report/4279892
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4475032
+  - FAIL http://www.cpantesters.org/cpan/report/4475032
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4379935
+  - FAIL http://www.cpantesters.org/cpan/report/4379935
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4508683
+  - FAIL http://www.cpantesters.org/cpan/report/4508683
 
 - i86pc-solaris-64int / 5.8.8 patch 34559:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2513978
+  - FAIL http://www.cpantesters.org/cpan/report/2513978
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3808070
+  - FAIL http://www.cpantesters.org/cpan/report/3808070
 
 
 
 WWW-Scraper-ISBN-Pearson_Driver-0.10:
 - i686-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3342018
+  - FAIL http://www.cpantesters.org/cpan/report/3342018
 
 - i686-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3534519
+  - FAIL http://www.cpantesters.org/cpan/report/3534519
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3499503
+  - FAIL http://www.cpantesters.org/cpan/report/3499503
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4078675
+  - FAIL http://www.cpantesters.org/cpan/report/4078675
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4336723
+  - FAIL http://www.cpantesters.org/cpan/report/4336723
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4479988
+  - FAIL http://www.cpantesters.org/cpan/report/4479988
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4765898
+  - FAIL http://www.cpantesters.org/cpan/report/4765898
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4639197
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4639197
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4073599
+  - FAIL http://www.cpantesters.org/cpan/report/4073599
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4287749
+  - FAIL http://www.cpantesters.org/cpan/report/4287749
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4494612
+  - FAIL http://www.cpantesters.org/cpan/report/4494612
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3944267
+  - FAIL http://www.cpantesters.org/cpan/report/3944267
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4073601
+  - FAIL http://www.cpantesters.org/cpan/report/4073601
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4275514
+  - FAIL http://www.cpantesters.org/cpan/report/4275514
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4412003
+  - FAIL http://www.cpantesters.org/cpan/report/4412003
 
 - i686-linux-thread-multi-64int-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3416596
+  - FAIL http://www.cpantesters.org/cpan/report/3416596
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4075853
+  - FAIL http://www.cpantesters.org/cpan/report/4075853
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4282113
+  - FAIL http://www.cpantesters.org/cpan/report/4282113
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4474842
+  - FAIL http://www.cpantesters.org/cpan/report/4474842
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4356251
+  - FAIL http://www.cpantesters.org/cpan/report/4356251
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4521156
+  - FAIL http://www.cpantesters.org/cpan/report/4521156
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3458185
+  - FAIL http://www.cpantesters.org/cpan/report/3458185
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3477023
+  - FAIL http://www.cpantesters.org/cpan/report/3477023
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3808081
+  - FAIL http://www.cpantesters.org/cpan/report/3808081
 
 
 
 WWW-Scraper-ISBN-Yahoo_Driver-0.08:
 - i486-linux-gnu-thread-multi / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4022223
+  - FAIL http://www.cpantesters.org/cpan/report/4022223
 
 - i686-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4117817
+  - FAIL http://www.cpantesters.org/cpan/report/4117817
 
 - i686-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3990404
+  - FAIL http://www.cpantesters.org/cpan/report/3990404
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3929744
+  - FAIL http://www.cpantesters.org/cpan/report/3929744
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4059563
+  - FAIL http://www.cpantesters.org/cpan/report/4059563
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4396101
+  - FAIL http://www.cpantesters.org/cpan/report/4396101
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4463152
+  - FAIL http://www.cpantesters.org/cpan/report/4463152
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4666863
+  - FAIL http://www.cpantesters.org/cpan/report/4666863
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4754831
+  - FAIL http://www.cpantesters.org/cpan/report/4754831
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4289970
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4289970
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4657584
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4657584
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3982694
+  - FAIL http://www.cpantesters.org/cpan/report/3982694
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4061345
+  - FAIL http://www.cpantesters.org/cpan/report/4061345
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4282871
+  - FAIL http://www.cpantesters.org/cpan/report/4282871
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4490876
+  - FAIL http://www.cpantesters.org/cpan/report/4490876
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4652897
+  - FAIL http://www.cpantesters.org/cpan/report/4652897
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4755852
+  - FAIL http://www.cpantesters.org/cpan/report/4755852
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3931426
+  - FAIL http://www.cpantesters.org/cpan/report/3931426
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4059562
+  - FAIL http://www.cpantesters.org/cpan/report/4059562
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4401462
+  - FAIL http://www.cpantesters.org/cpan/report/4401462
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4754377
+  - FAIL http://www.cpantesters.org/cpan/report/4754377
 
 - i686-linux-thread-multi-64int-ld / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4136364
+  - FAIL http://www.cpantesters.org/cpan/report/4136364
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3963265
+  - FAIL http://www.cpantesters.org/cpan/report/3963265
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4066714
+  - FAIL http://www.cpantesters.org/cpan/report/4066714
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4273998
+  - FAIL http://www.cpantesters.org/cpan/report/4273998
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4461298
+  - FAIL http://www.cpantesters.org/cpan/report/4461298
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4766103
+  - FAIL http://www.cpantesters.org/cpan/report/4766103
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1049-g5f1c709:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3929743
+  - FAIL http://www.cpantesters.org/cpan/report/3929743
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4082297
+  - FAIL http://www.cpantesters.org/cpan/report/4082297
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1257-g2b4f847:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4273827
+  - FAIL http://www.cpantesters.org/cpan/report/4273827
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4339225
+  - FAIL http://www.cpantesters.org/cpan/report/4339225
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4507310
+  - FAIL http://www.cpantesters.org/cpan/report/4507310
 
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4765251
+  - FAIL http://www.cpantesters.org/cpan/report/4765251
 
 - i86pc-solaris-thread-multi-64int / 5.8.8:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2652125
+  - FAIL http://www.cpantesters.org/cpan/report/2652125
 
 - x86_64-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4018078
+  - FAIL http://www.cpantesters.org/cpan/report/4018078
 
 - x86_64-linux / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4019842
+  - FAIL http://www.cpantesters.org/cpan/report/4019842
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/3808085
+  - FAIL http://www.cpantesters.org/cpan/report/3808085
 
 
 
 WWW-UsePerl-Journal-0.22:
 - i386-freebsd / 5.8.8 patch 34559:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2534982
+  - FAIL http://www.cpantesters.org/cpan/report/2534982
 
 - i386-freebsd-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2641944
+  - FAIL http://www.cpantesters.org/cpan/report/2641944
 
 - i386-freebsd-thread-multi-64int / 5.11.0 patch 34451:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/2353976
+  - FAIL http://www.cpantesters.org/cpan/report/2353976
 
 - i686-linux / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4152332
+  - FAIL http://www.cpantesters.org/cpan/report/4152332
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4590478
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4590478
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4558191
+  - FAIL http://www.cpantesters.org/cpan/report/4558191
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/4558903
+  - FAIL http://www.cpantesters.org/cpan/report/4558903
 
 
 
 WWW-UsePerl-Journal-Thread-0.12:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4286867
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4286867
 
-  - UNKNOWN http://nntp.x.perl.org/group/perl.cpan.testers/4286871
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4286871
 
 
 

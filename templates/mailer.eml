@@ -12,7 +12,7 @@ To set your preferences for what you wish to have reported in this [% report %],
 - [% arch.platform %] / [% pver.perl %]:
 [% FOREACH stat = pver.states -%]
 [% FOREACH id = stat.ids -%]
-  - [% stat.state %] http://nntp.x.perl.org/group/perl.cpan.testers/[% id %]
+  - [% stat.state %] http://www.cpantesters.org/cpan/report/[% id %]
 
 [% END -%]
 [% END -%]
