@@ -11,6 +11,7 @@ t/01base.t
 t/05setup_db-articles.t
 t/05setup_db-cpanprefs.t
 t/05setup_db-cpanstats.t
+t/05setup_db-uploads.t
 t/20attributes.t
 t/30counts.t
 t/31lastid.t
@@ -22,6 +23,7 @@ t/51init.t
 t/60setup_db-articles.t
 t/60setup_db-cpanstats.t
 t/60setup_db-ixlatest.t
+t/60setup_db-uploads.t
 t/61daily.t
 t/62daily.t
 t/63daily.t
@@ -31,13 +33,14 @@ t/66daily.t
 t/67reports.t
 t/70setup_db-cpanstats.t
 t/70setup_db-ixlatest.t
+t/70setup_db-uploads.t
 t/71daily.t
 t/89cleanup.t
-t/CTWRM_Testing.pm
 t/90podtest.t
 t/91podcover.t
 t/94metatest.t
 t/95changedate.t
+t/CTWRM_Testing.pm
 t/data/01mailrc.txt
 t/data/61daily.eml
 t/data/62daily.eml
