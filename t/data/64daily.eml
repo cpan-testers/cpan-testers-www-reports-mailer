@@ -1,6 +1,6 @@
 To: "Barbie" <BARBIE@cpan.org>
 From: CPAN Tester Report Server <do_not_reply@cpantesters.org>
-Date: Sun, 26 Jul 2009 18:06:13 +0000
+Date: Tue, 13 Apr 2010 21:40:55 +0000
 Subject: CPAN Testers Daily Summary Report
 
 Dear Barbie,
@@ -12,680 +12,680 @@ To set your preferences for what you wish to have reported in this Daily Summary
 
 App-Maisha-0.12:
 - amd64-freebsd / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3373877
+  - FAIL http://www.cpantesters.org/cpan/report/3373877-b19f-3f77-b713-d32bba55d77f
 
 
 
 App-Maisha-Plugin-PingFM-0.02:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4573192
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4573192-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-Testers-Common-Article-0.36:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4571869
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4571869-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-Testers-Common-DBUtils-0.03:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4571649
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4571649-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-Testers-Data-Release-0.02:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4664046
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4664046-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-Testers-Data-Uploads-0.07:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4661576
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4661576-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-WWW-Testers-Generator-0.30:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4290990
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4290990-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4585399
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4585399-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-YACSmoke-Plugin-NNTP-0.05:
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397258
+  - NA http://www.cpantesters.org/cpan/report/1397258-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4658072
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4658072-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-YACSmoke-Plugin-NNTPWeb-0.06:
 - i386-freebsd / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/1303800
+  - FAIL http://www.cpantesters.org/cpan/report/1303800-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397282
+  - NA http://www.cpantesters.org/cpan/report/1397282-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd / 5.8.8 patch 33662:
-  - FAIL http://www.cpantesters.org/cpan/report/1364232
+  - FAIL http://www.cpantesters.org/cpan/report/1364232-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd-64int / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/1895675
+  - FAIL http://www.cpantesters.org/cpan/report/1895675-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4617298
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4617298-b19f-3f77-b713-d32bba55d77f
 
 - sun4-solaris / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/1353452
+  - FAIL http://www.cpantesters.org/cpan/report/1353452-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-YACSmoke-Plugin-Outlook-0.06:
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397286
+  - NA http://www.cpantesters.org/cpan/report/1397286-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4589586
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4589586-b19f-3f77-b713-d32bba55d77f
 
 
 
 CPAN-YACSmoke-Plugin-WebList-0.05:
 - amd64-freebsd / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/2804552
+  - FAIL http://www.cpantesters.org/cpan/report/2804552-b19f-3f77-b713-d32bba55d77f
 
 - amd64-freebsd / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/2804544
+  - FAIL http://www.cpantesters.org/cpan/report/2804544-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397287
+  - NA http://www.cpantesters.org/cpan/report/1397287-b19f-3f77-b713-d32bba55d77f
 
-  - NA http://www.cpantesters.org/cpan/report/1397756
+  - NA http://www.cpantesters.org/cpan/report/1397756-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd / 5.8.8 patch 34559:
-  - FAIL http://www.cpantesters.org/cpan/report/2538544
+  - FAIL http://www.cpantesters.org/cpan/report/2538544-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/2612723
+  - FAIL http://www.cpantesters.org/cpan/report/2612723-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3088644
+  - FAIL http://www.cpantesters.org/cpan/report/3088644-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3440249
+  - FAIL http://www.cpantesters.org/cpan/report/3440249-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4133371
+  - FAIL http://www.cpantesters.org/cpan/report/4133371-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4016130
+  - FAIL http://www.cpantesters.org/cpan/report/4016130-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3519392
+  - FAIL http://www.cpantesters.org/cpan/report/3519392-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/4393098
+  - FAIL http://www.cpantesters.org/cpan/report/4393098-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4585439
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4585439-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4339709
+  - FAIL http://www.cpantesters.org/cpan/report/4339709-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://www.cpantesters.org/cpan/report/4103101
+  - FAIL http://www.cpantesters.org/cpan/report/4103101-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4433101
+  - FAIL http://www.cpantesters.org/cpan/report/4433101-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-64int / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4753070
+  - FAIL http://www.cpantesters.org/cpan/report/4753070-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4338447
+  - FAIL http://www.cpantesters.org/cpan/report/4338447-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://www.cpantesters.org/cpan/report/4400931
+  - FAIL http://www.cpantesters.org/cpan/report/4400931-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4542992
+  - FAIL http://www.cpantesters.org/cpan/report/4542992-b19f-3f77-b713-d32bba55d77f
 
 - i86pc-solaris-64int / 5.8.8 patch 34559:
-  - FAIL http://www.cpantesters.org/cpan/report/2548873
+  - FAIL http://www.cpantesters.org/cpan/report/2548873-b19f-3f77-b713-d32bba55d77f
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3517780
+  - FAIL http://www.cpantesters.org/cpan/report/3517780-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3476806
+  - FAIL http://www.cpantesters.org/cpan/report/3476806-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3808029
+  - FAIL http://www.cpantesters.org/cpan/report/3808029-b19f-3f77-b713-d32bba55d77f
 
 
 
 Calendar-List-0.21:
 - i686-linux-64int-ld / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/1637737
+  - FAIL http://www.cpantesters.org/cpan/report/1637737-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4615167
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4615167-b19f-3f77-b713-d32bba55d77f
 
 
 
 Data-FormValidator-Constraints-Words-0.03:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4591180
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4591180-b19f-3f77-b713-d32bba55d77f
 
 
 
 Data-Phrasebook-0.29:
 - amd64-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1093970
+  - NA http://www.cpantesters.org/cpan/report/1093970-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397858
+  - NA http://www.cpantesters.org/cpan/report/1397858-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-64int-ld / 5.8.8 patch 33935:
-  - FAIL http://www.cpantesters.org/cpan/report/1592796
+  - FAIL http://www.cpantesters.org/cpan/report/1592796-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4628980
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4628980-b19f-3f77-b713-d32bba55d77f
 
 
 
 Data-Phrasebook-Loader-DBI-0.11:
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1398094
+  - NA http://www.cpantesters.org/cpan/report/1398094-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4591132
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4591132-b19f-3f77-b713-d32bba55d77f
 
 
 
 Data-Phrasebook-Loader-Ini-0.10:
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397864
+  - NA http://www.cpantesters.org/cpan/report/1397864-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4656829
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4656829-b19f-3f77-b713-d32bba55d77f
 
 
 
 Data-Phrasebook-Loader-XML-0.12:
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397863
+  - NA http://www.cpantesters.org/cpan/report/1397863-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4667357
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4667357-b19f-3f77-b713-d32bba55d77f
 
 
 
 Data-Phrasebook-Loader-YAML-0.09:
 - amd64-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1093966
+  - NA http://www.cpantesters.org/cpan/report/1093966-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1397865
+  - NA http://www.cpantesters.org/cpan/report/1397865-b19f-3f77-b713-d32bba55d77f
 
 
 
 Finance-Currency-Convert-XE-0.15:
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1237421
+  - NA http://www.cpantesters.org/cpan/report/1237421-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd-64int / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/3089291
+  - FAIL http://www.cpantesters.org/cpan/report/3089291-b19f-3f77-b713-d32bba55d77f
 
 - i386-netbsd-thread-multi / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3139959
+  - FAIL http://www.cpantesters.org/cpan/report/3139959-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3162297
+  - FAIL http://www.cpantesters.org/cpan/report/3162297-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3418162
+  - FAIL http://www.cpantesters.org/cpan/report/3418162-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3537472
+  - FAIL http://www.cpantesters.org/cpan/report/3537472-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3999195
+  - FAIL http://www.cpantesters.org/cpan/report/3999195-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-64int-ld / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/2864684
+  - FAIL http://www.cpantesters.org/cpan/report/2864684-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3221883
+  - FAIL http://www.cpantesters.org/cpan/report/3221883-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3505391
+  - FAIL http://www.cpantesters.org/cpan/report/3505391-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/4085677
+  - FAIL http://www.cpantesters.org/cpan/report/4085677-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4589061
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4589061-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4092036
+  - FAIL http://www.cpantesters.org/cpan/report/4092036-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://www.cpantesters.org/cpan/report/3955222
+  - FAIL http://www.cpantesters.org/cpan/report/3955222-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4090051
+  - FAIL http://www.cpantesters.org/cpan/report/4090051-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-64int-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3424113
+  - FAIL http://www.cpantesters.org/cpan/report/3424113-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4100734
+  - FAIL http://www.cpantesters.org/cpan/report/4100734-b19f-3f77-b713-d32bba55d77f
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3503267
+  - FAIL http://www.cpantesters.org/cpan/report/3503267-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3074438
+  - FAIL http://www.cpantesters.org/cpan/report/3074438-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3476885
+  - FAIL http://www.cpantesters.org/cpan/report/3476885-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3808043
+  - FAIL http://www.cpantesters.org/cpan/report/3808043-b19f-3f77-b713-d32bba55d77f
 
 
 
 GD-Chart-Radial-0.07:
 - i386-freebsd / 5.5.5:
-  - NA http://www.cpantesters.org/cpan/report/1398997
+  - NA http://www.cpantesters.org/cpan/report/1398997-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4657087
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4657087-b19f-3f77-b713-d32bba55d77f
 
 
 
 Mail-File-0.08:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4610946
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4610946-b19f-3f77-b713-d32bba55d77f
 
 
 
 Mail-Outlook-0.15:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4612005
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4612005-b19f-3f77-b713-d32bba55d77f
 
 
 
 Parse-CPAN-Distributions-0.05:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4291803
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4291803-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4617961
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4617961-b19f-3f77-b713-d32bba55d77f
 
 
 
 Regexp-Log-Common-0.05:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4641011
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4641011-b19f-3f77-b713-d32bba55d77f
 
 
 
 Test-JSON-Meta-0.01:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4653528
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4653528-b19f-3f77-b713-d32bba55d77f
 
 
 
 WWW-Scraper-ISBN-Amazon_Driver-0.14:
 - i386-freebsd / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/2641587
+  - FAIL http://www.cpantesters.org/cpan/report/2641587-b19f-3f77-b713-d32bba55d77f
 
 - i486-linux-gnu-thread-multi / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4022215
+  - FAIL http://www.cpantesters.org/cpan/report/4022215-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3269721
+  - FAIL http://www.cpantesters.org/cpan/report/3269721-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4117816
+  - FAIL http://www.cpantesters.org/cpan/report/4117816-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3528799
+  - FAIL http://www.cpantesters.org/cpan/report/3528799-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3990402
+  - FAIL http://www.cpantesters.org/cpan/report/3990402-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-64int-ld / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/2852658
+  - FAIL http://www.cpantesters.org/cpan/report/2852658-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3492341
+  - FAIL http://www.cpantesters.org/cpan/report/3492341-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/4059560
+  - FAIL http://www.cpantesters.org/cpan/report/4059560-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4337610
+  - FAIL http://www.cpantesters.org/cpan/report/4337610-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4461270
+  - FAIL http://www.cpantesters.org/cpan/report/4461270-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4653224
+  - FAIL http://www.cpantesters.org/cpan/report/4653224-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4681890
+  - FAIL http://www.cpantesters.org/cpan/report/4681890-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4756165
+  - FAIL http://www.cpantesters.org/cpan/report/4756165-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4287225
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4287225-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4609584
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4609584-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3985952
+  - FAIL http://www.cpantesters.org/cpan/report/3985952-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4069299
+  - FAIL http://www.cpantesters.org/cpan/report/4069299-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4280009
+  - FAIL http://www.cpantesters.org/cpan/report/4280009-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4493643
+  - FAIL http://www.cpantesters.org/cpan/report/4493643-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4655542
+  - FAIL http://www.cpantesters.org/cpan/report/4655542-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4755743
+  - FAIL http://www.cpantesters.org/cpan/report/4755743-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://www.cpantesters.org/cpan/report/3931436
+  - FAIL http://www.cpantesters.org/cpan/report/3931436-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4059558
+  - FAIL http://www.cpantesters.org/cpan/report/4059558-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4400364
+  - FAIL http://www.cpantesters.org/cpan/report/4400364-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4754970
+  - FAIL http://www.cpantesters.org/cpan/report/4754970-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-64int-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3409781
+  - FAIL http://www.cpantesters.org/cpan/report/3409781-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-64int-ld / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3055572
+  - FAIL http://www.cpantesters.org/cpan/report/3055572-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4136360
+  - FAIL http://www.cpantesters.org/cpan/report/4136360-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3963117
+  - FAIL http://www.cpantesters.org/cpan/report/3963117-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4068275
+  - FAIL http://www.cpantesters.org/cpan/report/4068275-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4274953
+  - FAIL http://www.cpantesters.org/cpan/report/4274953-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4462429
+  - FAIL http://www.cpantesters.org/cpan/report/4462429-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4762393
+  - FAIL http://www.cpantesters.org/cpan/report/4762393-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1049-g5f1c709:
-  - FAIL http://www.cpantesters.org/cpan/report/3929742
+  - FAIL http://www.cpantesters.org/cpan/report/3929742-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4075851
+  - FAIL http://www.cpantesters.org/cpan/report/4075851-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1257-g2b4f847:
-  - FAIL http://www.cpantesters.org/cpan/report/4276209
+  - FAIL http://www.cpantesters.org/cpan/report/4276209-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://www.cpantesters.org/cpan/report/4379607
+  - FAIL http://www.cpantesters.org/cpan/report/4379607-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4503070
+  - FAIL http://www.cpantesters.org/cpan/report/4503070-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4766801
+  - FAIL http://www.cpantesters.org/cpan/report/4766801-b19f-3f77-b713-d32bba55d77f
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3449068
+  - FAIL http://www.cpantesters.org/cpan/report/3449068-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4018076
+  - FAIL http://www.cpantesters.org/cpan/report/4018076-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4019841
+  - FAIL http://www.cpantesters.org/cpan/report/4019841-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux-ld / 5.11.0 patch 34814:
-  - FAIL http://www.cpantesters.org/cpan/report/2991475
+  - FAIL http://www.cpantesters.org/cpan/report/2991475-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3476946
+  - FAIL http://www.cpantesters.org/cpan/report/3476946-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3808063
+  - FAIL http://www.cpantesters.org/cpan/report/3808063-b19f-3f77-b713-d32bba55d77f
 
 
 
 WWW-Scraper-ISBN-ORA_Driver-0.09:
 - amd64-freebsd / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/2824171
+  - FAIL http://www.cpantesters.org/cpan/report/2824171-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4124781
+  - FAIL http://www.cpantesters.org/cpan/report/4124781-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3994351
+  - FAIL http://www.cpantesters.org/cpan/report/3994351-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/4082324
+  - FAIL http://www.cpantesters.org/cpan/report/4082324-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4380052
+  - FAIL http://www.cpantesters.org/cpan/report/4380052-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4380061
+  - FAIL http://www.cpantesters.org/cpan/report/4380061-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4478920
+  - FAIL http://www.cpantesters.org/cpan/report/4478920-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4766403
+  - FAIL http://www.cpantesters.org/cpan/report/4766403-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4073594
+  - FAIL http://www.cpantesters.org/cpan/report/4073594-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4290984
+  - FAIL http://www.cpantesters.org/cpan/report/4290984-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4494556
+  - FAIL http://www.cpantesters.org/cpan/report/4494556-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://www.cpantesters.org/cpan/report/3943636
+  - FAIL http://www.cpantesters.org/cpan/report/3943636-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4073595
+  - FAIL http://www.cpantesters.org/cpan/report/4073595-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4274644
+  - FAIL http://www.cpantesters.org/cpan/report/4274644-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4408944
+  - FAIL http://www.cpantesters.org/cpan/report/4408944-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4079845
+  - FAIL http://www.cpantesters.org/cpan/report/4079845-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4279892
+  - FAIL http://www.cpantesters.org/cpan/report/4279892-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4475032
+  - FAIL http://www.cpantesters.org/cpan/report/4475032-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://www.cpantesters.org/cpan/report/4379935
+  - FAIL http://www.cpantesters.org/cpan/report/4379935-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4508683
+  - FAIL http://www.cpantesters.org/cpan/report/4508683-b19f-3f77-b713-d32bba55d77f
 
 - i86pc-solaris-64int / 5.8.8 patch 34559:
-  - FAIL http://www.cpantesters.org/cpan/report/2513978
+  - FAIL http://www.cpantesters.org/cpan/report/2513978-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3808070
+  - FAIL http://www.cpantesters.org/cpan/report/3808070-b19f-3f77-b713-d32bba55d77f
 
 
 
 WWW-Scraper-ISBN-Pearson_Driver-0.10:
 - i686-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3342018
+  - FAIL http://www.cpantesters.org/cpan/report/3342018-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3534519
+  - FAIL http://www.cpantesters.org/cpan/report/3534519-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3499503
+  - FAIL http://www.cpantesters.org/cpan/report/3499503-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/4078675
+  - FAIL http://www.cpantesters.org/cpan/report/4078675-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4336723
+  - FAIL http://www.cpantesters.org/cpan/report/4336723-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4479988
+  - FAIL http://www.cpantesters.org/cpan/report/4479988-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4765898
+  - FAIL http://www.cpantesters.org/cpan/report/4765898-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4639197
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4639197-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4073599
+  - FAIL http://www.cpantesters.org/cpan/report/4073599-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4287749
+  - FAIL http://www.cpantesters.org/cpan/report/4287749-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4494612
+  - FAIL http://www.cpantesters.org/cpan/report/4494612-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://www.cpantesters.org/cpan/report/3944267
+  - FAIL http://www.cpantesters.org/cpan/report/3944267-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4073601
+  - FAIL http://www.cpantesters.org/cpan/report/4073601-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4275514
+  - FAIL http://www.cpantesters.org/cpan/report/4275514-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4412003
+  - FAIL http://www.cpantesters.org/cpan/report/4412003-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-64int-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3416596
+  - FAIL http://www.cpantesters.org/cpan/report/3416596-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4075853
+  - FAIL http://www.cpantesters.org/cpan/report/4075853-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4282113
+  - FAIL http://www.cpantesters.org/cpan/report/4282113-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4474842
+  - FAIL http://www.cpantesters.org/cpan/report/4474842-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://www.cpantesters.org/cpan/report/4356251
+  - FAIL http://www.cpantesters.org/cpan/report/4356251-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4521156
+  - FAIL http://www.cpantesters.org/cpan/report/4521156-b19f-3f77-b713-d32bba55d77f
 
 - i86pc-solaris-64int / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3458185
+  - FAIL http://www.cpantesters.org/cpan/report/3458185-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3477023
+  - FAIL http://www.cpantesters.org/cpan/report/3477023-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/3808081
+  - FAIL http://www.cpantesters.org/cpan/report/3808081-b19f-3f77-b713-d32bba55d77f
 
 
 
 WWW-Scraper-ISBN-Yahoo_Driver-0.08:
 - i486-linux-gnu-thread-multi / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4022223
+  - FAIL http://www.cpantesters.org/cpan/report/4022223-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4117817
+  - FAIL http://www.cpantesters.org/cpan/report/4117817-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3990404
+  - FAIL http://www.cpantesters.org/cpan/report/3990404-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/3929744
+  - FAIL http://www.cpantesters.org/cpan/report/3929744-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4059563
+  - FAIL http://www.cpantesters.org/cpan/report/4059563-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4396101
+  - FAIL http://www.cpantesters.org/cpan/report/4396101-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4463152
+  - FAIL http://www.cpantesters.org/cpan/report/4463152-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4666863
+  - FAIL http://www.cpantesters.org/cpan/report/4666863-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4754831
+  - FAIL http://www.cpantesters.org/cpan/report/4754831-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4289970
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4289970-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4657584
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4657584-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/3982694
+  - FAIL http://www.cpantesters.org/cpan/report/3982694-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4061345
+  - FAIL http://www.cpantesters.org/cpan/report/4061345-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4282871
+  - FAIL http://www.cpantesters.org/cpan/report/4282871-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4490876
+  - FAIL http://www.cpantesters.org/cpan/report/4490876-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4652897
+  - FAIL http://www.cpantesters.org/cpan/report/4652897-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4755852
+  - FAIL http://www.cpantesters.org/cpan/report/4755852-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.9.5:
-  - FAIL http://www.cpantesters.org/cpan/report/3931426
+  - FAIL http://www.cpantesters.org/cpan/report/3931426-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4059562
+  - FAIL http://www.cpantesters.org/cpan/report/4059562-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4401462
+  - FAIL http://www.cpantesters.org/cpan/report/4401462-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4754377
+  - FAIL http://www.cpantesters.org/cpan/report/4754377-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-64int-ld / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4136364
+  - FAIL http://www.cpantesters.org/cpan/report/4136364-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3963265
+  - FAIL http://www.cpantesters.org/cpan/report/3963265-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4066714
+  - FAIL http://www.cpantesters.org/cpan/report/4066714-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4273998
+  - FAIL http://www.cpantesters.org/cpan/report/4273998-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4461298
+  - FAIL http://www.cpantesters.org/cpan/report/4461298-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4766103
+  - FAIL http://www.cpantesters.org/cpan/report/4766103-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1049-g5f1c709:
-  - FAIL http://www.cpantesters.org/cpan/report/3929743
+  - FAIL http://www.cpantesters.org/cpan/report/3929743-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4082297
+  - FAIL http://www.cpantesters.org/cpan/report/4082297-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1257-g2b4f847:
-  - FAIL http://www.cpantesters.org/cpan/report/4273827
+  - FAIL http://www.cpantesters.org/cpan/report/4273827-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.11.0 patch GitLive-blead-1437-g8bca5c8:
-  - FAIL http://www.cpantesters.org/cpan/report/4339225
+  - FAIL http://www.cpantesters.org/cpan/report/4339225-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4507310
+  - FAIL http://www.cpantesters.org/cpan/report/4507310-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4765251
+  - FAIL http://www.cpantesters.org/cpan/report/4765251-b19f-3f77-b713-d32bba55d77f
 
 - i86pc-solaris-thread-multi-64int / 5.8.8:
-  - FAIL http://www.cpantesters.org/cpan/report/2652125
+  - FAIL http://www.cpantesters.org/cpan/report/2652125-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4018078
+  - FAIL http://www.cpantesters.org/cpan/report/4018078-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4019842
+  - FAIL http://www.cpantesters.org/cpan/report/4019842-b19f-3f77-b713-d32bba55d77f
 
 - x86_64-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/3808085
+  - FAIL http://www.cpantesters.org/cpan/report/3808085-b19f-3f77-b713-d32bba55d77f
 
 
 
 WWW-UsePerl-Journal-0.22:
 - i386-freebsd / 5.8.8 patch 34559:
-  - FAIL http://www.cpantesters.org/cpan/report/2534982
+  - FAIL http://www.cpantesters.org/cpan/report/2534982-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/2641944
+  - FAIL http://www.cpantesters.org/cpan/report/2641944-b19f-3f77-b713-d32bba55d77f
 
 - i386-freebsd-thread-multi-64int / 5.11.0 patch 34451:
-  - FAIL http://www.cpantesters.org/cpan/report/2353976
+  - FAIL http://www.cpantesters.org/cpan/report/2353976-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4152332
+  - FAIL http://www.cpantesters.org/cpan/report/4152332-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4590478
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4590478-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi / 5.8.9:
-  - FAIL http://www.cpantesters.org/cpan/report/4558191
+  - FAIL http://www.cpantesters.org/cpan/report/4558191-b19f-3f77-b713-d32bba55d77f
 
 - i686-linux-thread-multi-ld / 5.10.0:
-  - FAIL http://www.cpantesters.org/cpan/report/4558903
+  - FAIL http://www.cpantesters.org/cpan/report/4558903-b19f-3f77-b713-d32bba55d77f
 
 
 
 WWW-UsePerl-Journal-Thread-0.12:
 - i686-linux-thread-multi / 5.8.8:
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4286867
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4286867-b19f-3f77-b713-d32bba55d77f
 
-  - UNKNOWN http://www.cpantesters.org/cpan/report/4286871
+  - UNKNOWN http://www.cpantesters.org/cpan/report/4286871-b19f-3f77-b713-d32bba55d77f
 
 
 
-If you have an issue with a particular report, or wish to gain further information from the tester, please use the 'Find A Tester' tool at http://stats.cpantesters.org/cpanmail.html, using the NNTP ID of the report to locate the correct email address.
+If you have an issue with a particular report, or wish to gain further information from the tester, please use the 'Find A Tester' tool at http://stats.cpantesters.org/cpanmail.html, using the ID or GUID of the report, as listed above, to locate the correct email address.
 
 If you wish to unsubscribe from these notifications, please login to the CPAN Testers Preferences system, with your PAUSE credentials, and disable CPAN Testers notifications permanently or temporarily. If you have problems with accessing the site, please contact Barbie <barbie@cpan.org> and request to be removed from the automatic mailings. 
 
