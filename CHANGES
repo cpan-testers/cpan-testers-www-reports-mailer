@@ -3,6 +3,7 @@ Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 0.27	31/05/2010
 	- added support for guid => nntpid lookups.
 	- added support for metabase reports.
+	- bugfixes from live.
 
 0.26	14/01/2010
 	- update CPAN Testers reports link in email template.

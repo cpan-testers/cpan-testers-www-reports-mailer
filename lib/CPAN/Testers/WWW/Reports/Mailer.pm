@@ -209,8 +209,8 @@ my %phrasebook = (
 
     'FindAuthorType'    => "SELECT pauseid FROM prefs_distributions WHERE report = ?",
 
-    'GetReports'        => "SELECT id,dist,version,platform,perl,state,guid FROM cpanstats WHERE id > ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
-    'GetReports2'       => "SELECT c.id,c.dist,c.version,c.platform,c.perl,c.state,c.guid FROM cpanstats AS c INNER JOIN ixlatest AS x ON x.dist=c.dist WHERE c.id > ? AND c.state IN ('pass','fail','na','unknown') AND author IN (%s) ORDER BY id",
+    'GetReports'        => "SELECT id,guid,dist,version,platform,perl,state FROM cpanstats WHERE id > ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
+    'GetReports2'       => "SELECT c.id,c.guid,c.dist,c.version,c.platform,c.perl,c.state FROM cpanstats AS c INNER JOIN ixlatest AS x ON x.dist=c.dist WHERE c.id > ? AND c.state IN ('pass','fail','na','unknown') AND author IN (%s) ORDER BY c.id",
     'GetReportCount'    => "SELECT id FROM cpanstats WHERE platform=? AND perl=? AND state=? AND id < ? AND dist=? AND version=? LIMIT 2",
     'GetLatestDistVers' => "SELECT version FROM uploads WHERE dist=? ORDER BY released DESC LIMIT 1",
     'GetAuthor'         => "SELECT author FROM uploads WHERE dist=? AND version=? LIMIT 1",
@@ -223,7 +223,7 @@ my %phrasebook = (
 
     'GetArticle'        => "SELECT * FROM articles WHERE id=?",
 
-    'GetReportTest'     => "SELECT id,dist,version,platform,perl,state,guid FROM cpanstats WHERE id = ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
+    'GetReportTest'     => "SELECT id,guid,dist,version,platform,perl,state FROM cpanstats WHERE id = ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
 
     'GetMetabaseByGUID' => 'SELECT * FROM metabase.metabase WHERE guid=?'
 );
@@ -357,7 +357,7 @@ sub check_reports {
         $self->_log( "DEBUG: dist: $row->{dist} $row->{version} $row->{state}\n" )    if($self->verbose);
 
         my $author = $self->_get_author($row->{dist}, $row->{version});
-        $self->_log( "DEBUG: author: $author\n" )    if($self->verbose);
+        $self->_log( "DEBUG: author: ".($author||'')."\n" )    if($self->verbose);
         next    unless($author);
 
         unless($author) {
@@ -430,6 +430,7 @@ sub check_reports {
         if($row->{perl} && $prefs->{perl} && $prefs->{perl} ne 'ALL') {
             my $perlv = $row->{perl};
             $perlv = $row->{perl};
+            $perlv =~ s/\s.*//;
 
             $prefs->{perl} =~ s/\s*//g;
             $prefs->{perl} =~ s/,/|/g;
@@ -466,9 +467,12 @@ sub check_reports {
         push @{$reports{$author}->{dists}{$row->{dist}}->{versions}{$row->{version}}->{platforms}{$row->{platform}}->{perls}{$row->{perl}}->{states}{uc $row->{state}}->{value}}, ($row->{guid} || $row->{id});
     }
 
+    $self->_log( "INFO: STOP checking reports in '$mode' mode\n" );
+
     return $self->_set_lastid()  unless($rows);
 
     if($mode ne 'reports') {
+        $self->_log( "INFO: START parsing data in '$mode' mode\n" );
         $self->_log( "DEBUG: processing authors: ".(scalar(keys %reports))."\n" )  if($self->verbose);
 
         for my $author (sort keys %reports) {
@@ -541,6 +545,8 @@ sub check_reports {
 
             $self->_write_mail('mailer.eml',\%tvars);
         }
+
+        $self->_log( "INFO: STOP parsing data in '$mode' mode\n" );
     }
 
     $self->_set_lastid($last_id);
