@@ -1,30 +1,29 @@
-#!perl
-
+#!/usr/bin/perl -w
 use strict;
-use warnings;
 
-use Test::More tests => 4;
 use CPAN::Testers::WWW::Reports::Mailer;
+use File::Slurp;
+use Test::More tests => 4;
 
 use lib 't';
 use CTWRM_Testing;
 
-my $log = 't/_TMPDIR/cpanreps.log';
-unlink $log if(-f $log);
+my $LOGFILE = 't/_TMPDIR/cpanreps.log';
+unlink $LOGFILE if(-f $LOGFILE);
 
 {
     ok( my $obj = CTWRM_Testing::getObj(), "got object" );
 
-    ok(!-f $log, 'log not found' );
+    ok(!-f $LOGFILE, 'log not found' );
     $obj->check_counts;
-    ok( -f $log, 'log created' );
+    ok( -f $LOGFILE, 'log created' );
 
     my ($counts,@log);
-    open FILE, '<', $obj->logfile;
-    while(<FILE>) {
+    my @lines = read_file($LOGFILE);
+    for my $line (@lines) {
         next    unless($counts || /INFO: COUNTS/);
         $counts = 1;
-        chomp;
+        $line =~ s/\s+$//;
         push @log, substr($_,21);
     }
 

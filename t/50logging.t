@@ -1,29 +1,31 @@
-#!perl
-
+#!/usr/bin/perl -w
 use strict;
-use warnings;
 
-use Test::More tests => 22;
-use File::Path;
-use File::Spec;
 use Cwd;
+use File::Path;
+use File::Slurp;
+use Test::More tests => 22;
+
 use lib 't';
 use CTWRM_Testing;
 
-unlink('50logging.log') if(-f '50logging.log');
+my $LOGFILE = '50logging.log';
+my $CONFIG  = 't/50logging.ini';
+
+unlink($LOGFILE) if(-f $LOGFILE);
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(config => 't/50logging.ini'), "got object" );
+    ok( my $obj = CTWRM_Testing::getObj(config => $CONFIG), "got object" );
 
-    is($obj->logfile, '50logging.log', 'logfile default set');
+    is($obj->logfile, $LOGFILE, 'logfile default set');
     is($obj->logclean, 0, 'logclean default set');
 
     $obj->_log("Hello\n");
     $obj->_log("Goodbye\n");
 
-    ok( -f '50logging.log', '50logging.log created in current dir' );
+    ok( -f $LOGFILE, '50logging.log created in current dir' );
 
-    my @log = do { open FILE, '<', '50logging.log'; <FILE> };
+    my @log = read_file($LOGFILE);
     chomp @log;
 
     is(scalar(@log),2, 'log written');
@@ -33,16 +35,16 @@ unlink('50logging.log') if(-f '50logging.log');
 
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(config => 't/50logging.ini'), "got object" );
+    ok( my $obj = CTWRM_Testing::getObj(config => $CONFIG), "got object" );
 
-    is($obj->logfile, '50logging.log', 'logfile default set');
+    is($obj->logfile, $LOGFILE, 'logfile default set');
     is($obj->logclean, 0, 'logclean default set');
 
     $obj->_log("Back Again\n");
 
-    ok( -f '50logging.log', '50logging.log created in current dir' );
+    ok( -f $LOGFILE, '50logging.log created in current dir' );
 
-    my @log = do { open FILE, '<', '50logging.log'; <FILE> };
+    my @log = read_file($LOGFILE);
     chomp @log;
 
     is(scalar(@log),3, 'log extended');
@@ -52,22 +54,22 @@ unlink('50logging.log') if(-f '50logging.log');
 }
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(config => 't/50logging.ini'), "got object" );
+    ok( my $obj = CTWRM_Testing::getObj(config => $CONFIG), "got object" );
 
-    is($obj->logfile, '50logging.log', 'logfile default set');
+    is($obj->logfile, $LOGFILE, 'logfile default set');
     is($obj->logclean, 0, 'logclean default set');
     $obj->logclean(1);
     is($obj->logclean, 1, 'logclean reset');
 
     $obj->_log("Start Again\n");
 
-    ok( -f '50logging.log', '50logging.log created in current dir' );
+    ok( -f $LOGFILE, '50logging.log created in current dir' );
 
-    my @log = do { open FILE, '<', '50logging.log'; <FILE> };
+    my @log = read_file($LOGFILE);
     chomp @log;
 
     is(scalar(@log),1, 'log overwritten');
     like($log[0], qr!\d{4}/\d\d/\d\d \d\d:\d\d:\d\d: Start Again!, 'line 1 of log');
 }
 
-unlink('50logging.log');    # remove 50logging.log
+unlink($LOGFILE);    # remove 50logging.log
