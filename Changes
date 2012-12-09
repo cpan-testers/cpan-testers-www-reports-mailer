@@ -3,6 +3,7 @@ Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
         - spelling fixes. (thanks to Florian Schlichting & Gregor Herrmann).
         - CHANGES => Changes
         - change file dates changed to meet W3CDTF standards.
+        - reworked Makefile.PL for clarity.
 
 0.28    2011-10-13
         - now only uses one database connection.
