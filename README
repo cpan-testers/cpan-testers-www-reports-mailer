@@ -8,23 +8,31 @@ DEPENDENCIES
 
 The distribution requires the following modules:
 
-  Compress::Zlib  
-  Config::IniFiles  
-  CPAN::Testers::Common::DBUtils  
-  File::Basename  
-  File::Slurp  
-  Getopt::ArgvFile  
-  Getopt::Long  
-  LWP::UserAgent  
-  Path::Class  
-  Parse::CPAN::Authors  
-  Template  
-  Time::Piece  
+  Class::Accessor::Fast
+  Compress::Zlib
+  Config::IniFiles
+  CPAN::Testers::Common::DBUtils
+  CPAN::Testers::Common::Utils
+  Email::Address
+  Email::Simple
+  File::Basename
+  File::Path
+  File::Slurp
+  Getopt::ArgvFile
+  Getopt::Long
+  LWP::UserAgent
+  MIME::Base64
+  MIME::QuotedPrint
+  Path::Class
+  Parse::CPAN::Authors
+  Template
+  Time::Piece
+  version
 
 The following dependencies are require to interact with the databases:
 
-  DBD::mysql  
-  DBD::SQLite  
+  DBD::mysql
+  DBD::SQLite
 
 INSTALLATION
 
@@ -38,7 +46,7 @@ if appropriate):
    make install
 
 Alternatively you may wish to use the CPAN.pm shell or CPANPLUS shell as your
-installer, which will automatically detect uninstalled prerequisities and 
+installer, which will automatically detect uninstalled prerequisities and
 install those too for you.
 
 BUGS, PATCHES & FIXES
@@ -46,8 +54,8 @@ BUGS, PATCHES & FIXES
 There are no known bugs at the time of this release. However, if you spot a
 bug or are experiencing difficulties that are not explained within the POD
 documentation, please submit a bug to the RT system (see link below). However,
-it would help greatly if you are able to pinpoint problems or even supply a 
-patch. 
+it would help greatly if you are able to pinpoint problems or even supply a
+patch.
 
 Fixes are dependent upon their severity and my availability. Should a fix not
 be forthcoming, please feel free to (politely) remind me by sending an email
@@ -62,7 +70,7 @@ AUTHOR
 
 COPYRIGHT AND LICENCE
 
-  Copyright (C) 2005-2009 Barbie for Miss Barbell Productions
+  Copyright (C) 2008-2012 Barbie for Miss Barbell Productions
 
-  This package is free software; you can redistribute it and/or 
-  modify it under the same terms as Perl itself.
+  This module is free software; you can redistribute it and/or
+  modify it under the Artistic License 2.0.

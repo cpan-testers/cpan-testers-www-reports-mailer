@@ -22,6 +22,7 @@ requires:
   Email::Address:                     0
   Email::Simple:                      0
   File::Basename:                     0
+  File::Path:                         0
   File::Slurp:                        0
   Getopt::ArgvFile:                   0
   Getopt::Long:                       0
@@ -39,7 +40,6 @@ recommends:
   Test::Pod:                          1.00
   Test::Pod::Coverage:                0.08
 build_requires:
-  File::Path:                         0
   IO::File:                           0
   Test::More:                         0.70
 
