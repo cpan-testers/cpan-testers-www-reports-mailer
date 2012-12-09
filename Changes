@@ -4,6 +4,10 @@ Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
         - CHANGES => Changes
         - change file dates changed to meet W3CDTF standards.
         - reworked Makefile.PL for clarity.
+        - License updated to Artistic License v2.0.
+        - added minimum perl version (5.006).
+        - added missing prerequisites.
+        - added META.json
 
 0.28    2011-10-13
         - now only uses one database connection.

@@ -43,6 +43,7 @@ WriteMakefile(
         'Time::Piece'                       => 0,
         'version'                           => 0,
 
+        'DBI'                               => 0,
         'DBD::mysql'                        => 0,
         'DBD::SQLite'                       => '1.07',
 

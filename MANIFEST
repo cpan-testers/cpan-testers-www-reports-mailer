@@ -5,6 +5,7 @@ examples/settings-example.ini
 lib/CPAN/Testers/WWW/Reports/Mailer.pm
 Makefile.PL
 MANIFEST
+META.json
 META.yml
 README
 t/01base.t
