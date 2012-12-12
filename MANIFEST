@@ -15,7 +15,6 @@ t/30counts.t
 t/31lastid.t
 t/32get_author.t
 t/33prefs.t
-t/50logging.ini
 t/50logging.t
 t/51init.t
 t/60setup-db.t
@@ -54,8 +53,6 @@ t/data/70data-db-cpanstats.txt
 t/data/70data-db-ixlatest.txt
 t/data/70data-db-uploads.txt
 t/data/71daily.eml
-t/data/preferences-daily.ini
-t/data/preferences-reports.ini
 templates/mailer.eml
 templates/notification.eml
 templates/report.eml
