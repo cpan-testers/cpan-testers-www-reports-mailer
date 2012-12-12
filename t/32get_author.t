@@ -1,16 +1,21 @@
-#!perl
-
+#!/usr/bin/perl -w
 use strict;
-use warnings;
 
+# -------------------------------------------------------------------
+# Library Modules
+
+use lib qw(t/lib);
 use Test::More tests => 6;
+
 use CPAN::Testers::WWW::Reports::Mailer;
 
-use lib 't';
-use CTWRM_Testing;
+use TestObject;
+
+# -------------------------------------------------------------------
+# Tests
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(), "got object" );
+    ok( my $obj = TestObject->load(), "got object" );
 
     is($obj->_get_author('Abstract-Meta-Class','0.11'),'ADRIANWIT','found author ADRIANWIT');
     is($obj->_get_author('Acme-CPANAuthors-French','0.07'),'SAPER','found author SAPER');

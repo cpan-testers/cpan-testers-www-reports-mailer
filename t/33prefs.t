@@ -1,68 +1,73 @@
-#!perl
-
+#!/usr/bin/perl -w
 use strict;
-use warnings;
 
+# -------------------------------------------------------------------
+# Library Modules
+
+use lib qw(t/lib);
 use Test::More tests => 9;
+
 use CPAN::Testers::WWW::Reports::Mailer;
 
-use lib 't';
-use CTWRM_Testing;
+use TestObject;
+
+# -------------------------------------------------------------------
+# Tests
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(), "got object" );
+    ok( my $obj = TestObject->load(), "got object" );
 
     my %prefs = (
         LBROCARD => {
-          'version' => 'LATEST',
-          'ignored' => 0,
-          'perl' => 'ALL',
-          'report' => '1',
-          'tuple' => 'FIRST',
-          'platform' => 'ALL',
-          'patches' => 0,
-          'grades' => {
-                        'FAIL' => 1
-                      }
+            'version'   => 'LATEST',
+            'ignored'   => 0,
+            'perl'      => 'ALL',
+            'report'    => '1',
+            'tuple'     => 'FIRST',
+            'platform'  => 'ALL',
+            'patches'   => 0,
+            'grades'    => {
+                'FAIL'      => 1
+            }
         },
         NOONE => {
-          'active' => 0,
-          'version' => 'LATEST',
-          'ignored' => 0,
-          'perl' => 'ALL',
-          'report' => '1',
-          'tuple' => 'FIRST',
-          'platform' => 'ALL',
-          'patches' => 0,
-          'grades' => {
-                        'FAIL' => 1
-                      }
+            'active'    => 0,
+            'version'   => 'LATEST',
+            'ignored'   => 0,
+            'perl'      => 'ALL',
+            'report'    => '1',
+            'tuple'     => 'FIRST',
+            'platform'  => 'ALL',
+            'patches'   => 0,
+            'grades'    => {
+                'FAIL'      => 1
+            }
         },
         BARBIE => {
-          'active' => 3,
-          'version' => 'LATEST',
-          'ignored' => 0,
-          'perl' => 'ALL',
-          'report' => '3',
-          'tuple' => 'FIRST',
-          'platform' => 'ALL',
-          'patches' => 0,
-          'grades' => {
-                        'ALL' => 1
-                      }
+            'active'    => 3,
+            'version'   => 'LATEST',
+            'ignored'   => 0,
+            'perl'      => 'ALL',
+            'report'    => '3',
+            'tuple'     => 'FIRST',
+            'platform'  => 'ALL',
+            'patches'   => 0,
+            'grades'    => {
+                'ALL'       => 1
+            }
         },
         SAPER => {
-          'version' => 'LATEST',
-          'active' => '3',
-          'ignored' => 0,
-          'perl' => 'ALL',
-          'report' => '1',
-          'tuple' => 'FIRST',
-          'platform' => 'ALL',
-          'patches' => 0,
-          'grades' => {
-                        'FAIL' => 1
-                      }
+            'version'   => 'LATEST',
+            'active'    => '3',
+            'ignored'   => 0,
+            'perl'      => 'ALL',
+            'report'    => '1',
+            'tuple'     => 'FIRST',
+            'platform'  => 'ALL',
+            'patches'   => 0,
+            'grades'    => {
+                'FAIL'      => 1
+            }
         },
     );
 
@@ -75,16 +80,16 @@ use Data::Dumper;
 
     my $row  = {};
     my $hash = {
-          'version' => 'LATEST',
-          'ignored' => 0,
-          'perl' => 'ALL',
-          'report' => 1,
-          'tuple' => 'FIRST',
-          'platform' => 'ALL',
-          'patches' => 0,
-          'grades' => {
-                        'FAIL' => 1
-                      }
+        'version'   => 'LATEST',
+        'ignored'   => 0,
+        'perl'      => 'ALL',
+        'report'    => 1,
+        'tuple'     => 'FIRST',
+        'platform'  => 'ALL',
+        'patches'   => 0,
+        'grades'    => {
+            'FAIL'      => 1
+        }
     };
 
     is_deeply($obj->_parse_prefs($row), $hash, 'default prefs parse');
@@ -101,19 +106,19 @@ use Data::Dumper;
         platform    => 'Linux'
     };
     $hash = {
-          'version' => 'ALL',
-          'ignored' => 1,
-          'perl' => '5.8.8',
-          'report' => 0,
-          'tuple' => 'ALL',
-          'platform' => 'Linux',
-          'patches' => 1,
-          'grades' => {
-                        'PASS' => 1,
-                        'FAIL' => 1,
-                        'UNKNOWN' => 1,
-                        'NA' => 1
-                      }
+        'version'   => 'ALL',
+        'ignored'   => 1,
+        'perl'      => '5.8.8',
+        'report'    => 0,
+        'tuple'     => 'ALL',
+        'platform'  => 'Linux',
+        'patches'   => 1,
+        'grades'    => {
+            'PASS'      => 1,
+            'FAIL'      => 1,
+            'UNKNOWN'   => 1,
+            'NA'        => 1
+        }
     };
 
     is_deeply($obj->_parse_prefs($row), $hash, 'default prefs parse');

@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.28';
+$VERSION = '0.29';
 
 =head1 NAME
 
@@ -207,7 +207,7 @@ my @months = (
         { 'id' => 12, 'value' => "December"   },
 );
 
-my %phrasebook = (
+our %phrasebook = (
     'LastReport'        => "SELECT MAX(id) FROM cpanstats.cpanstats",
     'GetEarliest'       => "SELECT id FROM cpanstats.cpanstats WHERE fulldate > ? ORDER BY id LIMIT 1",
 
@@ -229,7 +229,8 @@ my %phrasebook = (
 
     'GetReportTest'     => "SELECT id,guid,dist,version,platform,perl,state FROM cpanstats.cpanstats WHERE id = ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
 
-    'GetMetabaseByGUID' => 'SELECT * FROM metabase.metabase WHERE guid=?'
+    'GetMetabaseByGUID' => 'SELECT * FROM metabase.metabase WHERE guid=?',
+    'GetTestersEmail'   => 'SELECT * FROM metabase.testers_email'
 );
 
 #----------------------------------------------------------------------------
@@ -287,7 +288,7 @@ sub new {
     	$self->{db}->{mysql_auto_reconnect} = 1	if($opts{driver} =~ /mysql/i);
     }
 
-    $self->test(    $self->_defined_or( $options{test},     $hash{test},     $cfg->val('SETTINGS','test'  ), 0 ) );
+    $self->test(    $self->_defined_or( $options{test},     $hash{test},     $cfg->val('SETTINGS','test'     ), 0 ) );
     $options{nomail} = 1 if($self->test);
 
     $self->verbose( $self->_defined_or( $options{verbose},  $hash{verbose},  $cfg->val('SETTINGS','verbose'  ), $default{verbose}) );
@@ -318,8 +319,8 @@ sub new {
         }
     ));
 
-    my @testers = $self->{CPANPREFS}->get_query('hash','SELECT * FROM metabase.testers_email (resource,fullname,email) VALUES (?,?,?)',$creator,$name,$em);
-    my $tester (@testers) {
+    my @testers = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetTestersEmail'});
+    for my $tester (@testers) {
         $self->{testers}{$tester->{creator}}{name}  ||= $tester->{fullname};
         $self->{testers}{$tester->{creator}}{email} ||= $tester->{email};
     }

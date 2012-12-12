@@ -1,12 +1,24 @@
-#!perl
-
+#!perl -w
 use strict;
-use warnings;
+
 $|=1;
 
+# -------------------------------------------------------------------
+# Library Modules
+
+use lib qw(t/lib);
+use File::Basename;
+use File::Path;
+use File::Slurp;
 use Test::More tests => 14;
-use lib 't';
-use lib qw(./lib ../lib);
+
+use CPAN::Testers::WWW::Reports::Mailer;
+
+use TestEnvironment;
+use TestObject;
+
+# -------------------------------------------------------------------
+# Variables
 
 my %COUNTS = (
     REPORTS => 8,
@@ -22,17 +34,20 @@ my %COUNTS = (
     TEST    => 3
 );
 
-use File::Basename;
-use File::Path;
-use File::Slurp;
-use CTWRM_Testing;
-use CPAN::Testers::WWW::Reports::Mailer;
-
+my @DATA = (
+    'auth|BARBIE|3|NULL',
+    'dist|BARBIE|-|0|3|FAIL|FIRST|LATEST|1|ALL|ALL'
+);
 my %files = (
     'lastmail' => 't/_TMPDIR/test-lastmail.txt',
     'logfile'  => 't/_TMPDIR/test-reports.log',
     'mailfile' => 'mailer-debug.log'
 );
+
+my $CONFIG = 't/_DBDIR/preferences-reports.ini';
+
+# -------------------------------------------------------------------
+# Tests
 
 for(keys %files) {
     unlink $files{$_}   if(-f $files{$_});
@@ -41,19 +56,16 @@ for(keys %files) {
 mkpath(dirname($files{lastmail}));
 overwrite_file($files{lastmail}, 'daily=4766100,weekly=4766100,reports=4766100' );
 
-my ($pa,$pd) = CTWRM_Testing::prefs_db_init(\*DATA);
+my $handles = TestEnvironment::Handles();
+my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
 is($pa,1,'author records added');
 is($pd,1,'distro records added');
 
-my $mailer = CPAN::Testers::WWW::Reports::Mailer->new(config => 't/data/preferences-reports.ini');
+my $mailer = TestObject->load(config => $CONFIG);
 
 $mailer->check_reports();
 $mailer->check_counts();
 
 is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
 
-is(CTWRM_Testing::mail_check($files{mailfile},'t/data/67reports.eml'),1,'mail files match');
-
-__DATA__
-auth|BARBIE|3|NULL
-dist|BARBIE|-|0|3|FAIL|FIRST|LATEST|1|ALL|ALL
+is(TestObject::mail_check($files{mailfile},'t/data/67reports.eml'),1,'mail files match');

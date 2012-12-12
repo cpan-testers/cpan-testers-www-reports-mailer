@@ -1,21 +1,29 @@
 #!/usr/bin/perl -w
 use strict;
 
-use Cwd;
+# -------------------------------------------------------------------
+# Library Modules
+
+use lib qw(t/lib);
 use File::Path;
 use File::Slurp;
 use Test::More tests => 22;
 
-use lib 't';
-use CTWRM_Testing;
+use TestObject;
 
-my $LOGFILE = '50logging.log';
-my $CONFIG  = 't/50logging.ini';
+# -------------------------------------------------------------------
+# Variables
+
+my $LOGFILE = 't/_TMPDIR/50logging.log';
+my $CONFIG  = 't/_DBDIR/50logging.ini';
+
+# -------------------------------------------------------------------
+# Tests
 
 unlink($LOGFILE) if(-f $LOGFILE);
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(config => $CONFIG), "got object" );
+    ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
     is($obj->logfile, $LOGFILE, 'logfile default set');
     is($obj->logclean, 0, 'logclean default set');
@@ -35,7 +43,7 @@ unlink($LOGFILE) if(-f $LOGFILE);
 
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(config => $CONFIG), "got object" );
+    ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
     is($obj->logfile, $LOGFILE, 'logfile default set');
     is($obj->logclean, 0, 'logclean default set');
@@ -54,7 +62,7 @@ unlink($LOGFILE) if(-f $LOGFILE);
 }
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(config => $CONFIG), "got object" );
+    ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
     is($obj->logfile, $LOGFILE, 'logfile default set');
     is($obj->logclean, 0, 'logclean default set');

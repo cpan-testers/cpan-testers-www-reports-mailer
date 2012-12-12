@@ -1,18 +1,25 @@
 #!/usr/bin/perl -w
 use strict;
 
-use CPAN::Testers::WWW::Reports::Mailer;
+# -------------------------------------------------------------------
+# Library Modules
+
+use lib qw(t/lib);
 use File::Slurp;
 use Test::More tests => 4;
 
-use lib 't';
-use CTWRM_Testing;
+use CPAN::Testers::WWW::Reports::Mailer;
+
+use TestObject;
+
+# -------------------------------------------------------------------
+# Tests
 
 my $LOGFILE = 't/_TMPDIR/cpanreps.log';
 unlink $LOGFILE if(-f $LOGFILE);
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(), "got object" );
+    ok( my $obj = TestObject->load(), "got object" );
 
     ok(!-f $LOGFILE, 'log not found' );
     $obj->check_counts;
@@ -21,10 +28,10 @@ unlink $LOGFILE if(-f $LOGFILE);
     my ($counts,@log);
     my @lines = read_file($LOGFILE);
     for my $line (@lines) {
-        next    unless($counts || /INFO: COUNTS/);
+        next    unless($counts || $line =~ /INFO: COUNTS/);
         $counts = 1;
         $line =~ s/\s+$//;
-        push @log, substr($_,21);
+        push @log, substr($line,21);
     }
 
     is_deeply(\@log, [

@@ -3,55 +3,30 @@ use strict;
 
 $|=1;
 
-use DBI;
-use File::Path;
-use File::Basename;
-use IO::File;
-use Test::More tests => 1;
+use Test::More;
 
-my $DATA = 't/data/70data-db-cpanstats.txt';
-my $DB   = 't/_DBDIR/test.db';
+use lib ('t/lib');
+use TestEnvironment;
 
-# rebuild cpanstats db
 
-unlink $DB if -f $DB;
-mkpath( dirname($DB) );
+my $TESTS = 3;
 
-my $dbh = DBI->connect("dbi:SQLite:dbname=$DB", '', '', {AutoCommit=>1});
-$dbh->do(q{
-    CREATE TABLE cpanstats (
-        id            INTEGER PRIMARY KEY,
-        guid          TEXT,
-        state         TEXT,
-        postdate      TEXT,
-        tester        TEXT,
-        dist          TEXT,
-        version       TEXT,
-        platform      TEXT,
-        perl          TEXT,
-        osname        TEXT,
-        osvers        TEXT,
-        fulldate      TEXT
-    )
-});
+#----------------------------------------------------------------------------
+# Tests
 
-my fh = IO::File->new($DATA) or die;
-while(<$fh>){
-  chomp;
-  $dbh->do('INSERT INTO cpanstats ( id, guid, state, postdate, tester, dist, version, platform, perl, osname, osvers, fulldate ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )', {}, split(/\|/,$_) );
+my $handles = TestEnvironment::Handles();
+if(!$handles)   { plan skip_all => "Unable to create test environment"; }
+else            { plan tests    => $TESTS }
+
+SKIP: {
+    skip "No supported databases available", $TESTS  unless($handles->{CPANPREFS});
+
+    TestEnvironment::LoadData('70');
+
+    my @row = $handles->{CPANPREFS}->get_query('array','select count(*) from cpanstats');
+    is($row[0]->[0], 14034, "row count for cpanstats");
+    @row = $handles->{CPANPREFS}->get_query('array','select count(*) from ixlatest');
+    is($row[0]->[0], 43, "row ct");
+    @row = $handles->{CPANPREFS}->get_query('array','select count(*) from uploads');
+    is($row[0]->[0], 207, "row count for uploads");
 }
-
-$dbh->do(q{ CREATE INDEX distverstate ON cpanstats (dist, version, state) });
-$dbh->do(q{ CREATE INDEX ixdate ON cpanstats (postdate) });
-$dbh->do(q{ CREATE INDEX ixperl ON cpanstats (perl) });
-$dbh->do(q{ CREATE INDEX ixplat ON cpanstats (platform) });
-
-my ($ct) = $dbh->selectrow_array('select count(*) from cpanstats');
-
-$dbh->disconnect;
-
-is($ct, 14034, "row count for cpanstats");
-
-#select * from cpanstats where state='cpan' and dist in (SELECT dist from ixlatest where author='DCANTRELL')
-# sqlite> select * from cpanstats where postdate=200901 order by dist limit 20;
-# id|guid|state|postdate|tester|dist|version|platform|perl|osname|osvers|date

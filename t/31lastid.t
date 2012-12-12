@@ -1,20 +1,25 @@
-#!perl
-
+#!/usr/bin/perl -w
 use strict;
-use warnings;
 
-use Test::More tests => 21;
-use CPAN::Testers::WWW::Reports::Mailer;
+# -------------------------------------------------------------------
+# Library Modules
+
+use lib qw(t/lib);
 use IO::File;
+use Test::More tests => 21;
 
-use lib 't';
-use CTWRM_Testing;
+use CPAN::Testers::WWW::Reports::Mailer;
+
+use TestObject;
+
+# -------------------------------------------------------------------
+# Tests
 
 my $f = 't/_DBDIR/lastmail';
 unlink $f;
 
 {
-    ok( my $obj = CTWRM_Testing::getObj(), "got object" );
+    ok( my $obj = TestObject->load(), "got object" );
 
     ok($obj->lastmail($f),'reset last mail file');
     is($obj->lastmail,$f, 'reset last mail');
