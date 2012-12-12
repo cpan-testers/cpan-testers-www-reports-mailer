@@ -7,7 +7,9 @@ Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
         - License updated to Artistic License v2.0.
         - added minimum perl version (5.006).
         - added missing prerequisites.
-        - added META.json
+        - added META.json.
+        - dropped SQLite support.
+        - move DB testing to Test::Database.
 
 0.28    2011-10-13
         - now only uses one database connection.
