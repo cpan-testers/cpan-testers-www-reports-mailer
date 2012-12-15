@@ -1,6 +1,6 @@
 To: "David Cantrell" <DCANTRELL@cpan.org>
 From: CPAN Tester Report Server <do_not_reply@cpantesters.org>
-Date: Tue, 13 Apr 2010 21:51:56 +0000
+Date: Sat, 15 Dec 2012 15:46:50 +0000
 Subject: CPAN Testers Daily Summary Report
 
 Dear David Cantrell,
@@ -53,12 +53,8 @@ Devel-CheckLib-0.699_001:
 - MSWin32-x86-multi-thread / 5.10.0:
   - FAIL http://www.cpantesters.org/cpan/report/4869499-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4870093-b19f-3f77-b713-d32bba55d77f
-
 - MSWin32-x86-multi-thread / 5.8.8:
   - FAIL http://www.cpantesters.org/cpan/report/4860543-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4870075-b19f-3f77-b713-d32bba55d77f
 
 - amd64-freebsd / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4878769-b19f-3f77-b713-d32bba55d77f
@@ -75,16 +71,8 @@ Devel-CheckLib-0.699_001:
 - s390x-linux / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4857045-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4857064-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4857211-b19f-3f77-b713-d32bba55d77f
-
 - s390x-linux-thread-multi / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858185-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858329-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858543-b19f-3f77-b713-d32bba55d77f
 
 - s390x-linux-thread-multi-perlio / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858638-b19f-3f77-b713-d32bba55d77f
@@ -191,7 +179,7 @@ Wiki:        http://wiki.cpantesters.org
 Preferences: https://prefs.cpantesters.org
 To: "David Cantrell" <DCANTRELL@cpan.org>
 From: CPAN Tester Report Server <do_not_reply@cpantesters.org>
-Date: Tue, 13 Apr 2010 21:51:56 +0000
+Date: Sat, 15 Dec 2012 15:46:50 +0000
 Subject: CPAN Testers Daily Summary Report
 
 Dear David Cantrell,
@@ -217,12 +205,8 @@ Devel-CheckLib-0.699_001:
 - MSWin32-x86-multi-thread / 5.10.0:
   - FAIL http://www.cpantesters.org/cpan/report/4869499-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4870093-b19f-3f77-b713-d32bba55d77f
-
 - MSWin32-x86-multi-thread / 5.8.8:
   - FAIL http://www.cpantesters.org/cpan/report/4860543-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4870075-b19f-3f77-b713-d32bba55d77f
 
 - amd64-freebsd / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4878769-b19f-3f77-b713-d32bba55d77f
@@ -239,16 +223,8 @@ Devel-CheckLib-0.699_001:
 - s390x-linux / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4857045-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4857064-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4857211-b19f-3f77-b713-d32bba55d77f
-
 - s390x-linux-thread-multi / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858185-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858329-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858543-b19f-3f77-b713-d32bba55d77f
 
 - s390x-linux-thread-multi-perlio / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858638-b19f-3f77-b713-d32bba55d77f
@@ -271,7 +247,7 @@ Wiki:        http://wiki.cpantesters.org
 Preferences: https://prefs.cpantesters.org
 To: "David Cantrell" <DCANTRELL@cpan.org>
 From: CPAN Tester Report Server <do_not_reply@cpantesters.org>
-Date: Tue, 13 Apr 2010 21:51:56 +0000
+Date: Sat, 15 Dec 2012 15:46:50 +0000
 Subject: CPAN Testers Daily Summary Report
 
 Dear David Cantrell,
@@ -291,12 +267,8 @@ Devel-CheckLib-0.699_001:
 - MSWin32-x86-multi-thread / 5.10.0:
   - FAIL http://www.cpantesters.org/cpan/report/4869499-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4870093-b19f-3f77-b713-d32bba55d77f
-
 - MSWin32-x86-multi-thread / 5.8.8:
   - FAIL http://www.cpantesters.org/cpan/report/4860543-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4870075-b19f-3f77-b713-d32bba55d77f
 
 - amd64-freebsd / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4878769-b19f-3f77-b713-d32bba55d77f
@@ -313,16 +285,8 @@ Devel-CheckLib-0.699_001:
 - s390x-linux / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4857045-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4857064-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4857211-b19f-3f77-b713-d32bba55d77f
-
 - s390x-linux-thread-multi / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858185-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858329-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858543-b19f-3f77-b713-d32bba55d77f
 
 - s390x-linux-thread-multi-perlio / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858638-b19f-3f77-b713-d32bba55d77f
@@ -345,7 +309,7 @@ Wiki:        http://wiki.cpantesters.org
 Preferences: https://prefs.cpantesters.org
 To: "David Cantrell" <DCANTRELL@cpan.org>
 From: CPAN Tester Report Server <do_not_reply@cpantesters.org>
-Date: Tue, 13 Apr 2010 21:51:56 +0000
+Date: Sat, 15 Dec 2012 15:46:51 +0000
 Subject: CPAN Testers Daily Summary Report
 
 Dear David Cantrell,
@@ -365,12 +329,8 @@ Devel-CheckLib-0.699_001:
 - MSWin32-x86-multi-thread / 5.10.0:
   - FAIL http://www.cpantesters.org/cpan/report/4869499-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4870093-b19f-3f77-b713-d32bba55d77f
-
 - MSWin32-x86-multi-thread / 5.8.8:
   - FAIL http://www.cpantesters.org/cpan/report/4860543-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4870075-b19f-3f77-b713-d32bba55d77f
 
 - amd64-freebsd / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4878769-b19f-3f77-b713-d32bba55d77f
@@ -387,16 +347,8 @@ Devel-CheckLib-0.699_001:
 - s390x-linux / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4857045-b19f-3f77-b713-d32bba55d77f
 
-  - FAIL http://www.cpantesters.org/cpan/report/4857064-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4857211-b19f-3f77-b713-d32bba55d77f
-
 - s390x-linux-thread-multi / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858185-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858329-b19f-3f77-b713-d32bba55d77f
-
-  - FAIL http://www.cpantesters.org/cpan/report/4858543-b19f-3f77-b713-d32bba55d77f
 
 - s390x-linux-thread-multi-perlio / 5.6.2:
   - FAIL http://www.cpantesters.org/cpan/report/4858638-b19f-3f77-b713-d32bba55d77f

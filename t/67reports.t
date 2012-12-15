@@ -27,11 +27,11 @@ my %COUNTS = (
     UNKNOWN => 0,
     NA      => 0,
     NOMAIL  => 0,
-    MAILS   => 3,
+    MAILS   => 2,
     NEWAUTH => 0,
     GOOD    => 0,
     BAD     => 0,
-    TEST    => 3
+    TEST    => 2
 );
 
 my @DATA = (
@@ -61,7 +61,12 @@ my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
 is($pa,1,'author records added');
 is($pd,1,'distro records added');
 
+# remove some older entries to ensure we get some hits, but not all
+$handles->{CPANPREFS}->do_query('DELETE FROM cpanstats WHERE id < ? AND dist=? AND version=?',4766103,'WWW-Scraper-ISBN-Yahoo_Driver','0.08');
+$handles->{CPANPREFS}->do_query('DELETE FROM cpanstats WHERE id < ? AND dist=? AND version=?',4766801,'WWW-Scraper-ISBN-Amazon_Driver','0.14');
+
 my $mailer = TestObject->load(config => $CONFIG);
+#$mailer->verbose(1);
 
 if($mailer->nomail) {
     $mailer->check_reports();
