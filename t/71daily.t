@@ -59,6 +59,7 @@ for(keys %files) {
     unlink $files{$_}   if(-f $files{$_});
 }
 
+my $handles = TestEnvironment::Handles();
 my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
 is($pa,1,'author records added');
 is($pd,6,'distro records added');
@@ -91,10 +92,13 @@ run_mailer();
 
 sub run_mailer {
     my $mailer = TestObject->load(config => $CONFIG);
-    $mailer->check_reports();
-    $mailer->check_counts();
+    if($mailer->nomail) {
+        $mailer->check_reports();
+        $mailer->check_counts();
+    }
 
     is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
 }
 
-is(TestObject::mail_check($files{mailfile},'t/data/71daily.eml'),1,'mail files match');
+my ($mail1,$mail2) = TestObject::mail_check($files{mailfile},'t/data/71daily.eml');
+is_deeply($mail1,$mail2,'mail files match');

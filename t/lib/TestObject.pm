@@ -48,19 +48,19 @@ sub mail_check {
     my $mail1 = readfile($file1);
     my $mail2 = readfile($file2);
 
-    return $mail1 eq $mail2 ? 1 : 0;
+    return ($mail1,$mail2);
 }
 
 sub readfile {
     my $file = shift;
-    my $text;
+    my @text;
     my $fh = IO::File->new($file,'r') or die "Cannot open file [$file]: $!\n";
     while(<$fh>) { 
         next    if(/^Date:/);
-        $text .= $_ 
+        push @text, $_ 
     }
     $fh->close;
-    return $text;
+    return \@text;
 }
 
 1;

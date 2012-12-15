@@ -159,7 +159,7 @@ sub create_mysql_databases {
             'CREATE TABLE cpanstats (
                 id         int(10) unsigned NOT NULL,
                 type       tinyint(4) default 0,
-                guid       varchar(32),
+                guid       varchar(64),
                 state      varchar(32),
                 postdate   varchar(8),
                 tester     varchar(255),
@@ -286,7 +286,7 @@ sub create_mysql_databases {
             'DROP TABLE IF EXISTS metabase',
             'CREATE TABLE metabase (
                 id          int(10) unsigned NOT NULL,
-                guid        char(36) NOT NULL,
+                guid        varchar(64) NOT NULL,
                 updated     varchar(32) default NULL,
                 report      longblob NOT NULL,
                 PRIMARY KEY (id),
@@ -425,6 +425,7 @@ logfile=t/_TMPDIR/test-daily.log
 logclean=1
 mode=daily
 lastmail=t/_TMPDIR/test-lastmail.txt
+nomail=1
 
 [CPANPREFS]
 $dbcfg

@@ -63,9 +63,12 @@ is($pd,1,'distro records added');
 
 my $mailer = TestObject->load(config => $CONFIG);
 
-$mailer->check_reports();
-$mailer->check_counts();
+if($mailer->nomail) {
+    $mailer->check_reports();
+    $mailer->check_counts();
+}
 
 is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
 
-is(TestObject::mail_check($files{mailfile},'t/data/67reports.eml'),1,'mail files match');
+my ($mail1,$mail2) = TestObject::mail_check($files{mailfile},'t/data/67reports.eml');
+is_deeply($mail1,$mail2,'mail files match');

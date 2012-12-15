@@ -13,8 +13,8 @@ use Test::More tests => 2;
 # Tests
 
 # these shouldn't exist ...  whack just to be sure.
-rmtree( 't/_TMPDIR'   );
-rmtree( 't/_DBDIR'    );
+#rmtree( 't/_TMPDIR'   );
+#rmtree( 't/_DBDIR'    );
 
 # triple check
 ok( ! -d 't/_TMPDIR',   '_TMPDIR removed'   );

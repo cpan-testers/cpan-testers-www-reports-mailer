@@ -7,7 +7,7 @@ $|=1;
 # Library Modules
 
 use lib qw(t/lib);
-use Test::More tests => 14;
+use Test::More tests => 15;
 
 use CPAN::Testers::WWW::Reports::Mailer;
 
@@ -58,9 +58,14 @@ is($pd,1,'distro records added');
 
 my $mailer = TestObject->load(config => $CONFIG);
 
-$mailer->check_reports();
-$mailer->check_counts();
+is($mailer->nomail,1);
+
+if($mailer->nomail) {
+    $mailer->check_reports();
+    $mailer->check_counts();
+}
 
 is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
 
-is(TestObject::mail_check($files{mailfile},'t/data/61daily.eml'),1,'mail files match');
+my ($mail1,$mail2) = TestObject::mail_check($files{mailfile},'t/data/61daily.eml');
+is_deeply($mail1,$mail2,'mail files match');
