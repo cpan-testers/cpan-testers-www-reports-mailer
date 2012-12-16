@@ -23,7 +23,7 @@ my $CONFIG  = 't/_DBDIR/logging.ini';
 unlink($LOGFILE) if(-f $LOGFILE);
 
 SKIP: {
-    skip "No supported databases available", 22  unless(-f $CONFIG);
+    skip "No supported databases available", 7  unless(-f $CONFIG);
 
     ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
@@ -45,7 +45,7 @@ SKIP: {
 
 
 SKIP: {
-    skip "No supported databases available", 22  unless(-f $CONFIG);
+    skip "No supported databases available", 8  unless(-f $CONFIG);
 
     ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
@@ -66,7 +66,7 @@ SKIP: {
 }
 
 SKIP: {
-    skip "No supported databases available", 22  unless(-f $CONFIG);
+    skip "No supported databases available", 7  unless(-f $CONFIG);
 
     ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
@@ -86,4 +86,4 @@ SKIP: {
     like($log[0], qr!\d{4}/\d\d/\d\d \d\d:\d\d:\d\d: Start Again!, 'line 1 of log');
 }
 
-unlink($LOGFILE);    # remove 50logging.log
+unlink($LOGFILE);

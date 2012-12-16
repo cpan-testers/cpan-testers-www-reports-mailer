@@ -63,7 +63,7 @@ if(!$handles)   { plan skip_all => "Unable to create test environment"; }
 else            { plan tests    => $TESTS }
 
 SKIP: {
-    skip "No supported databases available", $TESTS  unless($handles && $handles->{CPANPREFS});
+    skip "No supported databases available", $TESTS  unless($handles->{CPANPREFS});
 
     my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
     is($pa,1,'author records added');
