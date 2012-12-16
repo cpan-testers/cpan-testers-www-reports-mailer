@@ -13,12 +13,19 @@ use CPAN::Testers::WWW::Reports::Mailer;
 use TestObject;
 
 # -------------------------------------------------------------------
+# Variables
+
+my $CONFIG  = 't/_DBDIR/preferences.ini';
+my $LOGFILE = 't/_TMPDIR/cpanreps.log';
+
+# -------------------------------------------------------------------
 # Tests
 
-my $LOGFILE = 't/_TMPDIR/cpanreps.log';
 unlink $LOGFILE if(-f $LOGFILE);
 
-{
+SKIP: {
+    skip "No supported databases available", 4  unless(-f $CONFIG);
+
     ok( my $obj = TestObject->load(), "got object" );
 
     ok(!-f $LOGFILE, 'log not found' );

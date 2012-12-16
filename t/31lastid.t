@@ -13,20 +13,27 @@ use CPAN::Testers::WWW::Reports::Mailer;
 use TestObject;
 
 # -------------------------------------------------------------------
+# Variables
+
+my $CONFIG = 't/_DBDIR/preferences.ini';
+my $LASTID = 't/_DBDIR/lastmail';
+
+# -------------------------------------------------------------------
 # Tests
 
-my $f = 't/_DBDIR/lastmail';
-unlink $f;
+unlink $LASTID;
 
-{
+SKIP: {
+    skip "No supported databases available", 21  unless(-f $CONFIG);
+
     ok( my $obj = TestObject->load(), "got object" );
 
-    ok($obj->lastmail($f),'reset last mail file');
-    is($obj->lastmail,$f, 'reset last mail');
+    ok($obj->lastmail($LASTID),'reset last mail file');
+    is($obj->lastmail,$LASTID, 'reset last mail');
 
-    ok(!-f $f, 'lastmail not created');
+    ok(!-f $LASTID, 'lastmail not created');
     is($obj->_get_lastid,0, 'new last id');
-    ok(-f $f, 'lastmail now exists');
+    ok(-f $LASTID, 'lastmail now exists');
 
     # defaults to daily mode
     ok($obj->_get_lastid(12), 'set last id - daily mode');

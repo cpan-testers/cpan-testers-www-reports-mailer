@@ -7,7 +7,7 @@ $|=1;
 # Library Modules
 
 use lib qw(t/lib);
-use Test::More tests => 15;
+use Test::More;
 
 use CPAN::Testers::WWW::Reports::Mailer;
 
@@ -16,6 +16,8 @@ use TestObject;
 
 # -------------------------------------------------------------------
 # Variables
+
+my $TESTS = 15;
 
 my %COUNTS = (
     REPORTS => 10643,
@@ -52,20 +54,27 @@ for(keys %files) {
 }
 
 my $handles = TestEnvironment::Handles();
-my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
-is($pa,1,'author records added');
-is($pd,1,'distro records added');
+if(!$handles)   { plan skip_all => "Unable to create test environment"; }
+else            { plan tests    => $TESTS }
 
-my $mailer = TestObject->load(config => $CONFIG);
+SKIP: {
+    skip "No supported databases available", $TESTS  unless($handles && $handles->{CPANPREFS});
 
-is($mailer->nomail,1);
+    my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
+    is($pa,1,'author records added');
+    is($pd,1,'distro records added');
 
-if($mailer->nomail) {
-    $mailer->check_reports();
-    $mailer->check_counts();
+    my $mailer = TestObject->load(config => $CONFIG);
+
+    is($mailer->nomail,1);
+
+    if($mailer->nomail) {
+        $mailer->check_reports();
+        $mailer->check_counts();
+    }
+
+    is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
+
+    my ($mail1,$mail2) = TestObject::mail_check($files{mailfile},'t/data/61daily.eml');
+    is_deeply($mail1,$mail2,'mail files match');
 }
-
-is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
-
-my ($mail1,$mail2) = TestObject::mail_check($files{mailfile},'t/data/61daily.eml');
-is_deeply($mail1,$mail2,'mail files match');

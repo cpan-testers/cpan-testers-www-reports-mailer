@@ -7,7 +7,7 @@ $|=1;
 # Library Modules
 
 use lib qw(t/lib);
-use Test::More tests => 14;
+use Test::More;
 
 use CPAN::Testers::WWW::Reports::Mailer;
 
@@ -16,6 +16,8 @@ use TestObject;
 
 # -------------------------------------------------------------------
 # Variables
+
+my $TESTS = 14;
 
 my %COUNTS = (
     REPORTS => 10643,
@@ -52,17 +54,24 @@ for(keys %files) {
 }
 
 my $handles = TestEnvironment::Handles();
-my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
-is($pa,1,'author records added');
-is($pd,1,'distro records added');
+if(!$handles)   { plan skip_all => "Unable to create test environment"; }
+else            { plan tests    => $TESTS }
 
-my $mailer = TestObject->load(config => $CONFIG);
+SKIP: {
+    skip "No supported databases available", $TESTS  unless($handles && $handles->{CPANPREFS});
 
-if($mailer->nomail) {
-    $mailer->check_reports();
-    $mailer->check_counts();
+    my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
+    is($pa,1,'author records added');
+    is($pd,1,'distro records added');
+
+    my $mailer = TestObject->load(config => $CONFIG);
+
+    if($mailer->nomail) {
+        $mailer->check_reports();
+        $mailer->check_counts();
+    }
+
+    is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
+
+    ok(-f $files{mailfile} ? 0 : 1,'no mail files sent');
 }
-
-is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
-
-ok(-f $files{mailfile} ? 0 : 1,'no mail files sent');

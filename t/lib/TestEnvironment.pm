@@ -33,7 +33,7 @@ my ($testdb,%handles);
 my $DBPATH  = 't/_DBDIR';
 my $TMPPATH = 't/_TMPDIR';
 my $CONFIG  = 't/_DBDIR/preferences.ini';
-my $CONFIG2 = 't/_DBDIR/50logging.ini';
+my $CONFIG2 = 't/_DBDIR/logging.ini';
 my $CONFIG3 = 't/_DBDIR/preferences-daily.ini';
 my $CONFIG4 = 't/_DBDIR/preferences-reports.ini';
 
@@ -57,6 +57,8 @@ sub Create {
 }
 
 sub Handles {
+    return  unless(-f $CONFIG);
+
     # load configuration
     my $cfg = Config::IniFiles->new( -file => $CONFIG );
 
@@ -408,7 +410,7 @@ PRINT
 mailrc=t/data/01mailrc.txt
 verbose=1
 nomail=1
-logfile=t/_TMPDIR/50logging.log
+logfile=t/_TMPDIR/logging.log
 
 [CPANPREFS]
 $dbcfg

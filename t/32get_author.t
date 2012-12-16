@@ -12,9 +12,16 @@ use CPAN::Testers::WWW::Reports::Mailer;
 use TestObject;
 
 # -------------------------------------------------------------------
+# Variables
+
+my $CONFIG = 't/_DBDIR/preferences.ini';
+
+# -------------------------------------------------------------------
 # Tests
 
-{
+SKIP: {
+    skip "No supported databases available", 6  unless(-f $CONFIG);
+
     ok( my $obj = TestObject->load(), "got object" );
 
     is($obj->_get_author('Abstract-Meta-Class','0.11'),'ADRIANWIT','found author ADRIANWIT');

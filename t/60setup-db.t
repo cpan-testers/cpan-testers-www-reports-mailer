@@ -24,7 +24,7 @@ if(!$handles)   { plan skip_all => "Unable to create test environment"; }
 else            { plan tests    => $TESTS }
 
 SKIP: {
-    skip "No supported databases available", $TESTS  unless($handles->{CPANPREFS});
+    skip "No supported databases available", $TESTS  unless($handles && $handles->{CPANPREFS});
 
     TestEnvironment::LoadData('60');
     TestEnvironment::LoadArticles( qw(4766103 4766403 4766801) );

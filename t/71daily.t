@@ -10,7 +10,7 @@ use lib qw(t/lib);
 use File::Slurp;
 use File::Path;
 use File::Basename;
-use Test::More tests => 47;
+use Test::More;
 
 use CPAN::Testers::WWW::Reports::Mailer;
 
@@ -19,6 +19,8 @@ use TestObject;
 
 # -------------------------------------------------------------------
 # Variables
+
+my $TESTS = 47;
 
 my %COUNTS = (
     REPORTS => 777,
@@ -60,35 +62,45 @@ for(keys %files) {
 }
 
 my $handles = TestEnvironment::Handles();
-my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
-is($pa,1,'author records added');
-is($pd,6,'distro records added');
+if(!$handles)   { plan skip_all => "Unable to create test environment"; }
+else            { plan tests    => $TESTS }
 
-mkpath(dirname($files{lastmail}));
-overwrite_file($files{lastmail}, 'daily=4587509,weekly=4587509,reports=4587509' );
-run_mailer();
+SKIP: {
+    skip "No supported databases available", $TESTS  unless($handles && $handles->{CPANPREFS});
 
-$COUNTS{REPORTS} = 394;
-$COUNTS{PASS}    = 365;
-$COUNTS{FAIL}    = 27;
-$COUNTS{UNKNOWN} = 2;
-overwrite_file($files{lastmail}, 'daily=4722317,weekly=4722317,reports=4722317' );
-run_mailer();
+    my ($pa,$pd) = TestEnvironment::ResetPrefs(\@DATA);
+    is($pa,1,'author records added');
+    is($pd,6,'distro records added');
 
-$COUNTS{MAILS}   = 1;
-$COUNTS{REPORTS} = 286;
-$COUNTS{PASS}    = 262;
-$COUNTS{TEST}    = 1;
-$COUNTS{FAIL}    = 23;
-$COUNTS{UNKNOWN} = 1;
-overwrite_file($files{lastmail}, 'daily=4766000,weekly=4766000,reports=4766000' );
-run_mailer();
+    mkpath(dirname($files{lastmail}));
+    overwrite_file($files{lastmail}, 'daily=4587509,weekly=4587509,reports=4587509' );
+    run_mailer();
 
-$COUNTS{MAILS}   = 1;
-$COUNTS{REPORTS} = 285;
-$COUNTS{FAIL}    = 22;
-overwrite_file($files{lastmail}, 'daily=4766100,weekly=4766100,reports=4766100' );
-run_mailer();
+    $COUNTS{REPORTS} = 394;
+    $COUNTS{PASS}    = 365;
+    $COUNTS{FAIL}    = 27;
+    $COUNTS{UNKNOWN} = 2;
+    overwrite_file($files{lastmail}, 'daily=4722317,weekly=4722317,reports=4722317' );
+    run_mailer();
+
+    $COUNTS{MAILS}   = 1;
+    $COUNTS{REPORTS} = 286;
+    $COUNTS{PASS}    = 262;
+    $COUNTS{TEST}    = 1;
+    $COUNTS{FAIL}    = 23;
+    $COUNTS{UNKNOWN} = 1;
+    overwrite_file($files{lastmail}, 'daily=4766000,weekly=4766000,reports=4766000' );
+    run_mailer();
+
+    $COUNTS{MAILS}   = 1;
+    $COUNTS{REPORTS} = 285;
+    $COUNTS{FAIL}    = 22;
+    overwrite_file($files{lastmail}, 'daily=4766100,weekly=4766100,reports=4766100' );
+    run_mailer();
+
+    my ($mail1,$mail2) = TestObject::mail_check($files{mailfile},'t/data/71daily.eml');
+    is_deeply($mail1,$mail2,'mail files match');
+}
 
 sub run_mailer {
     my $mailer = TestObject->load(config => $CONFIG);
@@ -99,6 +111,3 @@ sub run_mailer {
 
     is($mailer->{counts}{$_},$COUNTS{$_},"Matched count for $_") for(keys %COUNTS);
 }
-
-my ($mail1,$mail2) = TestObject::mail_check($files{mailfile},'t/data/71daily.eml');
-is_deeply($mail1,$mail2,'mail files match');

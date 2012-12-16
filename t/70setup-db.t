@@ -8,6 +8,8 @@ use Test::More;
 use lib ('t/lib');
 use TestEnvironment;
 
+# -------------------------------------------------------------------
+# Variables
 
 my $TESTS = 3;
 
@@ -19,7 +21,7 @@ if(!$handles)   { plan skip_all => "Unable to create test environment"; }
 else            { plan tests    => $TESTS }
 
 SKIP: {
-    skip "No supported databases available", $TESTS  unless($handles->{CPANPREFS});
+    skip "No supported databases available", $TESTS  unless($handles && $handles->{CPANPREFS});
 
     TestEnvironment::LoadData('70');
 
