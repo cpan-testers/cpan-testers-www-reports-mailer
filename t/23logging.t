@@ -14,15 +14,17 @@ use TestObject;
 # -------------------------------------------------------------------
 # Variables
 
-my $LOGFILE = 't/_TMPDIR/50logging.log';
-my $CONFIG  = 't/_DBDIR/50logging.ini';
+my $LOGFILE = 't/_TMPDIR/logging.log';
+my $CONFIG  = 't/_DBDIR/logging.ini';
 
 # -------------------------------------------------------------------
 # Tests
 
 unlink($LOGFILE) if(-f $LOGFILE);
 
-{
+SKIP: {
+    skip "No supported databases available", 22  unless(-f $CONFIG);
+
     ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
     is($obj->logfile, $LOGFILE, 'logfile default set');
@@ -42,7 +44,9 @@ unlink($LOGFILE) if(-f $LOGFILE);
 }
 
 
-{
+SKIP: {
+    skip "No supported databases available", 22  unless(-f $CONFIG);
+
     ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
     is($obj->logfile, $LOGFILE, 'logfile default set');
@@ -61,7 +65,9 @@ unlink($LOGFILE) if(-f $LOGFILE);
     like($log[2], qr!\d{4}/\d\d/\d\d \d\d:\d\d:\d\d: Back Again!, 'line 3 of log');
 }
 
-{
+SKIP: {
+    skip "No supported databases available", 22  unless(-f $CONFIG);
+
     ok( my $obj = TestObject->load(config => $CONFIG), "got object" );
 
     is($obj->logfile, $LOGFILE, 'logfile default set');

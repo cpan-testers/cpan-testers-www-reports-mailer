@@ -15,8 +15,9 @@ t/30counts.t
 t/31lastid.t
 t/32get_author.t
 t/33prefs.t
-t/50logging.t
-t/51init.t
+t/23logging.t
+t/21init.t
+t/22help.t
 t/60setup-db.t
 t/61daily.t
 t/62daily.t

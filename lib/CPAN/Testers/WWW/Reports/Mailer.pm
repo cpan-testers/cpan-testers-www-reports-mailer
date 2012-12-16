@@ -262,18 +262,22 @@ sub new {
         'mode=s',
         'help|h',
         'version|v'
-    );
+    ) or help(1);
+
+    # default to API settings if no command line option
+    for(qw(config help version)) {
+        $options{$_} ||= $hash{$_}  if(defined $hash{$_});
+    }
 
     $self->help(1)    if($options{help});
     $self->help(0)    if($options{version});
 
     # ensure we have a configuration file
-    my $config = $self->_defined_or($options{config}, $hash{config});
-    die "Must specify a configuration file\n"       unless($config);
-    die "Configuration file [$config] not found\n"  unless(-f $config);
+    die "Must specify a configuration file\n"               unless(   $options{config});
+    die "Configuration file [$options{config}] not found\n" unless(-f $options{config});
 
     # load configuration
-    my $cfg = Config::IniFiles->new( -file => $config );
+    my $cfg = Config::IniFiles->new( -file => $options{config} );
 
     # configure databases
     for my $db (qw(CPANPREFS)) {

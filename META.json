@@ -51,7 +51,8 @@
         "test" : {
             "requires": {
                 "IO::File": "0",
-                "Test::More": "0.70"
+                "Test::More": "0.70",
+                "Test::Trap": "0"
             },
             "recommends": {
                 "Test::CPAN::Meta": "0",

@@ -11,6 +11,8 @@ Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
         - added META.json.
         - dropped SQLite support.
         - move DB testing to Test::Database.
+        - added Test::Trap & help testing.
+        - reworked test suite.
 
 0.28    2011-10-13
         - now only uses one database connection.

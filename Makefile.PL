@@ -50,7 +50,8 @@ WriteMakefile(
 
         # build/test prereqs
         'IO::File'                          => 0,
-        'Test::More'                        => '0.70'
+        'Test::More'                        => '0.70',
+        'Test::Trap'                        => '0'
 
     },
 

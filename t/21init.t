@@ -12,20 +12,25 @@ use Test::More tests => 7;
 use TestObject;
 
 # -------------------------------------------------------------------
+# Variables
+
+my $CONFIG = 't/_DBDIR/preferences.ini';
+
+# -------------------------------------------------------------------
 # Tests
 
-ok( my $obj = TestObject->load(), "got object" );
+SKIP: {
+    skip "No supported databases available", 7  unless(-f $CONFIG);
 
-isa_ok( $obj, 'CPAN::Testers::WWW::Reports::Mailer', "object type" );
+    ok( my $obj = TestObject->load(), "got object" );
 
-#ok( $obj->{config}, 'config' );
-#isa_ok( $obj->{config}, 'GLOB', 'config type' );
+    isa_ok( $obj, 'CPAN::Testers::WWW::Reports::Mailer', "object type" );
 
-isa_ok( $obj->{CPANPREFS},         'CPAN::Testers::Common::DBUtils', 'CPANSTATS' );
+    isa_ok( $obj->{CPANPREFS}, 'CPAN::Testers::Common::DBUtils', 'CPANSTATS' );
 
-isa_ok( $obj->tt,   'Template', 'tt' );
-# TODO: should check attributes
+    isa_ok( $obj->tt,   'Template', 'tt' );
 
-is($obj->_defined_or( undef, 1, 2 ), 1);
-is($obj->_defined_or( 3, undef, 4 ), 3);
-is($obj->_defined_or( 5, 6, undef ), 5);
+    is($obj->_defined_or( undef, 1, 2 ), 1);
+    is($obj->_defined_or( 3, undef, 4 ), 3);
+    is($obj->_defined_or( 5, 6, undef ), 5);
+}
