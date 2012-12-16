@@ -7,15 +7,25 @@ $|=1;
 # Library Modules
 
 use File::Path;
-use Test::More tests => 2;
+use Test::More tests => 4;
 
 # -------------------------------------------------------------------
 # Tests
 
-# these shouldn't exist ...  whack just to be sure.
-rmtree( 't/_TMPDIR'   );
-rmtree( 't/_DBDIR'    );
+eval "use Test::Database";
+my $notd = $@ ? 1 : 0;
 
-# triple check
-ok( ! -d 't/_TMPDIR',   '_TMPDIR removed'   );
-ok( ! -d 't/_DBDIR',    '_DBDIR removed'    );
+unless($notd) {
+    my $td;
+    if($td = Test::Database->handle( 'mysql' )) {
+        $td->{driver}->drop_database($td->name);
+    } elsif($td = Test::Database->handle( 'SQLite' )) {
+        $td->{driver}->drop_database($td->name);
+    }
+}
+
+for my $d ('t/_DBDIR','t/_TMPDIR') {
+    ok( rmtree( $d ), "removed '$d'" );
+    ok( ! -d $d,      "removed '$d' verified" );
+}
+
