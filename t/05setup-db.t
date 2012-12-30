@@ -32,7 +32,7 @@ SKIP: {
     
 
     my @row = $handles->{CPANPREFS}->get_query('array','select count(*) from cpanstats');
-    is($row[0]->[0], 99, "row count for cpanstats");
+    is($row[0]->[0], 35, "row count for cpanstats");
     @row = $handles->{CPANPREFS}->get_query('array','select count(*) from uploads');
     is($row[0]->[0], 68, "row count for uploads");
 

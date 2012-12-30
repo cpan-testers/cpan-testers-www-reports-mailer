@@ -23,10 +23,10 @@ use TestObject;
 my $TESTS = 47;
 
 my %COUNTS = (
-    REPORTS => 777,
-    PASS    => 718,
-    FAIL    => 34,
-    UNKNOWN => 25,
+    REPORTS => 165,
+    PASS    => 137,
+    FAIL    => 17,
+    UNKNOWN => 11,
     NA      => 0,
     NOMAIL  => 0,
     MAILS   => 1,
@@ -76,25 +76,25 @@ SKIP: {
     overwrite_file($files{lastmail}, 'daily=4587509,weekly=4587509,reports=4587509' );
     run_mailer();
 
-    $COUNTS{REPORTS} = 394;
-    $COUNTS{PASS}    = 365;
-    $COUNTS{FAIL}    = 27;
+    $COUNTS{REPORTS} = 84;
+    $COUNTS{PASS}    = 72;
+    $COUNTS{FAIL}    = 10;
     $COUNTS{UNKNOWN} = 2;
     overwrite_file($files{lastmail}, 'daily=4722317,weekly=4722317,reports=4722317' );
     run_mailer();
 
     $COUNTS{MAILS}   = 1;
-    $COUNTS{REPORTS} = 286;
-    $COUNTS{PASS}    = 262;
+    $COUNTS{REPORTS} = 58;
+    $COUNTS{PASS}    = 50;
     $COUNTS{TEST}    = 1;
-    $COUNTS{FAIL}    = 23;
+    $COUNTS{FAIL}    = 7;
     $COUNTS{UNKNOWN} = 1;
     overwrite_file($files{lastmail}, 'daily=4766000,weekly=4766000,reports=4766000' );
     run_mailer();
 
     $COUNTS{MAILS}   = 1;
-    $COUNTS{REPORTS} = 285;
-    $COUNTS{FAIL}    = 22;
+    $COUNTS{REPORTS} = 57;
+    $COUNTS{FAIL}    = 6;
     overwrite_file($files{lastmail}, 'daily=4766100,weekly=4766100,reports=4766100' );
     run_mailer();
 

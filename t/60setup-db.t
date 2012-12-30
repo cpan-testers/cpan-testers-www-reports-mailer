@@ -30,7 +30,7 @@ SKIP: {
     TestEnvironment::LoadArticles( qw(4766103 4766403 4766801) );
 
     my @row = $handles->{CPANPREFS}->get_query('array','select count(*) from cpanstats');
-    is($row[0]->[0], 10976, "row count for cpanstats");
+    is($row[0]->[0], 1907, "row count for cpanstats");
     @row = $handles->{CPANPREFS}->get_query('array','select count(*) from ixlatest');
     is($row[0]->[0], 40, "row ct");
     @row = $handles->{CPANPREFS}->get_query('array','select count(*) from uploads');

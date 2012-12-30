@@ -20,11 +20,11 @@ use TestObject;
 my $TESTS = 15;
 
 my %COUNTS = (
-    REPORTS => 10643,
-    PASS    => 9688,
-    FAIL    => 896,
-    UNKNOWN => 40,
-    NA      => 19,
+    REPORTS => 1907,
+    PASS    => 1565,
+    FAIL    => 327,
+    UNKNOWN => 11,
+    NA      => 4,
     NOMAIL  => 0,
     MAILS   => 1,
     NEWAUTH => 0,

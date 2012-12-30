@@ -23,9 +23,9 @@ use TestObject;
 my $TESTS = 14;
 
 my %COUNTS = (
-    REPORTS => 8,
-    PASS    => 5,
-    FAIL    => 3,
+    REPORTS => 2,
+    PASS    => 0,
+    FAIL    => 2,
     UNKNOWN => 0,
     NA      => 0,
     NOMAIL  => 0,

@@ -26,7 +26,7 @@ SKIP: {
     TestEnvironment::LoadData('70');
 
     my @row = $handles->{CPANPREFS}->get_query('array','select count(*) from cpanstats');
-    is($row[0]->[0], 14034, "row count for cpanstats");
+    is($row[0]->[0], 2835, "row count for cpanstats");
     @row = $handles->{CPANPREFS}->get_query('array','select count(*) from ixlatest');
     is($row[0]->[0], 43, "row ct");
     @row = $handles->{CPANPREFS}->get_query('array','select count(*) from uploads');
