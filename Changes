@@ -1,5 +1,6 @@
 Revision history for Perl module CPAN::Testers::WWW::Reports::Mailer.
 
+0.30    2012-12-31
         - fixed MANIFEST list.
         - scaled down test data.
 
