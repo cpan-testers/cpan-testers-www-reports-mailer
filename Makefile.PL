@@ -15,7 +15,7 @@ HERE
 
 WriteMakefile(
     AUTHOR              => 'Barbie <barbie@cpan.org>',
-    NAME                => 'CPAN::Testers::WWW::Reports::Mailer',
+    NAME                => 'CPAN-Testers-WWW-Reports-Mailer',
     VERSION_FROM        => 'lib/CPAN/Testers/WWW/Reports/Mailer.pm',
     ABSTRACT            => 'CPAN Testers Reports Mailer',
     NO_META             => 1,
