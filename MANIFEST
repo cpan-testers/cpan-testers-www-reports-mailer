@@ -3,6 +3,7 @@ Changes
 examples/cpanprefs-mailer.sh
 examples/settings-example.ini
 lib/CPAN/Testers/WWW/Reports/Mailer.pm
+LICENSE
 Makefile.PL
 MANIFEST
 META.json

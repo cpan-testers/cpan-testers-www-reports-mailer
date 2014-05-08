@@ -49,6 +49,11 @@ provides:
     file:     lib/CPAN/Testers/WWW/Reports/Mailer.pm
     version:  0.30
 
+resources:
+  license:    http://www.perlfoundation.org/artistic_license_2_0
+  bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=CPAN-Testers-WWW-Reports-Mailer
+  repository: git://github.com/barbie/cpan-testers-www-reports-mailer.git
+
 meta-spec:
    version:   1.4
    url:       http://module-build.sourceforge.net/META-spec-v1.4.html
