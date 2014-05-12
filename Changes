@@ -1,6 +1,7 @@
 Revision history for CPAN-Testers-WWW-Reports-Mailer
 ====================================================
 
+0.31    2014-05-12
         - fixed distribution name in META.
         - added LICENSE file.
         - updated license links.
