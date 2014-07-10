@@ -1,6 +1,7 @@
 Revision history for CPAN-Testers-WWW-Reports-Mailer
 ====================================================
 
+0.32    2014-07-10
         - updated notification text (thanks to Karen Etheridge and Christian
           Walde).
 

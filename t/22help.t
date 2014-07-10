@@ -15,7 +15,7 @@ my $CONFIG = 't/_DBDIR/preferences.ini';
 {
     use CPAN::Testers::WWW::Reports::Mailer;
 
-    my $VERSION = '0.31';
+    my $VERSION = '0.32';
 
     my $obj;
     my $stdout;

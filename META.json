@@ -1,6 +1,6 @@
 {
     "name": "CPAN-Testers-WWW-Reports-Mailer",
-    "version": "0.31",
+    "version": "0.32",
     "abstract": "CPAN Testers Reports Mailer",
     "author": [
         "Barbie (BARBIE) <barbie@cpan.org>"
@@ -67,7 +67,7 @@
     "provides": {
         "CPAN::Testers::WWW::Reports::Mailer": {
             "file": "lib/CPAN/Testers/WWW/Reports/Mailer.pm",
-            "version": "0.31"
+            "version": "0.32"
         }
     },
     "no_index": {
