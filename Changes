@@ -3,6 +3,7 @@ Revision history for CPAN-Testers-WWW-Reports-Mailer
 
         - fixed license fields in META.json to be lists.
         - added homepage to resources links.
+        - added documentation about the CPAN Testers Fund.
 
 0.32    2014-07-10
         - updated notification text (thanks to Karen Etheridge and Christian
