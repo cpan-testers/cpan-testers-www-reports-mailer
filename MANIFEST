@@ -19,6 +19,7 @@ t/30counts.t
 t/31lastid.t
 t/32get_author.t
 t/33prefs.t
+t/34get_sponsor.t
 t/60setup-db.t
 t/61daily.t
 t/62daily.t
@@ -53,11 +54,11 @@ t/data/70data-db-cpanstats.txt
 t/data/70data-db-ixlatest.txt
 t/data/70data-db-uploads.txt
 t/data/71daily.eml
-templates/mailer.eml
-templates/notification.eml
-templates/report.eml
 t/lib/TestEnvironment.pm
 t/lib/TestObject.pm
 t/samples/4766103
 t/samples/4766403
 t/samples/4766801
+templates/mailer.eml
+templates/notification.eml
+templates/report.eml
