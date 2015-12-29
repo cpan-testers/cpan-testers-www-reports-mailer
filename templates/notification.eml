@@ -18,6 +18,16 @@ If you wish to find out more about CPAN Testers, please check out our Wiki and B
 
 Thanks,
 The CPAN Testers
+
+CPAN Testers is only made possible with the support of our sponsors.
+For more information on sponsoring, please visit the I ♥ CPAN Testers website (http://iheart.cpantesters.org)
+
+One of our esteemed sponsors is [% SPONSOR_NAME %], [% IF 'Individual Sponsor' == SPONSOR_CATEGORY ; THEN ; 'an' ; ELSE ; 'a' ; END ; %] [% SPONSOR_CATEGORY %].
+
+[% SPONSOR_BODY %]
+
+[% SPONSOR_HREF %]
+
 --
 Reports:     http://www.cpantesters.org
 Statistics:  http://stats.cpantesters.org
