@@ -47,7 +47,9 @@ sub Create {
     eval "use Test::Database";
     return  if($@);
 
-    if( $testdb = Test::Database->handle( 'mysql' )) {
+    Test::Database->load_drivers();
+
+    if( $testdb = Test::Database->handle( { dbd => 'mysql' } )) {
         create_mysql_databases();
         create_configs();
         return 1;
