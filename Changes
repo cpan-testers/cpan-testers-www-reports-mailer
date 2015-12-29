@@ -1,6 +1,7 @@
 Revision history for CPAN-Testers-WWW-Reports-Mailer
 ====================================================
 
+0.34    2015-12-29
         - retrieve sponsors from iheart site.
         - add random sponsor to emails.
 
