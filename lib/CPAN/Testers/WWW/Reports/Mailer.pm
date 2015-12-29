@@ -133,6 +133,9 @@ use Compress::Zlib;
 use Config::IniFiles;
 use CPAN::Testers::Common::DBUtils;
 use CPAN::Testers::Common::Utils    qw(guid_to_nntp);
+use CPAN::Testers::Fact::LegacyReport;
+use CPAN::Testers::Fact::TestSummary;
+use Data::Dumper;
 use Email::Address;
 use Email::Simple;
 use File::Basename;
@@ -140,7 +143,11 @@ use File::Path;
 use File::Slurp;
 use Getopt::ArgvFile default=>1;
 use Getopt::Long;
+use IO::File;
+use JSON;
 use LWP::UserAgent;
+use Math::Random::MT;
+use Metabase::Resource;
 use MIME::Base64;
 use MIME::QuotedPrint;
 use Path::Class;
@@ -148,6 +155,7 @@ use Parse::CPAN::Authors;
 use Template;
 use Time::Piece;
 use version;
+use WWW::Mechanize;
 
 use base qw(Class::Accessor::Fast);
 
@@ -164,7 +172,7 @@ my %default = (
     mailrc      => 'data/01mailrc.txt'
 );
 
-my (%AUTHORS,%PREFS);
+my (%AUTHORS,%PREFS,@SPONSORS,$MT,$IHEART);
 
 my %MODES = (
     daily   => { type =>  1, period => '24 hours', report => 'Daily Summary'   },
@@ -214,10 +222,11 @@ our %phrasebook = (
     'FindAuthorType'    => "SELECT pauseid FROM prefs_distributions WHERE report = ?",
 
     'GetReports'        => "SELECT id,guid,dist,version,platform,perl,state FROM cpanstats.cpanstats WHERE id > ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
-    'GetReports2'       => "SELECT c.id,c.guid,c.dist,c.version,c.platform,c.perl,c.state FROM cpanstats.cpanstats AS c INNER JOIN ixlatest AS x ON x.dist=c.dist WHERE c.id > ? AND c.state IN ('pass','fail','na','unknown') AND author IN (%s) ORDER BY c.id",
+    'GetReports2'       => "SELECT c.id,c.guid,c.dist,c.version,c.platform,c.perl,c.state FROM cpanstats.cpanstats AS c INNER JOIN cpanstats.ixlatest AS x ON x.dist=c.dist WHERE c.id > ? AND c.state IN ('pass','fail','na','unknown') AND author IN (%s) ORDER BY c.id",
     'GetReportCount'    => "SELECT id FROM cpanstats.cpanstats WHERE platform=? AND perl=? AND state=? AND id < ? AND dist=? AND version=? LIMIT 2",
     'GetLatestDistVers' => "SELECT version FROM cpanstats.uploads WHERE dist=? ORDER BY released DESC LIMIT 1",
     'GetAuthor'         => "SELECT author FROM cpanstats.uploads WHERE dist=? AND version=? LIMIT 1",
+    'GetAuthors'        => "SELECT author,dist,version FROM cpanstats.uploads",
 
     'GetAuthorPrefs'    => "SELECT * FROM prefs_authors WHERE pauseid=?",
     'GetDefaultPrefs'   => "SELECT * FROM prefs_authors AS a INNER JOIN prefs_distributions AS d ON d.pauseid=a.pauseid AND d.distribution='-' WHERE a.pauseid=?",
@@ -230,7 +239,8 @@ our %phrasebook = (
     'GetReportTest'     => "SELECT id,guid,dist,version,platform,perl,state FROM cpanstats.cpanstats WHERE id = ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
 
     'GetMetabaseByGUID' => 'SELECT * FROM metabase.metabase WHERE guid=?',
-    'GetTestersEmail'   => 'SELECT * FROM metabase.testers_email'
+    'GetTestersEmail'   => 'SELECT * FROM metabase.testers_email',
+    'GetTesters'        => 'SELECT * FROM metabase.testers_email ORDER BY id'
 );
 
 #----------------------------------------------------------------------------
@@ -303,6 +313,8 @@ sub new {
     $self->logclean($self->_defined_or( $options{logclean}, $hash{logclean}, $cfg->val('SETTINGS','logclean' ), $default{logclean} ) );
     $self->mode(lc  $self->_defined_or( $options{mode},     $hash{mode},     $cfg->val('SETTINGS','mode'     ), $default{mode} ) );
 
+    $IHEART = $cfg->val('SETTINGS','iheart_random' );
+
     my $mode = $self->mode;
     if($mode =~ /day/) {
         $mode = substr($mode,0,3);
@@ -328,6 +340,10 @@ sub new {
         $self->{testers}{$tester->{creator}}{name}  ||= $tester->{fullname};
         $self->{testers}{$tester->{creator}}{email} ||= $tester->{email};
     }
+
+    $self->_load_authors();
+    $self->_load_testers();
+    $self->_load_sponsors();
 
     return $self;
 }
@@ -698,19 +714,6 @@ sub _get_earliest {
     return $report[0]->[0] || 0;
 }
 
-sub _get_author {
-    my $self = shift;
-    my ($dist,$vers) = @_;
-    return  unless($dist && $vers);
-
-    unless($AUTHORS{$dist} && $AUTHORS{$dist}{$vers}) {
-        my @author = $self->{CPANPREFS}->get_query('array',$phrasebook{'GetAuthor'}, $dist, $vers);
-        $AUTHORS{$dist}{$vers} = @author ? $author[0]->[0] : undef;
-    }
-    return $AUTHORS{$dist}{$vers};
-}
-
-
 sub _get_prefs {
     my $self = shift;
     my ($author,$dist) = @_;
@@ -838,10 +841,15 @@ sub _send_report {
 
     # new Metabase lookup
     } else {
-        my @rows = $self->{CPANPREFS}->GetQuery('hash',$phrasebook{'GetMetabaseByGUID'},$row->{guid});
+        my @rows = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetMetabaseByGUID'},$row->{guid});
         return  unless(@rows);
 
-        my $data = decode_json($rows[0]->{report});
+        my $data = eval { decode_json($rows[0]->{report}) };
+        if ( $@ ) {
+            $self->_log( "WARN: Bad JSON in metabase report $row->{guid}\n" );
+            return;
+        }
+            
         my $fact = CPAN::Testers::Fact::LegacyReport->from_struct( $data->{'CPAN::Testers::Fact::LegacyReport'} );
         my $body = $fact->{content}{textreport};
 
@@ -853,14 +861,14 @@ sub _send_report {
         my $distro = Metabase::Resource->new( $report->{metadata}{core}{resource} );
         my $dist    = $distro->metadata->{dist_name};
         my $version = $distro->metadata->{dist_version};
-        my $author  = $distro->metadata->{author};
+        my $author2 = $distro->metadata->{author};
 
         my ($tester_name,$tester_email) = $self->_get_tester( $report->creator );
 
         my $subject = sprintf "%s %s-%s %s %s", $state, $dist, $version, $perl, $osname;
 
         # set up new mail headers
-        my $pause = $self->pause->author($author);
+        my $pause = $author2 ? $self->pause->author($author2) : $self->pause->author($author);
         %tvars = (
             author  => $author, 
             name    => ($pause ? $pause->name : $author),
@@ -878,6 +886,12 @@ sub _send_report {
 sub _write_mail {
     my ($self,$template,$parms) = @_;
 
+    unless($parms->{author}) {
+        $self->_log( "INFO: BAD:  $parms->{author} [$parms->{name}]\n" );
+        $self->{counts}{BAD}++;
+        return;
+    }
+
     my $from = $parms->{from} || $FROM;
     my $subject = $parms->{subject} || 'CPAN Testers Daily Reports';
     my $cmd = qq!| $HOW $parms->{author}\@cpan.org!;
@@ -887,8 +901,18 @@ sub _write_mail {
     my $DATE = $self->_emaildate();
     $DATE =~ s/\s+$//;
 
+    my $sponsor = $self->_get_sponsor();
+$self->_log( "INFO: Get Sponsor: ".Dumper($sponsor)."\n" );
+    $parms->{SPONSOR_CATEGORY} = $sponsor->{category};
+    $parms->{SPONSOR_NAME}     = $sponsor->{title};
+    $parms->{SPONSOR_BODY}     = $sponsor->{body};
+    $parms->{SPONSOR_HREF}     = $sponsor->{href};
+    $parms->{SPONSOR_URL}      = $sponsor->{url};
+
     my $text;
     $self->tt->process( $template, $parms, \$text ) || die $self->tt->error;
+
+    $parms->{name} ||= $parms->{author};
 
     my $body;
     $body =  "Reply-To: $parms->{reply}\n"  if($parms->{reply});
@@ -907,7 +931,6 @@ sub _write_mail {
         $fh->close;
         
     } elsif(my $fh = IO::File->new($cmd)) {
-
         print $fh $body;
         $fh->close;
         $self->_log( "INFO: GOOD: $parms->{author}\n" );
@@ -953,11 +976,88 @@ sub _download_mailrc {
     return $p;
 }
 
+sub _load_testers {
+    my $self = shift;
+    my $next = $self->{CPANPREFS}->iterator('hash',$phrasebook{'GetTesters'});
+    while(my $row = $next->()) {
+        $self->{testers}{$row->{resource}}{name}  ||= $row->{fullname};
+        $self->{testers}{$row->{resource}}{email} ||= $row->{email};
+    }
+}
+
 sub _get_tester {
     my ($self,$creator) = @_;
 
     return  unless($creator && $self->{testers}{$creator});
     return $self->{testers}{$creator}{name},$self->{testers}{$creator}{email};
+}
+
+sub _load_authors {
+    my $self = shift;
+    my $next = $self->{CPANPREFS}->iterator('hash',$phrasebook{'GetAuthors'});
+    while(my $row = $next->()) {
+        $AUTHORS{$row->{dist}}{$row->{version}} = $row->{author};
+    }
+}
+
+sub _get_author {
+    my ($self,$dist,$vers) = @_;
+    return	unless($dist && $vers);
+    return $AUTHORS{$dist}{$vers};
+}
+
+sub _get_authorX {
+    my $self = shift;
+    my ($dist,$vers) = @_;
+    return  unless($dist && $vers);
+
+    unless($AUTHORS{$dist} && $AUTHORS{$dist}{$vers}) {
+        my @author = $self->{CPANPREFS}->get_query('array',$phrasebook{'GetAuthor'}, $dist, $vers);
+        $AUTHORS{$dist}{$vers} = @author ? $author[0]->[0] : undef;
+    }
+    return $AUTHORS{$dist}{$vers};
+}
+
+sub _load_sponsors {
+    my $self = shift;
+
+    my $mech = WWW::Mechanize->new();
+    $mech->agent_alias( 'Linux Mozilla' );
+    eval { $mech->get( $IHEART ) };
+    return if($@ || !$mech->success() || !$mech->content());
+
+    my $json = $mech->content();
+    my $data = decode_json($json);
+
+    return unless($data);
+
+    for my $item (@$data) {
+        for my $link (@{$item->{links}}) {
+            push @SPONSORS, {
+                category => $item->{category},
+                title    => $link->{title},
+                body     => $link->{body},
+                href     => $link->{href},
+                url      => $link->{href}
+            };
+
+            $SPONSORS[-1]{url} =~ s!^https?://(?:www\.)?([^/]+).*!$1!  if($SPONSORS[-1]{url});
+            $SPONSORS[-1]{body} =~ s!</p>\s*<p[^>]*>!!g                if($SPONSORS[-1]{body});
+            $SPONSORS[-1]{body} =~ s!<[^>]+>!!g                        if($SPONSORS[-1]{body});
+        }
+    }
+
+    $self->_log( "INFO: " . scalar(@SPONSORS) . " Sponsors loaded\n" );
+    $self->_log( "INFO: Sponsors: " . Dumper(\@SPONSORS) );
+
+    $MT = Math::Random::MT->new(time);
+}
+
+sub _get_sponsor {
+    my $self = shift;
+    my $rand = $MT->rand(scalar(@SPONSORS));
+    $self->_log( "INFO: Sponsors: rand=$rand: " . Dumper($SPONSORS[$rand]) );
+    return $SPONSORS[$rand];
 }
 
 sub _log {
@@ -1138,8 +1238,8 @@ http://rt.cpan.org/Public/Dist/Display.html?Name=CPAN-Testers-WWW-Reports-Mailer
 
 =head1 CPAN TESTERS FUND
 
-CPAN Testers wouldn't exist without the help and support of the Perl 
-community. However, since 2008 CPAN Testers has grown far beyond the 
+CPAN Testers wouldn't exist without the help and support of the Perl
+community. However, since 2008 CPAN Testers has grown far beyond the
 expectations of it's original creators. As a consequence it now requires
 considerable funding to help support the infrastructure.
 
