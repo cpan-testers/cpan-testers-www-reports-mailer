@@ -50,6 +50,21 @@ sub mail_check {
     my $mail1 = readfile($file1);
     my $mail2 = readfile($file2);
 
+    # remove sponsor block
+    my $state = 0;
+    my @lines;
+    for my $line (@$mail1) {
+        $state = 1 if($line =~ /^Thanks,/);
+        $state = 2 if($line =~ /^The CPAN Testers/);
+        $state = 0 if($line =~ /^--/);
+
+        push @lines, $line unless($state == 3);
+
+        $state = 3 if($state == 2);
+    }
+
+    $mail1 = \@lines;
+
     return ($mail1,$mail2);
 }
 
