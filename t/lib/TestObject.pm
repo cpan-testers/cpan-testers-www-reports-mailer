@@ -18,6 +18,7 @@ my %phrasebook = (
     'GetReportCount'    => "SELECT id FROM cpanstats WHERE platform=? AND perl=? AND state=? AND id < ? AND dist=? AND version=? LIMIT 2",
     'GetLatestDistVers' => "SELECT version FROM uploads WHERE dist=? ORDER BY released DESC LIMIT 1",
     'GetAuthor'         => "SELECT author FROM uploads WHERE dist=? AND version=? LIMIT 1",
+    'GetAuthors'        => "SELECT author,dist,version FROM uploads",
 
     'GetAuthorPrefs'    => "SELECT * FROM prefs_authors WHERE pauseid=?",
     'GetDefaultPrefs'   => "SELECT * FROM prefs_authors AS a INNER JOIN prefs_distributions AS d ON d.pauseid=a.pauseid AND d.distribution='-' WHERE a.pauseid=?",
@@ -30,7 +31,8 @@ my %phrasebook = (
     'GetReportTest'     => "SELECT id,guid,dist,version,platform,perl,state FROM cpanstats WHERE id = ? AND state IN ('pass','fail','na','unknown') ORDER BY id",
 
     'GetMetabaseByGUID' => 'SELECT * FROM metabase WHERE guid=?',
-    'GetTestersEmail'   => 'SELECT * FROM testers_email'
+    'GetTestersEmail'   => 'SELECT * FROM testers_email',
+    'GetTesters'        => 'SELECT * FROM testers_email ORDER BY id'
 );
 
 sub load {

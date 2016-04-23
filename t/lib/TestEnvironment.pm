@@ -47,7 +47,12 @@ sub Create {
     eval "use Test::Database";
     return  if($@);
 
-    Test::Database->load_drivers();
+    #my @drivers1 = Test::Database->list_drivers();
+    #my @drivers2 = Test::Database->list_drivers('available');
+    #my @drivers3 = Test::Database->list_drivers('all');
+    #print STDERR "# listed drivers = @drivers1\n";
+    #print STDERR "# available drivers = @drivers2\n";
+    #print STDERR "# all drivers = @drivers3\n";
 
     if( $testdb = Test::Database->handle( { dbd => 'mysql' } )) {
         create_mysql_databases();
