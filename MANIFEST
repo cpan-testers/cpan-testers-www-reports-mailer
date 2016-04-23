@@ -9,6 +9,7 @@ MANIFEST
 META.json
 META.yml
 README
+sponsors.json
 t/01base.t
 t/05setup-db.t
 t/20attributes.t

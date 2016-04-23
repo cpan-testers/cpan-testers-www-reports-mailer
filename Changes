@@ -1,6 +1,8 @@
 Revision history for CPAN-Testers-WWW-Reports-Mailer
 ====================================================
 
+        - added a fallback sponsors file, in case network fails.
+
 0.35    2015-12-31
         - added missing pre-requisites.
 

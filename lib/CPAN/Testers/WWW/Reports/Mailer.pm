@@ -172,6 +172,8 @@ my %default = (
     mailrc      => 'data/01mailrc.txt'
 );
 
+my $sponsorfile = 'sponsors.json';
+
 my (%AUTHORS,%PREFS,@SPONSORS,$MT,$IHEART);
 
 my %MODES = (
@@ -1020,13 +1022,23 @@ sub _get_authorX {
 
 sub _load_sponsors {
     my $self = shift;
+    my $json;
 
     my $mech = WWW::Mechanize->new();
     $mech->agent_alias( 'Linux Mozilla' );
     eval { $mech->get( $IHEART ) };
-    return if($@ || !$mech->success() || !$mech->content());
 
-    my $json = $mech->content();
+    # if the network connection failed...
+    if($@ || !$mech->success() || !$mech->content()) {
+        if(-f $sponsorfile) {
+            $json = read_file($sponsorfile);
+        } else {
+            return;
+        }
+    } else {
+        $json = $mech->content();
+    }
+
     my $data = decode_json($json);
 
     return unless($data);
@@ -1046,6 +1058,9 @@ sub _load_sponsors {
             $SPONSORS[-1]{body} =~ s!<[^>]+>!!g                        if($SPONSORS[-1]{body});
         }
     }
+
+    # save file in case the network connection fails
+    overwrite_file($sponsorfile, $json);
 
     $self->_log( "INFO: " . scalar(@SPONSORS) . " Sponsors loaded\n" );
     $self->_log( "INFO: Sponsors: " . Dumper(\@SPONSORS) );
