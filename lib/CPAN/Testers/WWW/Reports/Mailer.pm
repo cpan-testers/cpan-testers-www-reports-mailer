@@ -1062,8 +1062,8 @@ sub _load_sponsors {
     # save file in case the network connection fails
     overwrite_file($sponsorfile, $json);
 
-    $self->_log( "INFO: " . scalar(@SPONSORS) . " Sponsors loaded\n" );
-    $self->_log( "INFO: Sponsors: " . Dumper(\@SPONSORS) );
+    #$self->_log( "INFO: " . scalar(@SPONSORS) . " Sponsors loaded\n" );
+    #$self->_log( "INFO: Sponsors: " . Dumper(\@SPONSORS) );
 
     $MT = Math::Random::MT->new(time);
 }
