@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use vars qw($VERSION);
-$VERSION = '0.35';
+$VERSION = '0.36';
 
 =head1 NAME
 
@@ -1282,7 +1282,7 @@ Miss Barbell Productions, L<http://www.missbarbell.co.uk/>
 
 =head1 COPYRIGHT & LICENSE
 
-  Copyright (C) 2008-2014 Barbie for Miss Barbell Productions.
+  Copyright (C) 2008-2016 Barbie for Miss Barbell Productions.
 
   This distribution is free software; you can redistribute it and/or
   modify it under the Artistic Licence v2.
