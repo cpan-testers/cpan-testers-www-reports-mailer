@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                     CPAN-Testers-WWW-Reports-Mailer
-version:                  0.36
+version:                  0.37
 abstract:                 CPAN Testers Reports Mailer
 author:
   - Barbie <barbie@cpan.org>
@@ -55,7 +55,7 @@ build_requires:
 provides:
   CPAN::Testers::WWW::Reports::Mailer:
     file:     lib/CPAN/Testers/WWW/Reports/Mailer.pm
-    version:  0.36
+    version:  0.37
 
 resources:
   homepage:   http://devel.cpantesters.org
