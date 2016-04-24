@@ -31,6 +31,7 @@ WriteMakefile(
         'CPAN::Testers::Fact::LegacyReport' => 0,
         'CPAN::Testers::Fact::TestSummary'  => 0,
         'Data::Dumper'                      => 0,
+        'Data::FlexSerializer'              => 0,
         'Email::Address'                    => 0,
         'Email::Simple'                     => 0,
         'File::Basename'                    => 0,

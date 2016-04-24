@@ -13,6 +13,8 @@ The distribution requires the following modules:
   Config::IniFiles
   CPAN::Testers::Common::DBUtils
   CPAN::Testers::Common::Utils
+  Data::Dumper
+  Data::FlexSerializer
   Email::Address
   Email::Simple
   File::Basename
