@@ -136,6 +136,7 @@ use CPAN::Testers::Common::Utils    qw(guid_to_nntp);
 use CPAN::Testers::Fact::LegacyReport;
 use CPAN::Testers::Fact::TestSummary;
 use Data::Dumper;
+use Data::FlexSerializer;
 use Email::Address;
 use Email::Simple;
 use File::Basename;
@@ -174,7 +175,7 @@ my %default = (
 
 my $sponsorfile = 'sponsors.json';
 
-my (%AUTHORS,%PREFS,@SPONSORS,$MT,$IHEART);
+my (%AUTHORS,%PREFS,@SPONSORS,$MT,$IHEART,$serializer);
 
 my %MODES = (
     daily   => { type =>  1, period => '24 hours', report => 'Daily Summary'   },
@@ -346,6 +347,12 @@ sub new {
     $self->_load_authors();
     $self->_load_testers();
     $self->_load_sponsors();
+
+    $serializer = Data::FlexSerializer->new(
+        detect_compression  => 1,
+        detect_sereal       => 1,
+        detect_json         => 1,
+    );
 
     return $self;
 }
@@ -846,9 +853,21 @@ sub _send_report {
         my @rows = $self->{CPANPREFS}->get_query('hash',$phrasebook{'GetMetabaseByGUID'},$row->{guid});
         return  unless(@rows);
 
-        my $data = eval { decode_json($rows[0]->{report}) };
-        if ( $@ ) {
-            $self->_log( "WARN: Bad JSON in metabase report $row->{guid}\n" );
+        my $data;
+        my $row = $rows[0];
+        if($row->{fact}) {
+            my $report;
+            eval { $report = $serializer->deserialize($row->{fact}); };
+            $self->_log( "WARN: Bad Sereal in metabase fact $row->{guid}\n" );
+            return if($@);
+
+            $data = _dereference_report($report);
+        } else {
+            $data = $serializer->deserialize($row->{report});
+        }
+
+        unless ( $data ) {
+            $self->_log( "WARN: Bad serialisation in metabase report $row->{guid}\n" );
             return;
         }
             
@@ -883,6 +902,24 @@ sub _send_report {
 
     # send data
     $self->_write_mail('report.eml',\%tvars);
+}
+
+sub _dereference_report {
+    my ($report) = @_;
+    my %facts;
+
+    eval {
+        my @facts = $report->facts();
+        for my $fact (@facts) {
+            my $name = ref $fact;
+            $facts{$name} = $fact->as_struct;
+            $facts{$name}{content} = decode_json($facts{$name}{content});
+        }
+    };
+
+    return  if($@);
+
+    return \%facts;
 }
 
 sub _write_mail {
